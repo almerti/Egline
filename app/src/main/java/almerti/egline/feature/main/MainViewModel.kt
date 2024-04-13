@@ -1,5 +1,6 @@
-package almerti.egline.feature.settings.main
+package almerti.egline.feature.main
 
+import almerti.egline.feature.main.MainState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

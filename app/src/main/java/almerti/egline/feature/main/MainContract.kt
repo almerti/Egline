@@ -1,4 +1,4 @@
-package almerti.egline.feature.settings.main
+package almerti.egline.feature.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider

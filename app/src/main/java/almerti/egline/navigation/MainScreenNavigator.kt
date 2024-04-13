@@ -1,7 +1,9 @@
 package almerti.egline.navigation
 
 
-import almerti.egline.screens.mainScreen.MainScreen
+import almerti.egline.feature.main.MainActions
+import almerti.egline.feature.main.MainScreen
+import almerti.egline.feature.main.MainState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -17,7 +19,12 @@ fun MainNavigationGraph(
         startDestination = Screen.Main.route
     ) {
         composable(Screen.Main.route) {
-            MainScreen()
+            MainScreen(
+                state = MainState(),
+                actions = MainActions(
+                    //some test
+                )
+            )
         }
     }
 }
