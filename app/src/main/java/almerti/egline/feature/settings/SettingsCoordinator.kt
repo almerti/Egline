@@ -1,15 +1,15 @@
-package 
+package almerti.egline.feature.settings
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
- import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 /**
  * Screen's coordinator which is responsible for handling actions from the UI layer
  * and one-shot actions based on the new UI state
  */
-class MainCoordinator(
-    val viewModel: MainViewModel
+class SettingsCoordinator(
+    val viewModel: SettingsViewModel
 ) {
     val screenStateFlow = viewModel.stateFlow
 
@@ -19,11 +19,11 @@ class MainCoordinator(
 }
 
 @Composable
-fun rememberMainCoordinator(
-    viewModel: MainViewModel =  hiltViewModel() 
-) : MainCoordinator {
+fun rememberSettingsCoordinator(
+    viewModel: SettingsViewModel = hiltViewModel()
+): SettingsCoordinator {
     return remember(viewModel) {
-        MainCoordinator(
+        SettingsCoordinator(
             viewModel = viewModel
         )
     }

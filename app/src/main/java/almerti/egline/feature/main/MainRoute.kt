@@ -1,4 +1,4 @@
-package 
+package almerti.egline.feature.settings.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -10,7 +10,7 @@ fun MainRoute(
     coordinator: MainCoordinator = rememberMainCoordinator()
 ) {
     // State observing and declarations
- val uiState by coordinator.screenStateFlow.collectAsState(MainState())
+    val uiState by coordinator.screenStateFlow.collectAsState(MainState())
 
     // UI Actions
     val actions = rememberMainActions(coordinator)

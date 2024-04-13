@@ -1,4 +1,4 @@
-package 
+package almerti.egline.feature.settings.main
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

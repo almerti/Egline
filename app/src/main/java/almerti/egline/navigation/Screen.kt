@@ -1,6 +1,10 @@
 package almerti.egline.navigation
 
 sealed class Screen(val route: String) {
+    fun createRoute(bookId: String): String{
+        return "$route?bookId=$bookId"
+    }
+
     object Main : Screen("main")
     object Catalog : Screen("catalog")
     object Notifications : Screen("notifications")

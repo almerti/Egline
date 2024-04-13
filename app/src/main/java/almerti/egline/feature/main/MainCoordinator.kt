@@ -1,8 +1,8 @@
-package 
+package almerti.egline.feature.settings.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
- import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 /**
  * Screen's coordinator which is responsible for handling actions from the UI layer
@@ -20,8 +20,8 @@ class MainCoordinator(
 
 @Composable
 fun rememberMainCoordinator(
-    viewModel: MainViewModel =  hiltViewModel() 
-) : MainCoordinator {
+    viewModel: MainViewModel = hiltViewModel()
+): MainCoordinator {
     return remember(viewModel) {
         MainCoordinator(
             viewModel = viewModel
