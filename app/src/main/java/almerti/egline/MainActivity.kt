@@ -26,34 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             EglineTheme {
                 val navController = rememberNavController()
-                val mainNavHostController = navController.topLevelNavigator
 
-                Scaffold(
-                    bottomBar = {
-
-                    }
-                ) { paddingValues ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(paddingValues)
-                    ) {
-                        MainNavigationGraph(
-                            navController = mainNavHostController,
-                            onOpenBookInfoScreen = { bookId ->
-                                navController.navigate(Screen.BookInfo.createRoute(bookId))
-                            }
-                        )
-
-                        val fullscreenNavHostController = navController.bottomLevelNavigator
-                        FullscreenNavigationGraph(
-                            navController = fullscreenNavHostController,
-                            onBack = {
-                                fullscreenNavHostController.popBackStack()
-                            }
-                        )
-                    }
-                }
             }
         }
     }

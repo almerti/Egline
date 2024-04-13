@@ -19,31 +19,5 @@ fun MainNavigationGraph(
         composable(Screen.Main.route) {
             MainScreen()
         }
-        composable(Screen.Catalog.route) {
-            CatalogScreen(
-                onOpenBookInfoScreen = onOpenBookInfoScreen
-            )
-        }
-        composable(Screen.Notifications.route) {
-            NotificationsScreen(
-                onOpenBookInfoScreen = onOpenBookInfoScreen
-            )
-        }
-        composable(Screen.Settings.route) {
-            SettingsScreen(
-                onNavigateToProfile = {
-                    navController.navigate(Screen.Profile.route)
-                },
-                onNavigateToAboutUs = {
-                    navController.navigate(Screen.AboutUs.route)
-                }
-            )
-        }
-        composable(Screen.Profile.route) {
-            ProfileScreen()
-        }
-        composable(Screen.AboutUs.route) {
-            AboutUsScreen()
-        }
     }
 }
