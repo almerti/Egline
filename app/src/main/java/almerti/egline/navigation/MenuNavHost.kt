@@ -3,7 +3,18 @@ package almerti.egline.navigation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Build
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,7 +30,10 @@ fun MenuNavHost(
     navController : NavHostController = rememberNavController() ,
     modifier : Modifier = Modifier
 ) {
-    Scaffold { innerPadding ->
+    Scaffold(
+    bottomBar = { BottomNavBar(navController) }
+    ) {
+        innerPadding ->
         NavHost(
             modifier = Modifier.padding(innerPadding) ,
             navController = navController ,
@@ -47,6 +61,33 @@ fun MenuNavHost(
                 ProfileScreen(navController)
             }
         }
+    }
+}
+
+
+@Composable
+fun BottomNavBar(navController: NavHostController) {
+    NavigationBar {
+        NavigationBarItem(
+            icon = { Icon(Icons.Outlined.FavoriteBorder, contentDescription = null) },
+            label = { Text("Favorites") },
+            selected = navController.currentDestination?.route == LibraryScreens.Favorites.route,
+            onClick = { navController.navigate(LibraryScreens.Favorites.route) }
+        )
+
+        NavigationBarItem(
+            icon = { Icon(Icons.Outlined.Build, contentDescription = null) },
+            label = { Text("Books") },
+            selected = navController.currentDestination?.route == LibraryScreens.Books.route,
+            onClick = { navController.navigate(LibraryScreens.Books.route) }
+        )
+
+        NavigationBarItem(
+            icon = { Icon(Icons.Outlined.AccountCircle, contentDescription = null) },
+            label = { Text("Profile") },
+            selected = navController.currentDestination?.route == LibraryScreens.Profile.route,
+            onClick = { navController.navigate(LibraryScreens.Profile.route) }
+        )
     }
 }
 
