@@ -20,7 +20,7 @@ fun RootNavHost(
 ) {
     NavHost(
         navController = rootController,
-        startDestination = RootScreens.BookReader.route
+        startDestination = RootScreens.Library.route,
     ) {
         composable(RootScreens.BookReader.route) {
             BookReaderScreen(
