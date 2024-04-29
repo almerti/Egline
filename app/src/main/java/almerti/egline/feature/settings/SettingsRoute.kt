@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 
-const val SETTINGS_GRAPH_ROUTE = "settings"
+const val SETTINGS_GRAPH_ROUTE = "settings_route"
 
 
 fun NavController.navigateToSettingsGraph() {
@@ -19,3 +19,4 @@ fun NavGraphBuilder.settingsGraph() {
         SettingsScreen()
     }
 }
+

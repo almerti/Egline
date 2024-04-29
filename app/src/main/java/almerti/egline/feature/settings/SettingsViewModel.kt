@@ -7,9 +7,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    savedStateHandle : SavedStateHandle
+    val dependency : dep
 ) : ViewModel() {
-
-
-
+    init {
+    dependency.makesome()
+    }
 }

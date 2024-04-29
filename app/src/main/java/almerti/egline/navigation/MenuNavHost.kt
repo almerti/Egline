@@ -1,13 +1,19 @@
 package almerti.egline.navigation
 
+import almerti.egline.feature.settings.SettingsScreen
+import almerti.egline.feature.settings.navigateToSettingsGraph
+import almerti.egline.feature.settings.settingsGraph
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Build
+import androidx.compose.material.icons.outlined.Comment
+import androidx.compose.material.icons.outlined.Deck
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -60,6 +66,7 @@ fun MenuNavHost(
             composable(LibraryScreens.Profile.route) {
                 ProfileScreen(navController)
             }
+            settingsGraph()
         }
     }
 }
@@ -69,7 +76,7 @@ fun MenuNavHost(
 fun BottomNavBar(navController: NavHostController) {
     NavigationBar {
         NavigationBarItem(
-            icon = { Icon(Icons.Outlined.FavoriteBorder, contentDescription = null) },
+            icon = { Icon(Icons.Outlined.Deck, contentDescription = null) },
             label = { Text("Favorites") },
             selected = navController.currentDestination?.route == LibraryScreens.Favorites.route,
             onClick = { navController.navigate(LibraryScreens.Favorites.route) }
@@ -87,6 +94,12 @@ fun BottomNavBar(navController: NavHostController) {
             label = { Text("Profile") },
             selected = navController.currentDestination?.route == LibraryScreens.Profile.route,
             onClick = { navController.navigate(LibraryScreens.Profile.route) }
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Outlined.Settings, contentDescription = null) },
+            label = { Text("Settings") },
+            selected = navController.currentDestination?.route == LibraryScreens.Profile.route,
+            onClick = { navController.navigateToSettingsGraph() }
         )
     }
 }
