@@ -1,14 +1,20 @@
 package almerti.egline.data
 
 import almerti.egline.data.dao.BookDao
+import almerti.egline.data.dao.ChapterDao
 import almerti.egline.data.model.Book
+import almerti.egline.data.model.Chapter
 import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [Book::class],
-    version = 1
+    entities = [Book::class,
+        Chapter::class],
+    version = 1,
+    exportSchema = false
 )
 abstract class EglineDatabase:RoomDatabase() {
     abstract val dao: BookDao
+    abstract val chapterDao: ChapterDao
+
 }
