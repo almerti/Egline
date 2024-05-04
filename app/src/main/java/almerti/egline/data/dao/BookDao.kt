@@ -1,5 +1,6 @@
-package almerti.egline.data.book
+package almerti.egline.data.dao
 
+import almerti.egline.data.model.Book
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Upsert
