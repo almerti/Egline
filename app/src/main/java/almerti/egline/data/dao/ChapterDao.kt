@@ -5,6 +5,8 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
+import kotlinx.coroutines.flow.Flow
+
 @Dao
 interface ChapterDao {
 
@@ -18,7 +20,7 @@ interface ChapterDao {
     suspend fun deleteChapterById(id: Int)
 
     @Query("SELECT * FROM chapter WHERE book_id = :bookId")
-    suspend fun getAllChaptersToBook(bookId:Int): List<Chapter>
+    fun getAllChaptersToBook(bookId:Int): Flow<List<Chapter>>
     @Query("SELECT * FROM chapter WHERE id = :id")
     suspend fun getChapter(id: Int): Chapter
 

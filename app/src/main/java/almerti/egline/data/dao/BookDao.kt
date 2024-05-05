@@ -6,6 +6,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BookDao {
@@ -17,7 +18,7 @@ interface BookDao {
     suspend fun DeleteBook(book : Book)
 
     @Query("SELECT * FROM Book")
-    suspend fun GetAllBooks() : List<Book>
+    fun GetAllBooks() : Flow<List<Book>>
 
     @Query("SELECT * FROM Book WHERE id = :id")
     suspend fun GetBookById(id : Int) : Book?
@@ -31,7 +32,7 @@ interface BookDao {
         AND 
         CASE WHEN :useRatingFilter THEN rating > :minRating AND rating < :maxRating END
 """)
-    suspend fun getBooksByFilters(
+    fun getBooksByFilters(
         useStatusFilter: Boolean = false,
         status: Status? = null,
         useDateFilter: Boolean = false,
@@ -40,6 +41,6 @@ interface BookDao {
         useRatingFilter: Boolean = false,
         minRating: Int? = null,
         maxRating: Int? = null,
-    ): List<Book>
+    ): Flow<List<Book>>
 
 }
