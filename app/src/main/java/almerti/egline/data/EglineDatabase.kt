@@ -14,7 +14,7 @@ import androidx.room.RoomDatabase
     exportSchema = false
 )
 abstract class EglineDatabase:RoomDatabase() {
-    abstract val dao: BookDao
-    abstract val chapterDao: ChapterDao
+    abstract fun BookDao(): BookDao
+    abstract fun ChapterDao(): ChapterDao
 
 }
