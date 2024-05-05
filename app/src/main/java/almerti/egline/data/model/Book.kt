@@ -10,6 +10,18 @@ data class Book(
     val title:String ,
     val description:String ,
     val cover:ByteArray ,
-    val rating:Double
+    val rating:Double,
+    val ratingCount:Int,
+    val views:Int,
+    val date:Long,
+    val status:Status
+
     
 )
+
+enum class Status{
+    ONGOING ,
+    COMPLETED ,
+    CANCELLED
+
+}

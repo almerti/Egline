@@ -11,9 +11,10 @@ data class Chapter(
     @PrimaryKey(autoGenerate = true)
     val id: Int ,
     val bookId: Int ,
-    val chapterId: Int ,
     val chapterName: String ,
+    val chapterNumber : Number,
     val chapterTextContent: String,
     val chapterAudioContent: String,
+    val date: Long
 )
 
