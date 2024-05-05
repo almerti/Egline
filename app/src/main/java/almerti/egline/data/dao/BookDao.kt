@@ -1,6 +1,7 @@
 package almerti.egline.data.dao
 
 import almerti.egline.data.model.Book
+import almerti.egline.data.model.Status
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
@@ -17,5 +18,28 @@ interface BookDao {
 
     @Query("SELECT * FROM Book")
     suspend fun GetAllBooks() : List<Book>
+
+    @Query("SELECT * FROM Book WHERE id = :id")
+    suspend fun GetBookById(id : Int) : Book?
+
+    @Query("""
+    SELECT * FROM Book 
+    WHERE 
+        CASE WHEN :useStatusFilter THEN status = :status END
+        AND 
+        CASE WHEN :useDateFilter THEN date BETWEEN :startDate AND :endDate END
+        AND 
+        CASE WHEN :useRatingFilter THEN rating > :minRating AND rating < :maxRating END
+""")
+    suspend fun getBooksByFilters(
+        useStatusFilter: Boolean = false,
+        status: Status? = null,
+        useDateFilter: Boolean = false,
+        startDate: Long? = null,
+        endDate: Long? = null,
+        useRatingFilter: Boolean = false,
+        minRating: Int? = null,
+        maxRating: Int? = null,
+    ): List<Book>
 
 }

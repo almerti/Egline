@@ -1,5 +1,6 @@
 package almerti.egline.data.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,6 +12,7 @@ data class Book(
     val description:String ,
     val cover:ByteArray ,
     val rating:Double,
+    @ColumnInfo(name = "rating_count")
     val ratingCount:Int,
     val views:Int,
     val date:Long,

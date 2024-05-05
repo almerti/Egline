@@ -7,10 +7,6 @@ import androidx.room.Query
 import androidx.room.Upsert
 @Dao
 interface ChapterDao {
-    @Query("SELECT * FROM chapter WHERE id = :id")
-   suspend fun getChapter(id: Int): Chapter
-    @Query("SELECT * FROM chapter")
-    suspend fun getAllChapters(): List<Chapter>
 
     @Upsert
     suspend fun UpsertChapter(chapter: Chapter)
@@ -20,5 +16,13 @@ interface ChapterDao {
 
     @Query("DELETE FROM chapter where id = :id")
     suspend fun deleteChapterById(id: Int)
+
+    @Query("SELECT * FROM chapter WHERE book_id = :bookId")
+    suspend fun getAllChaptersToBook(bookId:Int): List<Chapter>
+    @Query("SELECT * FROM chapter WHERE id = :id")
+    suspend fun getChapter(id: Int): Chapter
+
+    @Query("SELECT * FROM chapter WHERE book_id = :bookId AND number = :number ")
+    suspend fun getChapterToBook(bookId:Int,number : Int): Chapter
 
 }
