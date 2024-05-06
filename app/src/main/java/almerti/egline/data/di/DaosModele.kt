@@ -20,4 +20,5 @@ internal object DaosModele{
     fun providesChapterDao(
         database:EglineDatabase
     ): ChapterDao =database.ChapterDao()
+
 }
