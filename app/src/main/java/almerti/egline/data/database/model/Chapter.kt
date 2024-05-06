@@ -1,4 +1,4 @@
-package almerti.egline.data.model
+package almerti.egline.data.database.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -24,4 +24,3 @@ data class Chapter(
     val audioContent: String ,
     val date: Long
 )
-

@@ -1,6 +1,6 @@
-package almerti.egline.data.di
+package almerti.egline.data.database.di
 
-import almerti.egline.data.EglineDatabase
+import almerti.egline.data.database.EglineDatabase
 import android.content.Context
 import androidx.room.Room
 import dagger.Module

@@ -1,4 +1,4 @@
-package almerti.egline.data.model
+package almerti.egline.data.database.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -16,7 +16,7 @@ data class Book(
     val ratingCount:Int,
     val views:Int,
     val date:Long,
-    val status:Status
+    val status: Status
 
     
 )
