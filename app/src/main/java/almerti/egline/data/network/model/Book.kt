@@ -1,4 +1,4 @@
-package almerti.egline.data.retrofit.model
+package almerti.egline.data.network.model
 
 
 data class Book(

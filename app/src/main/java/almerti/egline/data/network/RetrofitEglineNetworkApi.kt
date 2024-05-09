@@ -1,8 +1,6 @@
-package almerti.egline.data.retrofit
+package almerti.egline.data.network
 
-import almerti.egline.data.retrofit.model.Book
-import android.net.NetworkRequest
-import retrofit2.Call
+import almerti.egline.data.network.model.Book
 import retrofit2.Response
 import retrofit2.http.GET
 
