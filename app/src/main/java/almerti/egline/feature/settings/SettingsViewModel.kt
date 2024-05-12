@@ -25,11 +25,10 @@ class SettingsViewModel @Inject constructor(
             val response = retrofitEglineNetworkApi.GetBooks()
             if(response.isSuccessful)
             {
-                bookState.value= listOf(response.body()!!)
+                bookState.value= response.body()!!
             }
             else
             {
-                //write log
                 Logger.getLogger("SettingsViewModel").warning("Error")
             }
 
