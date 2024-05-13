@@ -7,15 +7,15 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object NetworkModule{
+internal object NetworkModule {
 
     @Provides
     @Singleton
@@ -24,9 +24,8 @@ internal object NetworkModule{
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
-                }
+                },
             )
-
 
 
             .build();
@@ -35,7 +34,7 @@ internal object NetworkModule{
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(okHttpClient : OkHttpClient) : Retrofit {
         return Retrofit.Builder()
             .baseUrl("http://192.168.0.113:8000/api/v1/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -46,7 +45,7 @@ internal object NetworkModule{
 
     @Provides
     @Singleton
-    fun provideNetworkApi(retrofit: Retrofit): NetworkApi {
+    fun provideNetworkApi(retrofit : Retrofit) : NetworkApi {
         return retrofit.create(RetrofitEglineNetworkApi::class.java)
     }
 

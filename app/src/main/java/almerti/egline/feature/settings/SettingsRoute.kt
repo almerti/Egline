@@ -14,7 +14,7 @@ fun NavController.navigateToSettingsGraph() {
 fun NavGraphBuilder.settingsGraph() {
     navigation(
         route = SETTINGS_GRAPH_ROUTE,
-        startDestination = SETTINGS_ROUTE
+        startDestination = SETTINGS_ROUTE,
     ) {
         SettingsScreen()
     }

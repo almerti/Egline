@@ -14,7 +14,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideDep(): dep {
+    fun provideDep() : dep {
         return dep()
     }
 

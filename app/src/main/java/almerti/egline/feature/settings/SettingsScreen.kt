@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel
+    viewModel : SettingsViewModel
 ) {
     val books by viewModel.bookState.collectAsState()
 
@@ -33,26 +33,28 @@ fun SettingsScreen(
             CircularProgressIndicator()
         } else {
             LazyColumn {
-                items(books) { book ->
+                items(books) {book ->
                     BookItem(book)
                 }
             }
         }
-        Button(onClick = {
-            viewModel.viewModelScope.launch {
-            viewModel.addRating()
-            }
-        }
+        Button(
+            onClick = {
+                viewModel.viewModelScope.launch {
+                    viewModel.addRating()
+                }
+            },
         ) {
             Text(text = "Add Rating")
         }
-        }
     }
+}
+
 @Composable
-fun BookItem(book: Book) {
+fun BookItem(book : Book) {
     Row(
         modifier = Modifier.padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(book.title)
         Spacer(modifier = Modifier.width(8.dp))

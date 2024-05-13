@@ -23,24 +23,26 @@ interface BookDao {
     @Query("SELECT * FROM Book WHERE id = :id")
     suspend fun GetBookById(id : Int) : Book?
 
-    @Query("""
-    SELECT * FROM Book 
-    WHERE 
+    @Query(
+        """
+    SELECT * FROM Book
+    WHERE
         CASE WHEN :useStatusFilter THEN status = :status END
-        AND 
+        AND
         CASE WHEN :useDateFilter THEN date BETWEEN :startDate AND :endDate END
-        AND 
+        AND
         CASE WHEN :useRatingFilter THEN rating > :minRating AND rating < :maxRating END
-""")
+"""
+    )
     fun getBooksByFilters(
-        useStatusFilter: Boolean = false ,
-        status: Status? = null ,
-        useDateFilter: Boolean = false ,
-        startDate: Long? = null ,
-        endDate: Long? = null ,
-        useRatingFilter: Boolean = false ,
-        minRating: Int? = null ,
-        maxRating: Int? = null ,
-    ): Flow<List<Book>>
+        useStatusFilter : Boolean = false ,
+        status : Status? = null ,
+        useDateFilter : Boolean = false ,
+        startDate : Long? = null ,
+        endDate : Long? = null ,
+        useRatingFilter : Boolean = false ,
+        minRating : Int? = null ,
+        maxRating : Int? = null ,
+    ) : Flow<List<Book>>
 
 }

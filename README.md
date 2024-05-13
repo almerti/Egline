@@ -17,7 +17,8 @@ Egline is a book reading and audiobook listening application developed using Kot
 
 ## Contributing
 
-Contributions to Egline are welcome! If you find any bugs or have suggestions for new features, please open an issue or submit a pull request.
+Contributions to Egline are welcome! If you find any bugs or have suggestions for new features,
+please open an issue or submit a pull request.
 
 ## License
 

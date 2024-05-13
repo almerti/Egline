@@ -1,6 +1,5 @@
 package almerti.egline.navigation
 
-import almerti.egline.feature.settings.SettingsScreen
 import almerti.egline.feature.settings.navigateToSettingsGraph
 import almerti.egline.feature.settings.settingsGraph
 import androidx.compose.foundation.layout.Arrangement
@@ -9,10 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.Comment
 import androidx.compose.material.icons.outlined.Deck
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -32,29 +28,28 @@ import androidx.navigation.navigation
 @Composable
 @Preview
 fun MenuNavHost(
-    navController : NavHostController = rememberNavController() ,
+    navController : NavHostController = rememberNavController(),
     modifier : Modifier = Modifier
 ) {
     Scaffold(
-    bottomBar = { BottomNavBar(navController) }
-    ) {
-        innerPadding ->
+        bottomBar = {BottomNavBar(navController)},
+    ) {innerPadding ->
         NavHost(
-            modifier = Modifier.padding(innerPadding) ,
-            navController = navController ,
-            startDestination = LibraryScreens.Favorites.route
+            modifier = Modifier.padding(innerPadding),
+            navController = navController,
+            startDestination = LibraryScreens.Favorites.route,
         ) {
-                navigation(
-                route = LibraryScreens.Library.route ,
-                startDestination = LibraryScreens.Books.route
+            navigation(
+                route = LibraryScreens.Library.route,
+                startDestination = LibraryScreens.Books.route,
             ) {
 
                 composable(LibraryScreens.Books.route) {
                     BooksScreen(navController)
                 }
                 composable(
-                    route = LibraryScreens.BookDetails.route
-                ) { backStackEntry ->
+                    route = LibraryScreens.BookDetails.route,
+                ) {backStackEntry ->
                     BookDetailsScreen(navController)
                 }
             }
@@ -73,33 +68,33 @@ fun MenuNavHost(
 
 
 @Composable
-fun BottomNavBar(navController: NavHostController) {
+fun BottomNavBar(navController : NavHostController) {
     NavigationBar {
         NavigationBarItem(
-            icon = { Icon(Icons.Outlined.Deck, contentDescription = null) },
-            label = { Text("Favorites") },
+            icon = {Icon(Icons.Outlined.Deck, contentDescription = null)},
+            label = {Text("Favorites")},
             selected = navController.currentDestination?.route == LibraryScreens.Favorites.route,
-            onClick = { navController.navigate(LibraryScreens.Favorites.route) }
+            onClick = {navController.navigate(LibraryScreens.Favorites.route)},
         )
 
         NavigationBarItem(
-            icon = { Icon(Icons.Outlined.Build, contentDescription = null) },
-            label = { Text("Books") },
+            icon = {Icon(Icons.Outlined.Build, contentDescription = null)},
+            label = {Text("Books")},
             selected = navController.currentDestination?.route == LibraryScreens.Books.route,
-            onClick = { navController.navigate(LibraryScreens.Books.route) }
+            onClick = {navController.navigate(LibraryScreens.Books.route)},
         )
 
         NavigationBarItem(
-            icon = { Icon(Icons.Outlined.AccountCircle, contentDescription = null) },
-            label = { Text("Profile") },
+            icon = {Icon(Icons.Outlined.AccountCircle, contentDescription = null)},
+            label = {Text("Profile")},
             selected = navController.currentDestination?.route == LibraryScreens.Profile.route,
-            onClick = { navController.navigate(LibraryScreens.Profile.route) }
+            onClick = {navController.navigate(LibraryScreens.Profile.route)},
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Outlined.Settings, contentDescription = null) },
-            label = { Text("Settings") },
+            icon = {Icon(Icons.Outlined.Settings, contentDescription = null)},
+            label = {Text("Settings")},
             selected = navController.currentDestination?.route == LibraryScreens.Profile.route,
-            onClick = { navController.navigateToSettingsGraph() }
+            onClick = {navController.navigateToSettingsGraph()},
         )
     }
 }
@@ -108,12 +103,12 @@ fun BottomNavBar(navController: NavHostController) {
 @Composable
 fun FavoritesScreen(navController : NavHostController) {
     Column(
-        verticalArrangement = Arrangement.Top ,
-        modifier = Modifier
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier,
     ) {
 
         Text(text = "FavoritesScreen")
-        Button(onClick = { navController.navigate(LibraryScreens.Profile.route) }) {
+        Button(onClick = {navController.navigate(LibraryScreens.Profile.route)}) {
             Text(text = "Go to Profile")
         }
     }
@@ -122,12 +117,12 @@ fun FavoritesScreen(navController : NavHostController) {
 @Composable
 fun ProfileScreen(navController : NavHostController) {
     Column(
-        verticalArrangement = Arrangement.Top ,
-        modifier = Modifier
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier,
     ) {
 
         Text(text = "ProfileScreen")
-        Button(onClick = { navController.navigate(LibraryScreens.Books.route) }) {
+        Button(onClick = {navController.navigate(LibraryScreens.Books.route)}) {
             Text(text = "Go to Books")
         }
     }
@@ -137,12 +132,12 @@ fun ProfileScreen(navController : NavHostController) {
 @Composable
 fun BooksScreen(navController : NavHostController) {
     Column(
-        verticalArrangement = Arrangement.Top ,
-        modifier = Modifier
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier,
     ) {
 
         Text(text = "BooksScreen")
-        Button(onClick = { navController.navigate(LibraryScreens.BookDetails.route) }) {
+        Button(onClick = {navController.navigate(LibraryScreens.BookDetails.route)}) {
             Text(text = "Go to BookDetails")
         }
     }
@@ -151,18 +146,16 @@ fun BooksScreen(navController : NavHostController) {
 @Composable
 fun BookDetailsScreen(navController : NavHostController) {
     Column(
-        verticalArrangement = Arrangement.Top ,
-        modifier = Modifier
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier,
     ) {
 
         Text(text = "BookDetailsScreen")
-        Button(onClick = { navController.navigate(LibraryScreens.Favorites.route) }) {
+        Button(onClick = {navController.navigate(LibraryScreens.Favorites.route)}) {
             Text(text = "Go to Favorite")
         }
     }
 }
-
-
 
 
 sealed class LibraryScreens(val route : String) {

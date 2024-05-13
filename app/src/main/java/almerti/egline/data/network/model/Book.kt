@@ -1,7 +1,5 @@
 package almerti.egline.data.network.model
 
-import java.time.Year
-
 
 data class Book(
     val id : Int ,

@@ -27,7 +27,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
+                getDefaultProguardFile("proguard-android-optimize.txt") ,
                 "proguard-rules.pro"
             )
         }
@@ -65,14 +65,14 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     //hilt
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation (libs.hilt.android)
+    implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     ksp(libs.androidx.hilt.compiler)
 
     //room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    ksp (libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
 
     //retrofit

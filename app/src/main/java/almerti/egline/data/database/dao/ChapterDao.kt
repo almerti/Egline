@@ -11,20 +11,21 @@ import kotlinx.coroutines.flow.Flow
 interface ChapterDao {
 
     @Upsert
-    suspend fun UpsertChapter(chapter: Chapter)
+    suspend fun UpsertChapter(chapter : Chapter)
 
     @Delete
     suspend fun deleteChapter(chapter : Chapter)
 
     @Query("DELETE FROM chapter where id = :id")
-    suspend fun deleteChapterById(id: Int)
+    suspend fun deleteChapterById(id : Int)
 
     @Query("SELECT * FROM chapter WHERE book_id = :bookId")
-    fun getAllChaptersToBook(bookId:Int): Flow<List<Chapter>>
+    fun getAllChaptersToBook(bookId : Int) : Flow<List<Chapter>>
+
     @Query("SELECT * FROM chapter WHERE id = :id")
-    suspend fun getChapter(id: Int): Chapter
+    suspend fun getChapter(id : Int) : Chapter
 
     @Query("SELECT * FROM chapter WHERE book_id = :bookId AND number = :number ")
-    suspend fun getChapterToBook(bookId:Int,number : Int): Chapter
+    suspend fun getChapterToBook(bookId : Int , number : Int) : Chapter
 
 }

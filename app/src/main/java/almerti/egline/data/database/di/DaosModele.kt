@@ -10,15 +10,15 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object DaosModele{
+internal object DaosModele {
     @Provides
     fun providesBookDao(
-        database: EglineDatabase
-    ): BookDao =database.BookDao()
+        database : EglineDatabase
+    ) : BookDao = database.BookDao()
 
     @Provides
     fun providesChapterDao(
-        database: EglineDatabase
-    ): ChapterDao =database.ChapterDao()
+        database : EglineDatabase
+    ) : ChapterDao = database.ChapterDao()
 
 }

@@ -12,15 +12,16 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object DatabaseModule{
+internal object DatabaseModule {
 
     @Provides
     @Singleton
     fun ProvidesEglineDatabase(
-        @ApplicationContext context: Context
-    ): EglineDatabase = Room.databaseBuilder(
-        context,
-        EglineDatabase::class.java,
-        "egline.db")
+        @ApplicationContext context : Context
+    ) : EglineDatabase = Room.databaseBuilder(
+        context ,
+        EglineDatabase::class.java ,
+        "egline.db"
+    )
         .build()
 }

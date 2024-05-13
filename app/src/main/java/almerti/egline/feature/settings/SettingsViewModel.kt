@@ -5,7 +5,6 @@ import almerti.egline.data.network.model.Book
 import almerti.egline.data.network.model.BookRate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.annotations.SerializedName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -17,30 +16,29 @@ class SettingsViewModel @Inject constructor(
     val networkApi : NetworkApi
 ) : ViewModel() {
     val bookState = MutableStateFlow<List<Book>>(emptyList())
+
     init {
         GetBooks()
     }
-    private fun GetBooks()
-    {
+
+    private fun GetBooks() {
         viewModelScope.launch {
             val response = networkApi.getBooks()
-            if(response.isSuccessful)
-            {
-                bookState.value=  response.body()!!
-            }
-            else
-            {
+            if (response.isSuccessful) {
+                bookState.value = response.body()!!
+            } else {
                 Logger.getLogger("SettingsViewModel").warning("Error")
             }
 
         }
     }
-    suspend fun addRating()
-    {
-        val bookRate= BookRate(
-            bookId=1,
-            userId=1,
-            rate=2)
+
+    suspend fun addRating() {
+        val bookRate = BookRate(
+            bookId = 1,
+            userId = 1,
+            rate = 2,
+        )
         networkApi.addRateToBook(bookRate)
     }
 }
