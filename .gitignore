@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+#add di module to not change api link, also probably need to write this
+#git update-index --skip-worktree  app/src/main/java/almerti/egline/data/network/di/NetworkModule.kt
+NetworkModule
