@@ -1,6 +1,6 @@
-package almerti.egline.data.dao
+package almerti.egline.data.database.dao
 
-import almerti.egline.data.model.Chapter
+import almerti.egline.data.database.model.Chapter
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
