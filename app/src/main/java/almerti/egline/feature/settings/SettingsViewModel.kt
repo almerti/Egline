@@ -1,10 +1,11 @@
 package almerti.egline.feature.settings
 
-import almerti.egline.data.network.RetrofitEglineNetworkApi
+import almerti.egline.data.network.NetworkApi
 import almerti.egline.data.network.model.Book
-import androidx.lifecycle.SavedStateHandle
+import almerti.egline.data.network.model.BookRate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.annotations.SerializedName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -13,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    val retrofitEglineNetworkApi : RetrofitEglineNetworkApi
+    val networkApi : NetworkApi
 ) : ViewModel() {
     val bookState = MutableStateFlow<List<Book>>(emptyList())
     init {
@@ -22,10 +23,10 @@ class SettingsViewModel @Inject constructor(
     private fun GetBooks()
     {
         viewModelScope.launch {
-            val response = retrofitEglineNetworkApi.GetBooks()
+            val response = networkApi.getBooks()
             if(response.isSuccessful)
             {
-                bookState.value= response.body()!!
+                bookState.value=  response.body()!!
             }
             else
             {
@@ -33,5 +34,13 @@ class SettingsViewModel @Inject constructor(
             }
 
         }
+    }
+    suspend fun addRating()
+    {
+        val bookRate= BookRate(
+            bookId=1,
+            userId=1,
+            rate=2)
+        networkApi.addRateToBook(bookRate)
     }
 }

@@ -1,7 +1,8 @@
 package almerti.egline.data.network.di
 
 
-import almerti.egline.data.network.RetrofitEglineNetworkApi
+import almerti.egline.data.network.NetworkApi
+import almerti.egline.data.network.retrofit.RetrofitEglineNetworkApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,17 +19,14 @@ internal object NetworkModule{
 
     @Provides
     @Singleton
-    fun okHttpCallClient():OkHttpClient {
-      return OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor())
+    fun okHttpCallClient() : OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                }
+            )
             .build();
-        }
-    @Provides
-    @Singleton
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
     }
 
 
@@ -36,7 +34,7 @@ internal object NetworkModule{
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://192.168.0.113:8000/api/v1/")
+            .baseUrl("http://192.168.0.113:8000/api/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
@@ -45,7 +43,7 @@ internal object NetworkModule{
 
     @Provides
     @Singleton
-    fun provideRetrofitEglineNetworkApi(retrofit: Retrofit): RetrofitEglineNetworkApi {
+    fun provideNetworkApi(retrofit: Retrofit): NetworkApi {
         return retrofit.create(RetrofitEglineNetworkApi::class.java)
     }
 

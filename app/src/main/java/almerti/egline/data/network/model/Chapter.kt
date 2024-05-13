@@ -10,5 +10,5 @@ data class Chapter(
     val title: String ,
     val number : Int ,
     val filepath:String,
-    val date: Long
+    val date: String
 )

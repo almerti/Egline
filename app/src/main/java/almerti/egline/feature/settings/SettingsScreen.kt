@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,30 +17,37 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(
-    settingsViewModel: SettingsViewModel
+    viewModel: SettingsViewModel
 ) {
-    val books by settingsViewModel.bookState.collectAsState()
+    val books by viewModel.bookState.collectAsState()
 
     Column {
         Text(text = "SettingsScreen")
 
         if (books.isEmpty()) {
-            // Отображаем индикатор загрузки или сообщение, когда список книг пуст
             CircularProgressIndicator()
         } else {
-            // Отображаем список книг
             LazyColumn {
                 items(books) { book ->
                     BookItem(book)
                 }
             }
         }
+        Button(onClick = {
+            viewModel.viewModelScope.launch {
+            viewModel.addRating()
+            }
+        }
+        ) {
+            Text(text = "Add Rating")
+        }
+        }
     }
-}
-
 @Composable
 fun BookItem(book: Book) {
     Row(
@@ -49,5 +57,7 @@ fun BookItem(book: Book) {
         Text(book.title)
         Spacer(modifier = Modifier.width(8.dp))
         Text(book.description)
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(book.rating.toString())
     }
 }

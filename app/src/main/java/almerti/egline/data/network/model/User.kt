@@ -2,6 +2,7 @@ package almerti.egline.data.network.model
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 
 data class User (
@@ -11,5 +12,6 @@ data class User (
     val email: String,
     val password: String,
     val avatar: ByteArray,
-    val saved_books: JsonArray,
+    @SerializedName(value = "saved_books", alternate = ["books"])
+    val savedBooks: JsonObject,
 )
