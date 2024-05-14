@@ -29,7 +29,8 @@ import androidx.navigation.navigation
 @Preview
 fun MenuNavHost(
     navController : NavHostController = rememberNavController(),
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    onNavigateToLoginPage : () -> Unit
 ) {
     Scaffold(
         bottomBar = {BottomNavBar(navController)},
@@ -59,7 +60,7 @@ fun MenuNavHost(
             }
 
             composable(LibraryScreens.Profile.route) {
-                ProfileScreen(navController)
+                ProfileScreen(navController, onNavigateToLoginPage)
             }
             settingsGraph()
         }
@@ -115,15 +116,15 @@ fun FavoritesScreen(navController : NavHostController) {
 }
 
 @Composable
-fun ProfileScreen(navController : NavHostController) {
+fun ProfileScreen(navController : NavHostController, onNavigateToLoginPage : () -> Unit) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,
     ) {
 
         Text(text = "ProfileScreen")
-        Button(onClick = {navController.navigate(LibraryScreens.Books.route)}) {
-            Text(text = "Go to Books")
+        Button(onClick = onNavigateToLoginPage) {
+            Text(text = "Login")
         }
     }
 
