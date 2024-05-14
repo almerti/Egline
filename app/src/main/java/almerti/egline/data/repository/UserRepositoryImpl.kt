@@ -20,4 +20,12 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getOtherUser(userId : Int) : User {
         TODO("Not yet implemented")
     }
+
+    override suspend fun CreateUser(user : User) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun DeleteUser(userId : Int) {
+        TODO("Not yet implemented")
+    }
 }
