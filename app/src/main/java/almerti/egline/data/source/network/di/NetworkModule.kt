@@ -1,8 +1,8 @@
-package almerti.egline.data.network.di
+package almerti.egline.data.source.network.di
 
 
-import almerti.egline.data.network.NetworkApi
-import almerti.egline.data.network.retrofit.RetrofitEglineNetworkApi
+import almerti.egline.data.source.network.NetworkApi
+import almerti.egline.data.source.network.retrofit.RetrofitEglineNetworkApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,8 +1,8 @@
-package almerti.egline.data.database.di
+package almerti.egline.data.source.database.di
 
-import almerti.egline.data.database.EglineDatabase
-import almerti.egline.data.database.dao.BookDao
-import almerti.egline.data.database.dao.ChapterDao
+import almerti.egline.data.source.database.EglineDatabase
+import almerti.egline.data.source.database.dao.BookDao
+import almerti.egline.data.source.database.dao.ChapterDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

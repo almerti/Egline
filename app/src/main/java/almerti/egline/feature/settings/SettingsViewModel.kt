@@ -1,8 +1,8 @@
 package almerti.egline.feature.settings
 
-import almerti.egline.data.network.NetworkApi
-import almerti.egline.data.network.model.Book
-import almerti.egline.data.network.model.BookRate
+import almerti.egline.data.source.network.NetworkApi
+import almerti.egline.data.source.network.model.Book
+import almerti.egline.data.source.network.model.BookRate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

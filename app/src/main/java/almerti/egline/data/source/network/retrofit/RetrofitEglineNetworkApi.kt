@@ -1,11 +1,11 @@
-package almerti.egline.data.network.retrofit
+package almerti.egline.data.source.network.retrofit
 
-import almerti.egline.data.network.NetworkApi
-import almerti.egline.data.network.model.Book
-import almerti.egline.data.network.model.BookRate
-import almerti.egline.data.network.model.Chapter
-import almerti.egline.data.network.model.Comment
-import almerti.egline.data.network.model.User
+import almerti.egline.data.source.network.NetworkApi
+import almerti.egline.data.source.network.model.Book
+import almerti.egline.data.source.network.model.BookRate
+import almerti.egline.data.source.network.model.Chapter
+import almerti.egline.data.source.network.model.Comment
+import almerti.egline.data.source.network.model.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

@@ -1,6 +1,6 @@
 package almerti.egline.feature.settings
 
-import almerti.egline.data.network.model.Book
+import almerti.egline.data.source.network.model.Book
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

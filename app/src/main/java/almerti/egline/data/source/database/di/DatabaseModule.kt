@@ -1,6 +1,6 @@
-package almerti.egline.data.database.di
+package almerti.egline.data.source.database.di
 
-import almerti.egline.data.database.EglineDatabase
+import almerti.egline.data.source.database.EglineDatabase
 import android.content.Context
 import androidx.room.Room
 import dagger.Module
@@ -19,9 +19,9 @@ internal object DatabaseModule {
     fun ProvidesEglineDatabase(
         @ApplicationContext context : Context
     ) : EglineDatabase = Room.databaseBuilder(
-        context ,
-        EglineDatabase::class.java ,
-        "egline.db"
+        context,
+        EglineDatabase::class.java,
+        "egline.db",
     )
         .build()
 }

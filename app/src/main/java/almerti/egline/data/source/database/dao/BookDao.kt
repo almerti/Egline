@@ -1,7 +1,7 @@
-package almerti.egline.data.database.dao
+package almerti.egline.data.source.database.dao
 
-import almerti.egline.data.database.model.Book
-import almerti.egline.data.database.model.Status
+import almerti.egline.data.source.database.model.Book
+import almerti.egline.data.source.database.model.Status
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
@@ -32,17 +32,17 @@ interface BookDao {
         CASE WHEN :useDateFilter THEN date BETWEEN :startDate AND :endDate END
         AND
         CASE WHEN :useRatingFilter THEN rating > :minRating AND rating < :maxRating END
-"""
+""",
     )
     fun getBooksByFilters(
-        useStatusFilter : Boolean = false ,
-        status : Status? = null ,
-        useDateFilter : Boolean = false ,
-        startDate : Long? = null ,
-        endDate : Long? = null ,
-        useRatingFilter : Boolean = false ,
-        minRating : Int? = null ,
-        maxRating : Int? = null ,
+        useStatusFilter : Boolean = false,
+        status : Status? = null,
+        useDateFilter : Boolean = false,
+        startDate : Long? = null,
+        endDate : Long? = null,
+        useRatingFilter : Boolean = false,
+        minRating : Int? = null,
+        maxRating : Int? = null,
     ) : Flow<List<Book>>
 
 }

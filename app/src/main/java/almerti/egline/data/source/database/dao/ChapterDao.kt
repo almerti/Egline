@@ -1,6 +1,6 @@
-package almerti.egline.data.database.dao
+package almerti.egline.data.source.database.dao
 
-import almerti.egline.data.database.model.Chapter
+import almerti.egline.data.source.database.model.Chapter
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
@@ -26,6 +26,6 @@ interface ChapterDao {
     suspend fun getChapter(id : Int) : Chapter
 
     @Query("SELECT * FROM chapter WHERE book_id = :bookId AND number = :number ")
-    suspend fun getChapterToBook(bookId : Int , number : Int) : Chapter
+    suspend fun getChapterToBook(bookId : Int, number : Int) : Chapter
 
 }
