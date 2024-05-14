@@ -7,15 +7,21 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.logging.Logger
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    val repository : UserRepository
+    private val repository : UserRepository
 ) : ViewModel() {
-    var userState = MutableStateFlow<User?>(null)
+    private lateinit var userFlow : Flow<User>
+
+    private val _userState = MutableStateFlow<User?>(null)
+    val userState : StateFlow<User?> = _userState
 
     init {
         getUser()
@@ -23,20 +29,22 @@ class SettingsViewModel @Inject constructor(
 
     private fun getUser() {
         viewModelScope.launch {
-            repository.getCurrentUser().collect {user ->
-                userState.value = user
+            userFlow = repository.getCurrentUser()
+            userFlow.collect {user ->
+                _userState.value = user
+                Logger.getGlobal().info(user.toString())
             }
         }
     }
 
-    fun updateUser() {
+    fun updateUser(name : String) {
         viewModelScope.launch {
             val user = User(
-                id = userState.value?.id ?: 0,
-                displayName = "New Name",
-                email = "New Email",
-                avatar = "New Avatar".toByteArray(),
-                password = "New Password",
+                id = 1,
+                displayName = name,
+                email = "test",
+                avatar = "get".toByteArray(),
+                password = "NewPassword",
             )
             repository.updateCurrentUser(user)
         }

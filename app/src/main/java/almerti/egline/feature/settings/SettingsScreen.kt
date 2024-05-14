@@ -10,9 +10,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -23,7 +27,8 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(
     viewModel : SettingsViewModel
 ) {
-    val user by viewModel.userState.collectAsState()
+    val user by viewModel.userState.collectAsState(initial = null)
+    var newDisplayName by remember {mutableStateOf("")}
 
     Column {
         Text(text = "SettingsScreen")
@@ -32,12 +37,17 @@ fun SettingsScreen(
             CircularProgressIndicator()
         } else {
             Column {
+                TextField(
+                    value = newDisplayName,
+                    onValueChange = {newDisplayName = it},
+                    label = {Text("New Display Name")},
+                )
                 Text(text = user?.displayName ?: "")
                 Text(text = user?.email ?: "")
             }
         }
 
-        Button(onClick = {viewModel.updateUser()}) {
+        Button(onClick = {viewModel.updateUser(newDisplayName)}) {
             Text(text = "Update User")
         }
     }

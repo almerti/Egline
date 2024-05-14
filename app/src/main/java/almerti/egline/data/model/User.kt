@@ -13,7 +13,12 @@ data class User(
 
         other as User
 
-        return id == other.id
+        if (id != other.id) return false
+        if (displayName != other.displayName) return false
+        if (email != other.email) return false
+        if (!avatar.contentEquals(other.avatar)) return false
+
+        return true
     }
 
     override fun hashCode() : Int {
