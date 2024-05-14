@@ -80,6 +80,10 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
 
+
+    //DataStore
+    implementation(libs.androidx.datastore)
+
     //test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
