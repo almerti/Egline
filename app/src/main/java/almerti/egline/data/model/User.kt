@@ -1,10 +1,11 @@
 package almerti.egline.data.model
 
 data class User(
-    val id : Int,
-    val displayName : String,
-    val email : String,
-    val avatar : ByteArray,
+    val id : Int = -1,
+    val displayName : String = "Unknown",
+    val email : String = "Unknown",
+    val avatar : ByteArray = ByteArray(0),
+    val password : String?
 ) {
     override fun equals(other : Any?) : Boolean {
         if (this === other) return true

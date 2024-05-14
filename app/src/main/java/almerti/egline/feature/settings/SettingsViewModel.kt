@@ -1,11 +1,11 @@
 package almerti.egline.feature.settings
 
-import almerti.egline.data.source.network.NetworkApi
-import almerti.egline.data.source.network.model.Book
-import almerti.egline.data.source.network.model.BookRate
+import almerti.egline.data.model.User
+import almerti.egline.data.repository.UserRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.util.logging.Logger
@@ -13,32 +13,32 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    val networkApi : NetworkApi
+    val repository : UserRepository
 ) : ViewModel() {
-    val bookState = MutableStateFlow<List<Book>>(emptyList())
+    var userState = MutableStateFlow<User?>(null)
 
     init {
-        GetBooks()
+        getUser()
     }
 
-    private fun GetBooks() {
+    private fun getUser() {
         viewModelScope.launch {
-            val response = networkApi.getBooks()
-            if (response.isSuccessful) {
-                bookState.value = response.body()!!
-            } else {
-                Logger.getLogger("SettingsViewModel").warning("Error")
+            repository.getCurrentUser().collect {user ->
+                userState.value = user
             }
-
         }
     }
 
-    suspend fun addRating() {
-        val bookRate = BookRate(
-            bookId = 1,
-            userId = 1,
-            rate = 2,
-        )
-        networkApi.addRateToBook(bookRate)
+    fun updateUser() {
+        viewModelScope.launch {
+            val user = User(
+                id = userState.value?.id ?: 0,
+                displayName = "New Name",
+                email = "New Email",
+                avatar = "New Avatar".toByteArray(),
+                password = "New Password",
+            )
+            repository.updateCurrentUser(user)
+        }
     }
 }

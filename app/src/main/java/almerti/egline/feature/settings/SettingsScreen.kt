@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -24,42 +23,22 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(
     viewModel : SettingsViewModel
 ) {
-    val books by viewModel.bookState.collectAsState()
+    val user by viewModel.userState.collectAsState()
 
     Column {
         Text(text = "SettingsScreen")
 
-        if (books.isEmpty()) {
+        if (user == null) {
             CircularProgressIndicator()
         } else {
-            LazyColumn {
-                items(books) {book ->
-                    BookItem(book)
-                }
+            Column {
+                Text(text = user?.displayName ?: "")
+                Text(text = user?.email ?: "")
             }
         }
-        Button(
-            onClick = {
-                viewModel.viewModelScope.launch {
-                    viewModel.addRating()
-                }
-            },
-        ) {
-            Text(text = "Add Rating")
-        }
-    }
-}
 
-@Composable
-fun BookItem(book : Book) {
-    Row(
-        modifier = Modifier.padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(book.title)
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(book.description)
-        Spacer(modifier = Modifier.width(10.dp))
-        Text(book.rating.toString())
+        Button(onClick = {viewModel.updateUser()}) {
+            Text(text = "Update User")
+        }
     }
 }
