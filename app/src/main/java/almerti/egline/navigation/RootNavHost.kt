@@ -1,6 +1,8 @@
 package almerti.egline.navigation
 
 
+import almerti.egline.feature.login.loginGraph
+import almerti.egline.feature.login.navigateToLoginGraph
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -14,8 +16,8 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun RootNavHost(
-    modifier : Modifier = Modifier,
-    rootController : NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier,
+    rootController: NavHostController = rememberNavController(),
 ) {
     NavHost(
         navController = rootController,
@@ -29,14 +31,20 @@ fun RootNavHost(
             )
         }
 
+        loginGraph()
+
         composable(RootScreens.Library.route) {
-            MenuNavHost()
+            MenuNavHost(
+                onNavigateToLoginPage = {
+                    rootController.navigateToLoginGraph()
+                },
+            )
         }
     }
 }
 
 @Composable
-fun BookReaderScreen(onNavigateToLibrary : () -> Unit) {
+fun BookReaderScreen(onNavigateToLibrary: () -> Unit) {
     Column(modifier = Modifier) {
 
         Text(text = "BookReaderScreen")
@@ -45,7 +53,7 @@ fun BookReaderScreen(onNavigateToLibrary : () -> Unit) {
     }
 }
 
-sealed class RootScreens(val route : String) {
+sealed class RootScreens(val route: String) {
     object BookReader : RootScreens("book-reader")
     object Library : RootScreens("library")
 }
