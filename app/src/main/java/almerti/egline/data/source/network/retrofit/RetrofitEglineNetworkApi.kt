@@ -6,6 +6,7 @@ import almerti.egline.data.source.network.model.BookRate
 import almerti.egline.data.source.network.model.Chapter
 import almerti.egline.data.source.network.model.Comment
 import almerti.egline.data.source.network.model.User
+import almerti.egline.data.source.network.model.UserLogin
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -47,6 +48,9 @@ interface RetrofitEglineNetworkApi : NetworkApi {
 
     @DELETE(value = "user/{id}")
     override suspend fun deleteUser(@Path("id") id : Number) : Response<String>
+
+    @GET(value = "user/login")
+    override suspend fun login(@Body userLogin : UserLogin) : Response<String>
 
 
     //Chapter

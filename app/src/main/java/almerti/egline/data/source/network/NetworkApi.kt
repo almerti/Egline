@@ -5,6 +5,7 @@ import almerti.egline.data.source.network.model.BookRate
 import almerti.egline.data.source.network.model.Chapter
 import almerti.egline.data.source.network.model.Comment
 import almerti.egline.data.source.network.model.User
+import almerti.egline.data.source.network.model.UserLogin
 import retrofit2.Response
 
 interface NetworkApi {
@@ -21,6 +22,7 @@ interface NetworkApi {
     suspend fun createUser(user : User) : Response<String>
     suspend fun updateUser(id : Number, user : User) : Response<String>
     suspend fun deleteUser(id : Number) : Response<String>
+    suspend fun login(userLogin : UserLogin) : Response<String>
 
     // Chapter
     suspend fun getChapters() : Response<List<Chapter>>

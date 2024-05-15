@@ -11,5 +11,5 @@ data class User(
     val password : String,
     val avatar : ByteArray,
     @SerializedName(value = "saved_books", alternate = ["books"])
-    val savedBooks : JsonObject,
+    var savedBooks : JsonObject,
 )
