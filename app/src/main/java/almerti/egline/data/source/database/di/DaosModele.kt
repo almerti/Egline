@@ -3,6 +3,7 @@ package almerti.egline.data.source.database.di
 import almerti.egline.data.source.database.EglineDatabase
 import almerti.egline.data.source.database.dao.BookDao
 import almerti.egline.data.source.database.dao.ChapterDao
+import almerti.egline.data.source.database.dao.SavedBookDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,4 +22,8 @@ internal object DaosModele {
         database : EglineDatabase
     ) : ChapterDao = database.ChapterDao()
 
+    @Provides
+    fun providesSavedBookDao(
+        database : EglineDatabase
+    ) : SavedBookDao = database.SavedBookDao()
 }

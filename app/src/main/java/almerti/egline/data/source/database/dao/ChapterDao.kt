@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface ChapterDao {
 
     @Upsert
-    suspend fun UpsertChapter(chapter : Chapter)
+    suspend fun upsertChapter(chapter : Chapter)
 
     @Delete
     suspend fun deleteChapter(chapter : Chapter)

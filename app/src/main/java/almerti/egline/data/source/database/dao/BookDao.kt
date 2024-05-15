@@ -12,16 +12,16 @@ import kotlinx.coroutines.flow.Flow
 interface BookDao {
 
     @Upsert
-    suspend fun UpsertBook(book : Book)
+    suspend fun upsertBook(book : Book)
 
     @Delete
-    suspend fun DeleteBook(book : Book)
+    suspend fun deleteBook(book : Book)
 
     @Query("SELECT * FROM Book")
-    fun GetAllBooks() : Flow<List<Book>>
+    fun getAllBooks() : Flow<List<Book>>
 
     @Query("SELECT * FROM Book WHERE id = :id")
-    suspend fun GetBookById(id : Int) : Book?
+    suspend fun getBookById(id : Int) : Book?
 
     @Query(
         """
