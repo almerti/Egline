@@ -1,7 +1,6 @@
 package almerti.egline.data.repository
 
 import almerti.egline.data.model.User
-import almerti.egline.data.source.database.EglineDatabase
 import almerti.egline.data.source.network.NetworkApi
 import almerti.egline.data.source.network.model.UserLogin
 import androidx.datastore.core.DataStore
