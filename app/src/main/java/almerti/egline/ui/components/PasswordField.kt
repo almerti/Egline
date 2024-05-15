@@ -4,6 +4,7 @@ import almerti.egline.R
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -26,10 +27,11 @@ fun PasswordField() {
     val inputText = remember {mutableStateOf("")}
     val icon = remember {mutableIntStateOf(R.drawable.baseline_visibility_24)}
 
-    TextField(
+    OutlinedTextField(
         modifier = Modifier.padding(bottom = 24.dp),
         value = inputText.value,
         placeholder = {Text(text = stringResource(id = R.string.password_field))},
+        label = {Text(text = stringResource(id = R.string.password_label))},
         visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(

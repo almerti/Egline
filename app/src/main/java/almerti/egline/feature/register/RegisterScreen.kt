@@ -1,10 +1,11 @@
-package almerti.egline.feature.login
+package almerti.egline.feature.register
 
 import almerti.egline.R
 import almerti.egline.ui.components.AuthBottomMessage
 import almerti.egline.ui.components.BackButton
 import almerti.egline.ui.components.CustomTextField
 import almerti.egline.ui.components.FormButton
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -29,15 +31,11 @@ import almerti.egline.ui.components.PasswordField
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginScreen(
-    viewModel: LoginViewModel
-) {
+fun RegisterScreen() {
     Scaffold {
         Column(
             modifier = Modifier
@@ -55,18 +53,18 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Icon(
+                Image(
                     modifier = Modifier
                         .height(220.dp)
                         .width(200.dp),
                     imageVector = ImageVector.vectorResource(R.drawable.ic_launcher_foreground),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface,
                 )
                 Text(
                     modifier = Modifier.padding(bottom = 36.dp),
-                    text = stringResource(id = R.string.login_header),
+                    text = stringResource(id = R.string.register_header),
                     style = TextStyle(
+                        color = Color.Black,
                         fontWeight = FontWeight.Bold,
                         fontSize = 36.sp,
                         fontStyle = FontStyle.Normal,
@@ -77,14 +75,19 @@ fun LoginScreen(
                     labelText = stringResource(id = R.string.email_label),
                     icon = R.drawable.baseline_email_24,
                 )
+                CustomTextField(
+                    // username field
+                    labelText = stringResource(id = R.string.username_label),
+                    icon = R.drawable.baseline_person_24,
+                )
                 PasswordField()
                 FormButton(
-                    text = stringResource(id = R.string.login_header),
+                    text = stringResource(id = R.string.register_header),
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 AuthBottomMessage(
-                    text1 = stringResource(id = R.string.register_message_part1),
-                    text2 = stringResource(id = R.string.register_message_part2),
+                    text1 = stringResource(id = R.string.login_message_part1),
+                    text2 = stringResource(id = R.string.login_message_part2),
                 )
             }
         }
@@ -93,6 +96,6 @@ fun LoginScreen(
 
 @Preview
 @Composable
-fun LoginScreenPreview() {
-    LoginScreen(viewModel = LoginViewModel())
+fun RegisterScreenPreview() {
+    RegisterScreen()
 }

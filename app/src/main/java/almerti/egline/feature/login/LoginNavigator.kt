@@ -9,6 +9,6 @@ internal const val LOGIN_ROUTE = "login"
 internal fun NavGraphBuilder.loginScreen() {
     composable(LOGIN_ROUTE) {
         val viewModel: LoginViewModel = hiltViewModel<LoginViewModel>()
-        LoginScreen()
+        LoginScreen(viewModel)
     }
 }
