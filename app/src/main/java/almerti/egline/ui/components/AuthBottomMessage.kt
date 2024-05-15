@@ -17,7 +17,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun AuthBottomMessage(
     text1: String,
-    text2: String
+    text2: String,
+    navigateToGraph: () -> Unit
 ) {
     Row {
         Text(
@@ -25,7 +26,7 @@ fun AuthBottomMessage(
         )
         TextButton(
             modifier = Modifier.height(22.dp),
-            onClick = { /* TODO{*} */},
+            onClick = navigateToGraph,
             contentPadding = PaddingValues(
                 start = 5.dp,
                 top = 1.dp,

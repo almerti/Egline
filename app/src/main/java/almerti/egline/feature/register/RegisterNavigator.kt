@@ -6,9 +6,16 @@ import androidx.navigation.compose.composable
 
 internal const val REGISTER_ROUTE = "register"
 
-internal fun NavGraphBuilder.registerScreen() {
+internal fun NavGraphBuilder.registerScreen(
+    onBackClick: () -> Unit,
+    onNavigateToLoginGraph: () -> Unit
+) {
     composable(REGISTER_ROUTE) {
         val viewModel: RegisterViewModel = hiltViewModel<RegisterViewModel>()
-        RegisterScreen()
+        RegisterScreen(
+            viewModel = viewModel,
+            onBackClick = onBackClick,
+            onNavigateToLoginGraph = onNavigateToLoginGraph,
+        )
     }
 }

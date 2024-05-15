@@ -17,11 +17,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun BackButton(
-
+    onBackClick: () -> Unit
 ) {
     Button(
         modifier = Modifier.size(36.dp),
-        onClick = { /*TODO*/},
+        onClick = onBackClick,
         content = {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.baseline_arrow_back_24),

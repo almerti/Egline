@@ -32,11 +32,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
+    onBackClick: () -> Unit,
+    onNavigateToRegisterGraph: () -> Unit
 ) {
     Scaffold {
         Column(
@@ -49,7 +52,7 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
             ) {
-                BackButton()
+                BackButton(onBackClick = onBackClick)
             }
             Column(
                 verticalArrangement = Arrangement.Top,
@@ -85,6 +88,7 @@ fun LoginScreen(
                 AuthBottomMessage(
                     text1 = stringResource(id = R.string.register_message_part1),
                     text2 = stringResource(id = R.string.register_message_part2),
+                    navigateToGraph = onNavigateToRegisterGraph, // navigate to register graph
                 )
             }
         }
@@ -93,6 +97,10 @@ fun LoginScreen(
 
 @Preview
 @Composable
-fun LoginScreenPreview() {
-    LoginScreen(viewModel = LoginViewModel())
+private fun LoginScreenPreview() {
+    LoginScreen(
+        viewModel = hiltViewModel<LoginViewModel>(),
+        onBackClick = {},
+        onNavigateToRegisterGraph = {},
+    )
 }
