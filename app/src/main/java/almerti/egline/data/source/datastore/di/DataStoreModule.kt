@@ -1,7 +1,7 @@
 package almerti.egline.data.source.datastore.di
 
+import almerti.egline.data.model.User
 import almerti.egline.data.source.datastore.UserSerializer
-import almerti.egline.data.source.datastore.model.User
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory

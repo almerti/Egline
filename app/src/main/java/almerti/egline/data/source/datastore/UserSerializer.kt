@@ -1,6 +1,6 @@
 package almerti.egline.data.source.datastore
 
-import almerti.egline.data.source.datastore.model.User
+import almerti.egline.data.model.User
 import androidx.datastore.core.Serializer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,7 +20,7 @@ object UserSerializer : Serializer<User> {
                 input.readBytes().decodeToString(),
             )
         } catch (e : SerializationException) {
-            e.printStackTrace();
+            e.printStackTrace()
             defaultValue
         }
     }
