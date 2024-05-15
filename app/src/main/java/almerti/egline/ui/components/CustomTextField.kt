@@ -3,6 +3,7 @@ package almerti.egline.ui.components
 import almerti.egline.R
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -15,15 +16,15 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CustomTextField(
-    placeholderText: String,
+    labelText: String,
     icon: Int
 ) {
     val inputText = remember {mutableStateOf("")}
 
-    TextField(
+    OutlinedTextField(
         modifier = Modifier.padding(bottom = 24.dp),
         value = inputText.value,
-        placeholder = {Text(text = placeholderText)},
+        label = {Text(text = labelText)},
         trailingIcon = {
             Icon(
                 imageVector = ImageVector.vectorResource(icon),
