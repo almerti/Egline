@@ -60,16 +60,21 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun register(user : User) : String {
-        return remoteApi.createUser(userToNetworkUser(user)).body() ?: "No response"
+        val answer = remoteApi.createUser(userToNetworkUser(user))
+        return if (answer.isSuccessful) "OK"
+        else answer.body() ?: "No response"
     }
 
     override suspend fun login(email : String, password : String) : String {
-        return remoteApi.login(UserLogin(email = email, password = password)).body()
-            ?: "No response"
+        val answer = remoteApi.login(UserLogin(email = email, password = password))
+        return if (answer.isSuccessful) "OK"
+        else answer.body() ?: "No response"
     }
 
     override suspend fun delete(userId : Int) : String {
-        return remoteApi.deleteUser(userDataStore.data.first().id).body() ?: "No response"
+        val answer = remoteApi.deleteUser(userDataStore.data.first().id)
+        return if (answer.isSuccessful) "OK"
+        else answer.body() ?: "No response"
     }
 
     private fun networkUserToUser(user : almerti.egline.data.source.network.model.User) : User {
