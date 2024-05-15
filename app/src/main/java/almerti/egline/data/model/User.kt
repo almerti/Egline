@@ -1,11 +1,14 @@
 package almerti.egline.data.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class User(
     val id : Int = -1,
     val displayName : String = "Unknown",
     val email : String = "Unknown",
     val avatar : ByteArray = ByteArray(0),
-    val password : String?
+    val password : String? = null
 ) {
     override fun equals(other : Any?) : Boolean {
         if (this === other) return true
