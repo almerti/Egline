@@ -1,6 +1,8 @@
 package almerti.egline.feature.settings
 
+import almerti.egline.data.model.Folder
 import almerti.egline.data.model.User
+import almerti.egline.data.repository.FolderRepository
 import almerti.egline.data.repository.UserRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,15 +10,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.logging.Logger
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val repository : UserRepository
+    private val userRepository : UserRepository,
+    private val FolderRepository : FolderRepository
+
 ) : ViewModel() {
     private lateinit var userFlow : Flow<User>
 
@@ -29,11 +31,8 @@ class SettingsViewModel @Inject constructor(
 
     private fun getUser() {
         viewModelScope.launch {
-            userFlow = repository.getCurrentUser()
-            userFlow.collect {user ->
-                _userState.value = user
-                Logger.getGlobal().info(user.toString())
-            }
+            userFlow = userRepository.getCurrent()
+            userFlow.collect {_userState.value = it}
         }
     }
 
@@ -46,7 +45,29 @@ class SettingsViewModel @Inject constructor(
                 avatar = "get".toByteArray(),
                 password = "NewPassword",
             )
-            repository.updateCurrentUser(user)
+            userRepository.updateCurrent(user)
+        }
+    }
+
+    fun addToFolder(name : String) {
+        viewModelScope.launch {
+            FolderRepository.addBooks(
+                Folder(
+                    folderName = name,
+                    bookIds = mutableListOf(2, 5, 3),
+                ),
+            )
+        }
+    }
+
+    fun getFolders() {
+        viewModelScope.launch {
+            val ele = FolderRepository.getAllFolders()
+            ele.forEach(
+                fun(it : Folder) {
+                    Logger.getGlobal().info(it.toString())
+                },
+            )
         }
     }
 }

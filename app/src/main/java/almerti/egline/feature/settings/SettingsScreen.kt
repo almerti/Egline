@@ -1,12 +1,6 @@
 package almerti.egline.feature.settings
 
-import almerti.egline.data.source.network.model.Book
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -17,11 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(
@@ -29,6 +18,7 @@ fun SettingsScreen(
 ) {
     val user by viewModel.userState.collectAsState(initial = null)
     var newDisplayName by remember {mutableStateOf("")}
+    var folder by remember {mutableStateOf("")}
 
     Column {
         Text(text = "SettingsScreen")
@@ -49,6 +39,19 @@ fun SettingsScreen(
 
         Button(onClick = {viewModel.updateUser(newDisplayName)}) {
             Text(text = "Update User")
+        }
+
+        TextField(
+            value = folder,
+            onValueChange = {folder = it},
+            label = {Text("folder name")},
+        )
+
+        Button(onClick = {viewModel.addToFolder(folder)}) {
+            Text(text = "add to folder")
+        }
+        Button(onClick = {viewModel.getFolders()}) {
+            Text(text = "get folders")
         }
     }
 }
