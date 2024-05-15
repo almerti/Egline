@@ -49,8 +49,8 @@ interface RetrofitEglineNetworkApi : NetworkApi {
     @DELETE(value = "user/{id}")
     override suspend fun deleteUser(@Path("id") id : Number) : Response<String>
 
-    @GET(value = "user/login")
-    override suspend fun login(@Body userLogin : UserLogin) : Response<String>
+    @POST(value = "user/login")
+    override suspend fun login(@Body userLogin : UserLogin) : Response<User>
 
 
     //Chapter

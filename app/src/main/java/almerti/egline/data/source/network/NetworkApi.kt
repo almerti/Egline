@@ -22,7 +22,7 @@ interface NetworkApi {
     suspend fun createUser(user : User) : Response<String>
     suspend fun updateUser(id : Number, user : User) : Response<String>
     suspend fun deleteUser(id : Number) : Response<String>
-    suspend fun login(userLogin : UserLogin) : Response<String>
+    suspend fun login(userLogin : UserLogin) : Response<User>
 
     // Chapter
     suspend fun getChapters() : Response<List<Chapter>>

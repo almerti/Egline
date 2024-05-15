@@ -61,20 +61,35 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun register(user : User) : String {
         val answer = remoteApi.createUser(userToNetworkUser(user))
-        return if (answer.isSuccessful) "OK"
-        else answer.body() ?: "No response"
+        if (answer.isSuccessful) {
+            userDataStore.updateData {
+                user
+            }
+            return "OK"
+        } else return answer.errorBody()?.string() ?: "No response"
     }
 
     override suspend fun login(email : String, password : String) : String {
-        val answer = remoteApi.login(UserLogin(email = email, password = password))
-        return if (answer.isSuccessful) "OK"
-        else answer.body() ?: "No response"
+        val response = remoteApi.login(UserLogin(email = email, password = password))
+        if (response.isSuccessful) {
+            userDataStore.updateData {
+                networkUserToUser(response.body()!!)
+            }
+            return "OK"
+        } else {
+            return response.errorBody()?.string() ?: "No response"
+        }
     }
 
     override suspend fun delete(userId : Int) : String {
         val answer = remoteApi.deleteUser(userDataStore.data.first().id)
-        return if (answer.isSuccessful) "OK"
-        else answer.body() ?: "No response"
+
+        if (answer.isSuccessful) {
+            userDataStore.updateData {
+                User()
+            }
+            return "OK"
+        } else return answer.errorBody()?.string() ?: "No response"
     }
 
     private fun networkUserToUser(user : almerti.egline.data.source.network.model.User) : User {

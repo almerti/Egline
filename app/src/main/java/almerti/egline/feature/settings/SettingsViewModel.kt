@@ -70,4 +70,11 @@ class SettingsViewModel @Inject constructor(
             )
         }
     }
+
+    fun logintest() {
+        viewModelScope.launch {
+            val res = userRepository.login("test@i.o", "1122")
+            Logger.getGlobal().info(res.toString())
+        }
+    }
 }
