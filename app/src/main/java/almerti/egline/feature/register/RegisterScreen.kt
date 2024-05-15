@@ -5,7 +5,6 @@ import almerti.egline.ui.components.AuthBottomMessage
 import almerti.egline.ui.components.BackButton
 import almerti.egline.ui.components.CustomTextField
 import almerti.egline.ui.components.FormButton
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,11 +30,17 @@ import almerti.egline.ui.components.PasswordField
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(
+    viewModel: RegisterViewModel,
+    onBackClick: () -> Unit,
+    onNavigateToLoginGraph: () -> Unit
+) {
     Scaffold {
         Column(
             modifier = Modifier
@@ -47,24 +52,24 @@ fun RegisterScreen() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
             ) {
-                BackButton()
+                BackButton(onBackClick = onBackClick)
             }
             Column(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Image(
+                Icon(
                     modifier = Modifier
                         .height(220.dp)
                         .width(200.dp),
                     imageVector = ImageVector.vectorResource(R.drawable.ic_launcher_foreground),
                     contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurface,
                 )
                 Text(
                     modifier = Modifier.padding(bottom = 36.dp),
                     text = stringResource(id = R.string.register_header),
                     style = TextStyle(
-                        color = Color.Black,
                         fontWeight = FontWeight.Bold,
                         fontSize = 36.sp,
                         fontStyle = FontStyle.Normal,
@@ -88,6 +93,7 @@ fun RegisterScreen() {
                 AuthBottomMessage(
                     text1 = stringResource(id = R.string.login_message_part1),
                     text2 = stringResource(id = R.string.login_message_part2),
+                    navigateToGraph = onNavigateToLoginGraph,
                 )
             }
         }
@@ -97,5 +103,9 @@ fun RegisterScreen() {
 @Preview
 @Composable
 fun RegisterScreenPreview() {
-    RegisterScreen()
+    RegisterScreen(
+        viewModel = RegisterViewModel(),
+        onBackClick = {},
+        onNavigateToLoginGraph = {},
+    )
 }

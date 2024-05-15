@@ -3,6 +3,8 @@ package almerti.egline.navigation
 
 import almerti.egline.feature.login.loginGraph
 import almerti.egline.feature.login.navigateToLoginGraph
+import almerti.egline.feature.register.navigateToRegisterGraph
+import almerti.egline.feature.register.registerGraph
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -30,9 +32,22 @@ fun RootNavHost(
                 },
             )
         }
-
-        loginGraph()
-
+        loginGraph(
+            onBackClick = {
+                rootController.popBackStack()
+            },
+            onNavigateToRegisterGraph = {
+                rootController.navigateToRegisterGraph()
+            },
+        )
+        registerGraph(
+            onBackClick = {
+                rootController.popBackStack()
+            },
+            onNavigateToLoginGraph = {
+                rootController.navigateToLoginGraph()
+            },
+        )
         composable(RootScreens.Library.route) {
             MenuNavHost(
                 onNavigateToLoginPage = {

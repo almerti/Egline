@@ -4,17 +4,23 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 
-const val REGISTER_GRAPH_ROUTE = "login_route"
+const val REGISTER_GRAPH_ROUTE = "register_route"
 
 fun NavController.navigateToRegisterGraph() {
     navigate(REGISTER_GRAPH_ROUTE)
 }
 
-fun NavGraphBuilder.registerGraph() {
+fun NavGraphBuilder.registerGraph(
+    onBackClick: () -> Unit,
+    onNavigateToLoginGraph: () -> Unit
+) {
     navigation(
         route = REGISTER_GRAPH_ROUTE,
         startDestination = REGISTER_ROUTE,
     ) {
-        registerScreen()
+        registerScreen(
+            onBackClick = onBackClick,
+            onNavigateToLoginGraph = onNavigateToLoginGraph,
+        )
     }
 }
