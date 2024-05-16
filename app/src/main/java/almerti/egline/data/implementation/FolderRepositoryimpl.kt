@@ -48,10 +48,10 @@ class FolderRepositoryimpl @Inject constructor(
 
         val savedBooks = mutableListOf<SavedBook>()
         folders.forEach {
-
             savedBooks.addAll(folderToSavedBook(it))
         }
         eglineDatabase.SavedBookDao().upsertSavedBooks(savedBooks)
+        UserRepository.get().update()
     }
 
     override suspend fun getByName(folderName : String) : Folder {

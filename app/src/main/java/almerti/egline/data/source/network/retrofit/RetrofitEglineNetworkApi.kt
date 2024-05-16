@@ -21,7 +21,7 @@ interface RetrofitEglineNetworkApi : NetworkApi {
     override suspend fun getBooks() : Response<List<Book>>
 
     @GET(value = "book/{id}")
-    override suspend fun getBook(@Path("id") id : Number) : Response<Book>
+    override suspend fun getBook(@Path("id") id : Int) : Response<Book>
 
     @POST(value = "book/rate")
     override suspend fun addRateToBook(@Body bookRate : BookRate) : Response<String>
@@ -38,16 +38,16 @@ interface RetrofitEglineNetworkApi : NetworkApi {
 
     //User
     @GET(value = "user/{id}")
-    override suspend fun getUser(@Path("id") id : Number) : Response<User>
+    override suspend fun getUser(@Path("id") id : Int) : Response<User>
 
     @POST(value = "user")
     override suspend fun createUser(@Body user : User) : Response<String>
 
     @PUT(value = "user/{id}")
-    override suspend fun updateUser(@Path("id") id : Number , @Body user : User) : Response<String>
+    override suspend fun updateUser(@Path("id") id : Int , @Body user : User) : Response<String>
 
     @DELETE(value = "user/{id}")
-    override suspend fun deleteUser(@Path("id") id : Number) : Response<String>
+    override suspend fun deleteUser(@Path("id") id : Int) : Response<String>
 
     @POST(value = "user/login")
     override suspend fun login(@Body userLogin : UserLogin) : Response<User>
@@ -58,18 +58,23 @@ interface RetrofitEglineNetworkApi : NetworkApi {
     override suspend fun getChapters() : Response<List<Chapter>>
 
     @GET(value = "chapter/{id}")
-    override suspend fun getChapterByBookId(@Path("id") id : Number) : Response<Chapter>
+    override suspend fun getChapterByBookId(@Path("id") id : Int) : Response<Chapter>
 
-    @GET(value = "chapter/Chapter/book-chapters/{id}")
-    override suspend fun getAllChaptersToBookId(@Path("id") id : Number) : Response<List<Chapter>>
+    @GET(value = "chapter/book-chapters/{id}")
+    override suspend fun getAllChaptersToBookId(@Path("id") id : Int) : Response<List<Chapter>>
 
+    @GET(value = "chapter/audio/{id}")
+    override suspend fun getChapterAudioContent(@Path("id") id : Int) : Response<ByteArray>
+
+    @GET(value = "chapter/text/{id}")
+    override suspend fun getChapterTextContent(@Path("id") id : Int) : Response<String>
 
     //comment
     @GET(value = "comment")
     override suspend fun getComments() : Response<List<Comment>>
 
     @GET(value = "comment/{id}")
-    override suspend fun getComment(@Path("id") id : Number) : Response<Comment>
+    override suspend fun getComment(@Path("id") id : Int) : Response<Comment>
 
     @DELETE(value = "comment/{id}")
     override suspend fun deleteComment(@Path("id") commentId : Int) : Response<String>
@@ -79,7 +84,7 @@ interface RetrofitEglineNetworkApi : NetworkApi {
 
     @PUT(value = "comment/{id}")
     override suspend fun updateComment(
-        @Path("id") id : Number ,
+        @Path("id") id : Int ,
         @Body comment : Comment
     ) : Response<String>
 }

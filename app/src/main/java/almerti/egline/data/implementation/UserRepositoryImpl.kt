@@ -38,7 +38,6 @@ class UserRepositoryImpl @Inject constructor(
             user
         }
 
-
         val networkUser = userToNetworkUser(user)
         val savedBooks = JsonObject()
         val gson = Gson()
@@ -67,9 +66,7 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun register(user : User) : String {
         val answer = remoteApi.createUser(userToNetworkUser(user))
         if (answer.isSuccessful) {
-            userDataStore.updateData {
-                user
-            }
+            login(user.email, user.password!!)
             return "OK"
         } else return answer.errorBody()?.string() ?: "No response"
     }
