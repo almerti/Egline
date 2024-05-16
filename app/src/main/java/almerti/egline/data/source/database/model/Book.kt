@@ -17,8 +17,6 @@ data class Book(
     val views : Int,
     val date : Long,
     val status : Status
-
-
 )
 
 enum class Status {
