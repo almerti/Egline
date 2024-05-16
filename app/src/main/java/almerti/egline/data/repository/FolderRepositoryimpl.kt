@@ -3,6 +3,7 @@ package almerti.egline.data.repository
 import almerti.egline.data.model.Folder
 import almerti.egline.data.source.database.EglineDatabase
 import almerti.egline.data.source.database.model.SavedBook
+import com.google.gson.JsonObject
 import dagger.Lazy
 import javax.inject.Inject
 
@@ -27,6 +28,28 @@ class FolderRepositoryimpl @Inject constructor(
 
     override suspend fun getAllFolders() : List<Folder> {
         return savedBooksToFolder(eglineDatabase.SavedBookDao().getAllSavedBooks())
+    }
+
+    override suspend fun saveFoldersJson(jsonObject : JsonObject) {
+        val folders = mutableListOf<Folder>()
+
+        for ((key, value) in jsonObject.entrySet()) {
+            val folderName = key
+            val bookIds = value.asJsonPrimitive.asString.removeSurrounding("[", "]")
+                .split(",")
+                .map {it.trim().toInt()}
+                .toMutableList()
+
+            folders.add(Folder(folderName, bookIds))
+        }
+
+
+        val savedBooks = mutableListOf<SavedBook>()
+        folders.forEach {
+
+            savedBooks.addAll(folderToSavedBook(it))
+        }
+        eglineDatabase.SavedBookDao().upsertSavedBooks(savedBooks)
     }
 
     override suspend fun getFolderByName(folderName : String) : Folder {
