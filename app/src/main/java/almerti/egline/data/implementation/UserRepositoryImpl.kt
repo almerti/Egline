@@ -74,10 +74,7 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun login(email : String, password : String) : String {
         val response = remoteApi.login(UserLogin(email = email, password = password))
         if (response.isSuccessful) {
-            userDataStore.updateData {
-                networkUserToUser(response.body()!!)
-            }
-
+            networkUserToUser(response.body()!!)
             return "OK"
         } else {
             return response.errorBody()?.string() ?: "No response"
