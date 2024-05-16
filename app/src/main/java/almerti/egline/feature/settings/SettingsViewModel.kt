@@ -31,7 +31,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun getUser() {
         viewModelScope.launch {
-            userFlow = userRepository.getCurrent()
+            userFlow = userRepository.get()
             userFlow.collect {_userState.value = it}
         }
     }
@@ -45,7 +45,7 @@ class SettingsViewModel @Inject constructor(
                 avatar = "get".toByteArray(),
                 password = "NewPassword",
             )
-            userRepository.updateCurrent(user)
+            userRepository.update(user)
         }
     }
 
@@ -62,7 +62,7 @@ class SettingsViewModel @Inject constructor(
 
     fun getFolders() {
         viewModelScope.launch {
-            val ele = FolderRepository.getAllFolders()
+            val ele = FolderRepository.getAll()
             ele.forEach(
                 fun(it : Folder) {
                     Logger.getGlobal().info(it.toString())

@@ -13,11 +13,11 @@ import java.util.logging.Logger
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val remoteApi : NetworkApi,
-    private val userDataStore : DataStore<User>,
+    private val remoteApi : NetworkApi ,
+    private val userDataStore : DataStore<User> ,
     private val FolderRepository : FolderRepository
 ) : UserRepository {
-    override suspend fun getCurrent() : Flow<User> {
+    override suspend fun get() : Flow<User> {
         val networkUser = remoteApi.getUser(userDataStore.data.first().id)
         if (networkUser.isSuccessful && networkUser.body() != null) {
             val user = networkUserToUser(networkUser.body()!!)
@@ -31,7 +31,7 @@ class UserRepositoryImpl @Inject constructor(
         return userDataStore.data
     }
 
-    override suspend fun updateCurrent(user : User) {
+    override suspend fun update(user : User) {
         userDataStore.updateData {
             user
         }
@@ -41,20 +41,20 @@ class UserRepositoryImpl @Inject constructor(
         val savedBooks = JsonObject()
         val gson = Gson()
 
-        FolderRepository.getAllFolders().forEach {
-            savedBooks.addProperty(it.folderName, gson.toJson(it.bookIds))
+        FolderRepository.getAll().forEach {
+            savedBooks.addProperty(it.folderName , gson.toJson(it.bookIds))
         }
         networkUser.savedBooks = savedBooks
 
         Logger.getGlobal().info(networkUser.toString())
-        remoteApi.updateUser(networkUser.id, networkUser)
+        remoteApi.updateUser(networkUser.id , networkUser)
     }
 
-    override suspend fun updateCurrent() {
-        updateCurrent(userDataStore.data.first())
+    override suspend fun update() {
+        update(userDataStore.data.first())
     }
 
-    override suspend fun getOther(userId : Int) : User {
+    override suspend fun get(userId : Int) : User {
         val userData = remoteApi.getUser(userId)
         if (userData.isSuccessful)
             return networkUserToUser(userData.body()!!)
@@ -72,8 +72,8 @@ class UserRepositoryImpl @Inject constructor(
         } else return answer.errorBody()?.string() ?: "No response"
     }
 
-    override suspend fun login(email : String, password : String) : String {
-        val response = remoteApi.login(UserLogin(email = email, password = password))
+    override suspend fun login(email : String , password : String) : String {
+        val response = remoteApi.login(UserLogin(email = email , password = password))
         if (response.isSuccessful) {
             userDataStore.updateData {
                 networkUserToUser(response.body()!!)
@@ -101,23 +101,23 @@ class UserRepositoryImpl @Inject constructor(
         FolderRepository.saveFoldersJson(user.savedBooks)
 
         return User(
-            id = user.id,
-            email = user.email,
-            displayName = user.displayName,
-            avatar = user.avatar,
-            password = user.password,
+            id = user.id ,
+            email = user.email ,
+            displayName = user.displayName ,
+            avatar = user.avatar ,
+            password = user.password ,
         )
     }
 
     private fun userToNetworkUser(user : User) : almerti.egline.data.source.network.model.User {
 
         return almerti.egline.data.source.network.model.User(
-            id = user.id,
-            email = user.email,
-            displayName = user.displayName,
-            avatar = user.avatar,
-            password = user.password ?: "",
-            savedBooks = JsonObject(),
+            id = user.id ,
+            email = user.email ,
+            displayName = user.displayName ,
+            avatar = user.avatar ,
+            password = user.password ?: "" ,
+            savedBooks = JsonObject() ,
         )
     }
 }
