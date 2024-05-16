@@ -12,7 +12,7 @@ fun NavController.navigateToRegisterGraph() {
 
 fun NavGraphBuilder.registerGraph(
     onBackClick: () -> Unit,
-    onNavigateToLoginGraph: () -> Unit
+    onNavigateToMainPage: () -> Unit
 ) {
     navigation(
         route = REGISTER_GRAPH_ROUTE,
@@ -20,7 +20,7 @@ fun NavGraphBuilder.registerGraph(
     ) {
         registerScreen(
             onBackClick = onBackClick,
-            onNavigateToLoginGraph = onNavigateToLoginGraph,
+            onNavigateToMainPage = onNavigateToMainPage,
         )
     }
 }

@@ -1,7 +1,6 @@
 package almerti.egline.feature.register
 
 import almerti.egline.R
-import almerti.egline.ui.components.AuthBottomMessage
 import almerti.egline.ui.components.BackButton
 import almerti.egline.ui.components.CustomTextField
 import almerti.egline.ui.components.FormButton
@@ -16,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -28,18 +26,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import almerti.egline.ui.components.PasswordField
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel,
     onBackClick: () -> Unit,
-    onNavigateToLoginGraph: () -> Unit
+    onNavigateToMainPage: () -> Unit
 ) {
     Scaffold {
         Column(
@@ -48,6 +48,17 @@ fun RegisterScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            val state = viewModel.state
+            val context = LocalContext.current
+            LaunchedEffect(key1 = context) {
+                viewModel.registerValidationEvents.collect {event ->
+                    when (event) {
+                        is RegisterViewModel.RegisterValidationEvent.Success -> {
+                            onNavigateToMainPage()
+                        }
+                    }
+                }
+            }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
@@ -60,8 +71,8 @@ fun RegisterScreen(
             ) {
                 Icon(
                     modifier = Modifier
-                        .height(220.dp)
-                        .width(200.dp),
+                        .height(180.dp)
+                        .width(160.dp),
                     imageVector = ImageVector.vectorResource(R.drawable.ic_launcher_foreground),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurface,
@@ -79,21 +90,37 @@ fun RegisterScreen(
                     // email field
                     labelText = stringResource(id = R.string.email_label),
                     icon = R.drawable.baseline_email_24,
+                    value = state.email,
+                    onValueChange = {
+                        viewModel.onEvent(RegisterFormEvent.EmailChanged(it))
+                    },
+                    isError = state.emailError != null,
+                    supportingText = state.emailError,
                 )
                 CustomTextField(
                     // username field
                     labelText = stringResource(id = R.string.username_label),
                     icon = R.drawable.baseline_person_24,
+                    value = state.displayName,
+                    onValueChange = {
+                        viewModel.onEvent(RegisterFormEvent.DisplayNameChanged(it))
+                    },
+                    isError = state.displayNameError != null,
+                    supportingText = state.displayNameError,
                 )
-                PasswordField()
+                PasswordField(
+                    value = state.password,
+                    onValueChange = {
+                        viewModel.onEvent(RegisterFormEvent.PasswordChanged(it))
+                    },
+                    isError = state.passwordError != null,
+                    supportingText = state.passwordError,
+                )
                 FormButton(
                     text = stringResource(id = R.string.register_header),
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                AuthBottomMessage(
-                    text1 = stringResource(id = R.string.login_message_part1),
-                    text2 = stringResource(id = R.string.login_message_part2),
-                    navigateToGraph = onNavigateToLoginGraph,
+                    onClick = {
+                        viewModel.onEvent(RegisterFormEvent.Submit)
+                    },
                 )
             }
         }
@@ -104,8 +131,8 @@ fun RegisterScreen(
 @Composable
 fun RegisterScreenPreview() {
     RegisterScreen(
-        viewModel = RegisterViewModel(),
+        viewModel = hiltViewModel<RegisterViewModel>(),
         onBackClick = {},
-        onNavigateToLoginGraph = {},
+        onNavigateToMainPage = {},
     )
 }

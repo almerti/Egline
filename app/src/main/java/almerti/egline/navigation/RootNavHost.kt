@@ -39,13 +39,16 @@ fun RootNavHost(
             onNavigateToRegisterGraph = {
                 rootController.navigateToRegisterGraph()
             },
+            onNavigateToMainPage = {
+                rootController.navigate(RootScreens.Library.route)
+            },
         )
         registerGraph(
             onBackClick = {
                 rootController.popBackStack()
             },
-            onNavigateToLoginGraph = {
-                rootController.navigateToLoginGraph()
+            onNavigateToMainPage = {
+                rootController.navigate(RootScreens.Library.route)
             },
         )
         composable(RootScreens.Library.route) {

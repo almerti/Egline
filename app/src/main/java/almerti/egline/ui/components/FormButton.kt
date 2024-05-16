@@ -15,7 +15,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun FormButton(
-    text: String
+    text: String,
+    onClick: () -> Unit
 ) {
     FilledTonalButton(
         modifier = Modifier.padding(top = 20.dp),
@@ -28,7 +29,7 @@ fun FormButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.onBackground,
         ),
-        onClick = { /*TODO*/},
+        onClick = onClick,
         content = {
             Text(
                 text = text,
