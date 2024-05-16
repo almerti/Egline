@@ -1,6 +1,8 @@
-package almerti.egline.data.repository
+package almerti.egline.data.implementation
 
 import almerti.egline.data.model.Folder
+import almerti.egline.data.repository.FolderRepository
+import almerti.egline.data.repository.UserRepository
 import almerti.egline.data.source.database.EglineDatabase
 import almerti.egline.data.source.database.model.SavedBook
 import com.google.gson.JsonObject
@@ -8,8 +10,8 @@ import dagger.Lazy
 import javax.inject.Inject
 
 class FolderRepositoryimpl @Inject constructor(
-    private val eglineDatabase : EglineDatabase ,
-    private val UserRepository : Lazy<UserRepository> ,
+    private val eglineDatabase : EglineDatabase,
+    private val UserRepository : Lazy<UserRepository>,
 ) : FolderRepository {
     override suspend fun addBooks(folder : Folder) {
         eglineDatabase.SavedBookDao().upsertSavedBooks(folderToSavedBook(folder))
@@ -33,14 +35,14 @@ class FolderRepositoryimpl @Inject constructor(
     override suspend fun saveFoldersJson(jsonObject : JsonObject) {
         val folders = mutableListOf<Folder>()
 
-        for ((key , value) in jsonObject.entrySet()) {
+        for ((key, value) in jsonObject.entrySet()) {
             val folderName = key
-            val bookIds = value.asJsonPrimitive.asString.removeSurrounding("[" , "]")
+            val bookIds = value.asJsonPrimitive.asString.removeSurrounding("[", "]")
                 .split(",")
-                .map { it.trim().toInt() }
+                .map {it.trim().toInt()}
                 .toMutableList()
 
-            folders.add(Folder(folderName , bookIds))
+            folders.add(Folder(folderName, bookIds))
         }
 
 
@@ -54,7 +56,7 @@ class FolderRepositoryimpl @Inject constructor(
 
     override suspend fun getByName(folderName : String) : Folder {
         return savedBooksToFolder(
-            eglineDatabase.SavedBookDao().getSavedBooksByFolderName(folderName) ,
+            eglineDatabase.SavedBookDao().getSavedBooksByFolderName(folderName),
         )[0]
     }
 
@@ -64,9 +66,9 @@ class FolderRepositoryimpl @Inject constructor(
         folder.bookIds.forEach {
             savedBooks.add(
                 SavedBook(
-                    folderName = folder.folderName ,
-                    bookId = it ,
-                ) ,
+                    folderName = folder.folderName,
+                    bookId = it,
+                ),
             )
         }
 
@@ -75,20 +77,20 @@ class FolderRepositoryimpl @Inject constructor(
 
     private fun savedBookToFolder(savedBook : SavedBook) : Folder {
         return Folder(
-            folderName = savedBook.folderName ,
-            bookIds = mutableListOf(savedBook.bookId) ,
+            folderName = savedBook.folderName,
+            bookIds = mutableListOf(savedBook.bookId),
         )
     }
 
     private fun savedBooksToFolder(savedBooks : List<SavedBook>) : List<Folder> {
-        val folders = mutableMapOf<String , Folder>()
+        val folders = mutableMapOf<String, Folder>()
 
-        savedBooks.forEach { book ->
+        savedBooks.forEach {book ->
             val folderName = book.folderName
             val bookId = book.bookId
 
             val folder = folders.getOrPut(folderName) {
-                Folder(folderName , mutableListOf())
+                Folder(folderName, mutableListOf())
             }
 
             folder.bookIds.add(bookId)

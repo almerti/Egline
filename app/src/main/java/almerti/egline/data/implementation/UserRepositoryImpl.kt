@@ -1,6 +1,8 @@
-package almerti.egline.data.repository
+package almerti.egline.data.implementation
 
 import almerti.egline.data.model.User
+import almerti.egline.data.repository.FolderRepository
+import almerti.egline.data.repository.UserRepository
 import almerti.egline.data.source.network.NetworkApi
 import almerti.egline.data.source.network.model.UserLogin
 import androidx.datastore.core.DataStore
@@ -13,8 +15,8 @@ import java.util.logging.Logger
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val remoteApi : NetworkApi ,
-    private val userDataStore : DataStore<User> ,
+    private val remoteApi : NetworkApi,
+    private val userDataStore : DataStore<User>,
     private val FolderRepository : FolderRepository
 ) : UserRepository {
     override suspend fun get() : Flow<User> {
@@ -42,12 +44,12 @@ class UserRepositoryImpl @Inject constructor(
         val gson = Gson()
 
         FolderRepository.getAll().forEach {
-            savedBooks.addProperty(it.folderName , gson.toJson(it.bookIds))
+            savedBooks.addProperty(it.folderName, gson.toJson(it.bookIds))
         }
         networkUser.savedBooks = savedBooks
 
         Logger.getGlobal().info(networkUser.toString())
-        remoteApi.updateUser(networkUser.id , networkUser)
+        remoteApi.updateUser(networkUser.id, networkUser)
     }
 
     override suspend fun update() {
@@ -72,8 +74,8 @@ class UserRepositoryImpl @Inject constructor(
         } else return answer.errorBody()?.string() ?: "No response"
     }
 
-    override suspend fun login(email : String , password : String) : String {
-        val response = remoteApi.login(UserLogin(email = email , password = password))
+    override suspend fun login(email : String, password : String) : String {
+        val response = remoteApi.login(UserLogin(email = email, password = password))
         if (response.isSuccessful) {
             userDataStore.updateData {
                 networkUserToUser(response.body()!!)
@@ -101,23 +103,23 @@ class UserRepositoryImpl @Inject constructor(
         FolderRepository.saveFoldersJson(user.savedBooks)
 
         return User(
-            id = user.id ,
-            email = user.email ,
-            displayName = user.displayName ,
-            avatar = user.avatar ,
-            password = user.password ,
+            id = user.id,
+            email = user.email,
+            displayName = user.displayName,
+            avatar = user.avatar,
+            password = user.password,
         )
     }
 
     private fun userToNetworkUser(user : User) : almerti.egline.data.source.network.model.User {
 
         return almerti.egline.data.source.network.model.User(
-            id = user.id ,
-            email = user.email ,
-            displayName = user.displayName ,
-            avatar = user.avatar ,
-            password = user.password ?: "" ,
-            savedBooks = JsonObject() ,
+            id = user.id,
+            email = user.email,
+            displayName = user.displayName,
+            avatar = user.avatar,
+            password = user.password ?: "",
+            savedBooks = JsonObject(),
         )
     }
 }

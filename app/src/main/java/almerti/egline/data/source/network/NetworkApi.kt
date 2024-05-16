@@ -14,13 +14,13 @@ interface NetworkApi {
     suspend fun getBook(id : Number) : Response<Book>
     suspend fun addRateToBook(bookRate : BookRate) : Response<String>
     suspend fun updateRateToBook(bookRate : BookRate) : Response<String>
-    suspend fun deleteRateToBook(bookId : Int, userId : Int) : Response<String>
+    suspend fun deleteRateToBook(bookId : Int , userId : Int) : Response<String>
 
 
     // User
     suspend fun getUser(id : Number) : Response<User>
     suspend fun createUser(user : User) : Response<String>
-    suspend fun updateUser(id : Number, user : User) : Response<String>
+    suspend fun updateUser(id : Number , user : User) : Response<String>
     suspend fun deleteUser(id : Number) : Response<String>
     suspend fun login(userLogin : UserLogin) : Response<User>
 
@@ -33,5 +33,6 @@ interface NetworkApi {
     suspend fun getComments() : Response<List<Comment>>
     suspend fun getComment(id : Number) : Response<Comment>
     suspend fun createComment(comment : Comment) : Response<String>
-    suspend fun updateComment(id : Number, comment : Comment) : Response<String>
+    suspend fun deleteComment(commentId : Int) : Response<String>
+    suspend fun updateComment(id : Number , comment : Comment) : Response<String>
 }
