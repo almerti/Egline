@@ -1,15 +1,18 @@
 package almerti.egline.data.model
 
 data class Book(
-    val id : Int,
-    val title : String,
-    val description : String,
-    val cover : ByteArray,
-    val rating : Double,
-    val ratingCount : Int,
-    val views : Int,
-    val date : Long,
-    val status : String
+    val id : Int ,
+    val title : String ,
+    val description : String ,
+    val cover : ByteArray ,
+    val rating : Double ,
+    val ratingCount : Int ,
+    val views : Int ,
+    val date : Long ,
+    val status : String ,
+    val genres : List<String> ,
+    val chapters : List<Chapter> ,
+    val comments : List<Comment>
 ) {
     override fun equals(other : Any?) : Boolean {
         if (this === other) return true
@@ -26,6 +29,9 @@ data class Book(
         if (views != other.views) return false
         if (date != other.date) return false
         if (status != other.status) return false
+        if (genres != other.genres) return false
+        if (chapters != other.chapters) return false
+        if (comments != other.comments) return false
 
         return true
     }
@@ -40,6 +46,10 @@ data class Book(
         result = 31 * result + views
         result = 31 * result + date.hashCode()
         result = 31 * result + status.hashCode()
+        result = 31 * result + genres.hashCode()
+        result = 31 * result + chapters.hashCode()
+        result = 31 * result + comments.hashCode()
+        
         return result
     }
 }
