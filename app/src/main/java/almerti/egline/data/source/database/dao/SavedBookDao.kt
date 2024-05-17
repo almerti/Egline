@@ -33,4 +33,6 @@ interface SavedBookDao {
     @Query("SELECT folder_name`` FROM saved_books WHERE book_id = :bookId")
     suspend fun getFolderNamedByBookId(bookId : Int) : List<String>
 
+    @Query(value = "DELETE FROM saved_books")
+    suspend fun deleteAllSavedBooks()
 }

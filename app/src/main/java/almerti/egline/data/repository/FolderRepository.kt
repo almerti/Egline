@@ -8,6 +8,7 @@ interface FolderRepository {
     suspend fun removeBook(folder : Folder)
     suspend fun removeFolder(folder : Folder)
     suspend fun getAll() : List<Folder>
+    suspend fun removeAll()
     suspend fun saveFoldersJson(jsonObject : JsonObject)
     suspend fun getByName(folderName : String) : Folder?
 

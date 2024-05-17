@@ -8,7 +8,7 @@ data class Book(
     val cover : ByteArray,
     val rating : Double,
 //    val ratingCount : Int ,
-    val year : String,
+    val year : Int,
     val views : Int,
     val status : String,
     val genre : List<Genre>,

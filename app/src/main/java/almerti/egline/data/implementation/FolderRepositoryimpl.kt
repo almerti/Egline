@@ -32,6 +32,10 @@ class FolderRepositoryimpl @Inject constructor(
         return savedBooksToFolder(eglineDatabase.SavedBookDao().getAllSavedBooks())
     }
 
+    override suspend fun removeAll() {
+        eglineDatabase.SavedBookDao().deleteAllSavedBooks()
+    }
+
     override suspend fun saveFoldersJson(jsonObject : JsonObject) {
         val folders = mutableListOf<Folder>()
 
@@ -41,10 +45,8 @@ class FolderRepositoryimpl @Inject constructor(
                 .split(",")
                 .map {it.trim().toInt()}
                 .toMutableList()
-
             folders.add(Folder(folderName, bookIds))
         }
-
 
         val savedBooks = mutableListOf<SavedBook>()
         folders.forEach {

@@ -1,9 +1,9 @@
 package almerti.egline.data.source.database
 
+import almerti.egline.data.model.Book
 import almerti.egline.data.source.database.dao.BookDao
 import almerti.egline.data.source.database.dao.ChapterDao
 import almerti.egline.data.source.database.dao.SavedBookDao
-import almerti.egline.data.source.database.model.Book
 import almerti.egline.data.source.database.model.Chapter
 import almerti.egline.data.source.database.model.SavedBook
 import androidx.room.Database

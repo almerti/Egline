@@ -1,5 +1,6 @@
 package almerti.egline.data.source.database.model
 
+import almerti.egline.data.model.Book
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -25,7 +26,7 @@ data class Chapter(
     val number : Int,
     @ColumnInfo(name = "text_content")
     val textContent : String,
-    @ColumnInfo(name = "audio_content")
-    val audioContent : String,
+    @ColumnInfo(name = "audio_content", typeAffinity = ColumnInfo.BLOB)
+    val audioContent : ByteArray,
     val date : Long
 )

@@ -24,9 +24,13 @@ class CommentRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAll(book : Book) : List<Comment> {
+        return getAll(book.id)
+    }
+
+    override suspend fun getAll(bookId : Int) : List<Comment> {
         val response = remoteApi.getComments()
         return if (response.isSuccessful) {
-            response.body()!!.filter {it.bookId == book.id}.map {networkToEntity(it)}
+            response.body()!!.filter {it.bookId == bookId}.map {networkToEntity(it)}
         } else
             listOf()
     }
