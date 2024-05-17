@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface BookRepository {
 
     suspend fun getAll() : Flow<MutableList<Book>>
-    suspend fun getById(id : Int) : Flow<Book>
-    suspend fun getByName(name : String) : Flow<MutableList<Book>>
+    suspend fun getById(id : Int) : Book?
+    suspend fun getByName(name : String) : List<Book>
+    suspend fun update()
+    suspend fun removeAll()
 }
