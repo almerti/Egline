@@ -14,6 +14,7 @@ import java.util.logging.Logger
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
+
     private val remoteApi : NetworkApi,
     private val userDataStore : DataStore<User>,
     private val folderRepository : FolderRepository
@@ -95,7 +96,7 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun delete(userId : Int) : String {
+    override suspend fun delete(userId: Int): String {
         val answer = remoteApi.deleteUser(userDataStore.data.first().id)
 
         if (answer.isSuccessful) {
@@ -106,6 +107,7 @@ class UserRepositoryImpl @Inject constructor(
             return "OK"
         } else return answer.errorBody()?.string() ?: "No response"
     }
+
 
     override suspend fun networkUpdate() {
         try {
@@ -135,7 +137,7 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
-    private fun userToNetworkUser(user : User) : almerti.egline.data.source.network.model.User {
+    private fun userToNetworkUser(user: User): almerti.egline.data.source.network.model.User {
 
         return almerti.egline.data.source.network.model.User(
             id = user.id,
