@@ -41,10 +41,8 @@ class FolderRepositoryimpl @Inject constructor(
                 .split(",")
                 .map {it.trim().toInt()}
                 .toMutableList()
-
             folders.add(Folder(folderName, bookIds))
         }
-
 
         val savedBooks = mutableListOf<SavedBook>()
         folders.forEach {
