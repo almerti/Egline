@@ -1,5 +1,6 @@
 package almerti.egline.data.source.database.model
 
+import almerti.egline.data.model.Book
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey

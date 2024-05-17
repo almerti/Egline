@@ -1,7 +1,7 @@
 package almerti.egline.data.source.database.dao
 
-import almerti.egline.data.source.database.model.Book
-import almerti.egline.data.source.database.model.Status
+import almerti.egline.data.model.Book
+import almerti.egline.data.model.Status
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
@@ -13,6 +13,9 @@ interface BookDao {
 
     @Upsert
     suspend fun upsertBook(book : Book)
+
+    @Upsert
+    suspend fun upsertBooks(books : List<Book>)
 
     @Delete
     suspend fun deleteBook(book : Book)
@@ -29,7 +32,7 @@ interface BookDao {
     WHERE
         CASE WHEN :useStatusFilter THEN status = :status END
         AND
-        CASE WHEN :useDateFilter THEN date BETWEEN :startDate AND :endDate END
+        CASE WHEN :useDateFilter THEN year BETWEEN :startDate AND :endDate END
         AND
         CASE WHEN :useRatingFilter THEN rating > :minRating AND rating < :maxRating END
 """,
@@ -45,4 +48,12 @@ interface BookDao {
         maxRating : Int? = null,
     ) : Flow<List<Book>>
 
+    @Query("DELETE FROM Book")
+    suspend fun deleteAllBooks()
+
+    @Query("DELETE FROM Book WHERE id = :id")
+    suspend fun deleteBookById(id : Int)
+
+    @Query("SELECT * FROM Book WHERE title LIKE '%' || :name || '%'")
+    suspend fun getBookByName(name : String) : List<Book>
 }
