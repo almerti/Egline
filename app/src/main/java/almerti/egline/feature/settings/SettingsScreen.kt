@@ -1,65 +1,60 @@
 package almerti.egline.feature.settings
 
-import almerti.egline.data.network.model.Book
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 @Composable
 fun SettingsScreen(
     viewModel : SettingsViewModel
 ) {
-    val books by viewModel.bookState.collectAsState()
+    val user by viewModel.userState.collectAsState(initial = null)
+    var newDisplayName by remember {mutableStateOf("")}
+    var folder by remember {mutableStateOf("")}
 
     Column {
         Text(text = "SettingsScreen")
 
-        if (books.isEmpty()) {
+        if (user == null) {
             CircularProgressIndicator()
         } else {
-            LazyColumn {
-                items(books) {book ->
-                    BookItem(book)
-                }
+            Column {
+                TextField(
+                    value = newDisplayName,
+                    onValueChange = {newDisplayName = it},
+                    label = {Text("New Display Name")},
+                )
+                Text(text = user?.displayName ?: "")
+                Text(text = user?.email ?: "")
             }
         }
-        Button(
-            onClick = {
-                viewModel.viewModelScope.launch {
-                    viewModel.addRating()
-                }
-            },
-        ) {
-            Text(text = "Add Rating")
-        }
-    }
-}
 
-@Composable
-fun BookItem(book : Book) {
-    Row(
-        modifier = Modifier.padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(book.title)
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(book.description)
-        Spacer(modifier = Modifier.width(10.dp))
-        Text(book.rating.toString())
+        Button(onClick = {viewModel.updateUser(newDisplayName)}) {
+            Text(text = "Update User")
+        }
+
+        TextField(
+            value = folder,
+            onValueChange = {folder = it},
+            label = {Text("folder name")},
+        )
+
+        Button(onClick = {viewModel.addToFolder(folder)}) {
+            Text(text = "add to folder")
+        }
+        Button(onClick = {viewModel.getFolders()}) {
+            Text(text = "get folders")
+        }
+        Button(onClick = {viewModel.logintest()}) {
+            Text(text = "login")
+        }
     }
 }

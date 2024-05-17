@@ -8,5 +8,6 @@ plugins {
 buildscript {
     dependencies {
         classpath(libs.hilt.android.gradle.plugin)
+        classpath("org.jetbrains.kotlin:kotlin-serialization:1.6.10")
     }
 }

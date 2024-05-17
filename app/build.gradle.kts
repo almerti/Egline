@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.ksp)
-//    id("kotlinx-serialization")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -79,6 +79,11 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+
+
+    //DataStore
+    implementation(libs.androidx.datastore)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
     //test
     testImplementation(libs.junit)

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Egline</string>
+    <string name="login_header">Sign In</string>
+    <string name="register_header">Sign Up</string>
+    <string name="password_label">Password</string>
+    <string name="email_label">Email</string>
+    <string name="username_label">Username</string>
+    <string name="register_message_part1">Still do not have account?</string>
+    <string name="register_message_part2">Sign Up!</string>
 </resources>

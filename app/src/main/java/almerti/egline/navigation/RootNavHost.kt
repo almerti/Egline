@@ -1,6 +1,10 @@
 package almerti.egline.navigation
 
 
+import almerti.egline.feature.login.loginGraph
+import almerti.egline.feature.login.navigateToLoginGraph
+import almerti.egline.feature.register.navigateToRegisterGraph
+import almerti.egline.feature.register.registerGraph
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -14,8 +18,8 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun RootNavHost(
-    modifier : Modifier = Modifier,
-    rootController : NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier,
+    rootController: NavHostController = rememberNavController(),
 ) {
     NavHost(
         navController = rootController,
@@ -28,15 +32,37 @@ fun RootNavHost(
                 },
             )
         }
-
+        loginGraph(
+            onBackClick = {
+                rootController.popBackStack()
+            },
+            onNavigateToRegisterGraph = {
+                rootController.navigateToRegisterGraph()
+            },
+            onNavigateToMainPage = {
+                rootController.navigate(RootScreens.Library.route)
+            },
+        )
+        registerGraph(
+            onBackClick = {
+                rootController.popBackStack()
+            },
+            onNavigateToMainPage = {
+                rootController.navigate(RootScreens.Library.route)
+            },
+        )
         composable(RootScreens.Library.route) {
-            MenuNavHost()
+            MenuNavHost(
+                onNavigateToLoginPage = {
+                    rootController.navigateToLoginGraph()
+                },
+            )
         }
     }
 }
 
 @Composable
-fun BookReaderScreen(onNavigateToLibrary : () -> Unit) {
+fun BookReaderScreen(onNavigateToLibrary: () -> Unit) {
     Column(modifier = Modifier) {
 
         Text(text = "BookReaderScreen")
@@ -45,7 +71,7 @@ fun BookReaderScreen(onNavigateToLibrary : () -> Unit) {
     }
 }
 
-sealed class RootScreens(val route : String) {
+sealed class RootScreens(val route: String) {
     object BookReader : RootScreens("book-reader")
     object Library : RootScreens("library")
 }
