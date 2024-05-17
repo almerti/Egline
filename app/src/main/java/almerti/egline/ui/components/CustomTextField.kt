@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CustomTextField(
     labelText: String,
-    icon: Int,
+    icon: @Composable () -> Unit,
     value: String,
     onValueChange: (String) -> Unit,
     isError: Boolean,
@@ -24,12 +24,7 @@ fun CustomTextField(
         modifier = Modifier.padding(bottom = 24.dp),
         value = value,
         label = {Text(text = labelText)},
-        trailingIcon = {
-            Icon(
-                imageVector = ImageVector.vectorResource(icon),
-                contentDescription = null,
-            )
-        },
+        trailingIcon = icon,
         onValueChange = onValueChange,
         isError = isError,
         supportingText = {

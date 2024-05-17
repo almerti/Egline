@@ -27,8 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import almerti.egline.ui.components.PasswordField
 import android.annotation.SuppressLint
+import android.graphics.drawable.Icon
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Deck
+import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -92,7 +96,7 @@ fun LoginScreen(
                 CustomTextField(
                     // email field
                     labelText = stringResource(id = R.string.email_label),
-                    icon = R.drawable.baseline_email_24,
+                    icon = {Icon(Icons.Outlined.Email, contentDescription = null)},
                     value = state.email,
                     onValueChange = {
                         viewModel.onEvent(LoginFormEvent.EmailChanged(it))

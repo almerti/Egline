@@ -1,7 +1,12 @@
 package almerti.egline.ui.components
 
 import almerti.egline.R
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +26,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun PasswordField(
     value: String,
@@ -29,7 +35,6 @@ fun PasswordField(
     supportingText: String?
 ) {
     var passwordVisibility: Boolean by remember {mutableStateOf(false)}
-    val icon = remember {mutableIntStateOf(R.drawable.baseline_visibility_24)}
 
     OutlinedTextField(
         modifier = Modifier.padding(bottom = 24.dp),
@@ -37,18 +42,15 @@ fun PasswordField(
         label = {Text(text = stringResource(id = R.string.password_label))},
         visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
+            val image = if (passwordVisibility)
+                Icons.Outlined.VisibilityOff
+            else Icons.Outlined.Visibility
+
             IconButton(
-                onClick = {
-                    passwordVisibility = !passwordVisibility
-                    if (passwordVisibility) {
-                        icon.intValue = R.drawable.baseline_visibility_off_24
-                    } else {
-                        icon.intValue = R.drawable.baseline_visibility_24
-                    }
-                },
+                onClick = {passwordVisibility = !passwordVisibility},
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(icon.intValue),
+                    imageVector = image,
                     contentDescription = null,
                 )
             }
