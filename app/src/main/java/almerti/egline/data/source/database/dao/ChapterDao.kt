@@ -13,6 +13,9 @@ interface ChapterDao {
     @Upsert
     suspend fun upsertChapter(chapter : Chapter)
 
+    @Upsert
+    suspend fun upsertChapters(chapters : List<Chapter>)
+
     @Delete
     suspend fun deleteChapter(chapter : Chapter)
 
@@ -27,5 +30,8 @@ interface ChapterDao {
 
     @Query("SELECT * FROM chapter WHERE book_id = :bookId AND number = :number ")
     suspend fun getChapterToBook(bookId : Int, number : Int) : Chapter
+
+    @Query("SELECT * FROM chapter")
+    suspend fun getAllChapters() : List<Chapter>
 
 }

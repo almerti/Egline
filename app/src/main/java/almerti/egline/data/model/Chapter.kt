@@ -1,15 +1,15 @@
 package almerti.egline.data.model
 
-import java.util.Date
+import java.time.LocalDate
 
 data class Chapter(
     val id : Int,
     val bookId : Int,
     val title : String,
     val number : Int,
-    val textContent : String,
-    val audioContent : ByteArray?,
-    val date : Date
+    var textContent : String,
+    var audioContent : ByteArray?,
+    val date : LocalDate
 ) {
     override fun equals(other : Any?) : Boolean {
         if (this === other) return true
