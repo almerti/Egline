@@ -4,6 +4,8 @@ import almerti.egline.R
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -24,7 +26,7 @@ fun BackButton(
         onClick = onBackClick,
         content = {
             Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.baseline_arrow_back_24),
+                imageVector = Icons.Outlined.ArrowBackIosNew,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurface,
             )

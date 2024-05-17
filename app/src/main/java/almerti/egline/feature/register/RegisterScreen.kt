@@ -27,6 +27,9 @@ import androidx.compose.ui.unit.sp
 import almerti.egline.ui.components.PasswordField
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -89,7 +92,7 @@ fun RegisterScreen(
                 CustomTextField(
                     // email field
                     labelText = stringResource(id = R.string.email_label),
-                    icon = R.drawable.baseline_email_24,
+                    icon = {Icon(Icons.Outlined.Email, contentDescription = null)},
                     value = state.email,
                     onValueChange = {
                         viewModel.onEvent(RegisterFormEvent.EmailChanged(it))
@@ -100,7 +103,7 @@ fun RegisterScreen(
                 CustomTextField(
                     // username field
                     labelText = stringResource(id = R.string.username_label),
-                    icon = R.drawable.baseline_person_24,
+                    icon = {Icon(Icons.Outlined.Person, contentDescription = null)},
                     value = state.displayName,
                     onValueChange = {
                         viewModel.onEvent(RegisterFormEvent.DisplayNameChanged(it))
