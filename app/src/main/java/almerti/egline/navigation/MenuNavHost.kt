@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.Deck
+import androidx.compose.material.icons.outlined.CollectionsBookmark
+import androidx.compose.material.icons.outlined.FolderSpecial
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -26,11 +27,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 
 @Composable
-@Preview
 fun MenuNavHost(
-    navController : NavHostController = rememberNavController(),
-    modifier : Modifier = Modifier,
-    onNavigateToLoginPage : () -> Unit
+    navController: NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier,
+    onNavigateToLoginPage: () -> Unit
 ) {
     Scaffold(
         bottomBar = {BottomNavBar(navController)},
@@ -69,17 +69,17 @@ fun MenuNavHost(
 
 
 @Composable
-fun BottomNavBar(navController : NavHostController) {
+fun BottomNavBar(navController: NavHostController) {
     NavigationBar {
         NavigationBarItem(
-            icon = {Icon(Icons.Outlined.Deck, contentDescription = null)},
+            icon = {Icon(Icons.Outlined.FolderSpecial, contentDescription = null)},
             label = {Text("Favorites")},
             selected = navController.currentDestination?.route == LibraryScreens.Favorites.route,
             onClick = {navController.navigate(LibraryScreens.Favorites.route)},
         )
 
         NavigationBarItem(
-            icon = {Icon(Icons.Outlined.Build, contentDescription = null)},
+            icon = {Icon(Icons.Outlined.CollectionsBookmark, contentDescription = null)},
             label = {Text("Books")},
             selected = navController.currentDestination?.route == LibraryScreens.Books.route,
             onClick = {navController.navigate(LibraryScreens.Books.route)},
@@ -102,7 +102,7 @@ fun BottomNavBar(navController : NavHostController) {
 
 
 @Composable
-fun FavoritesScreen(navController : NavHostController) {
+fun FavoritesScreen(navController: NavHostController) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,
@@ -116,7 +116,7 @@ fun FavoritesScreen(navController : NavHostController) {
 }
 
 @Composable
-fun ProfileScreen(navController : NavHostController, onNavigateToLoginPage : () -> Unit) {
+fun ProfileScreen(navController: NavHostController, onNavigateToLoginPage: () -> Unit) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,
@@ -131,7 +131,7 @@ fun ProfileScreen(navController : NavHostController, onNavigateToLoginPage : () 
 }
 
 @Composable
-fun BooksScreen(navController : NavHostController) {
+fun BooksScreen(navController: NavHostController) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,
@@ -145,7 +145,7 @@ fun BooksScreen(navController : NavHostController) {
 }
 
 @Composable
-fun BookDetailsScreen(navController : NavHostController) {
+fun BookDetailsScreen(navController: NavHostController) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,
@@ -158,8 +158,18 @@ fun BookDetailsScreen(navController : NavHostController) {
     }
 }
 
+@Preview
+@Composable
+private fun MenuNavHostPreview() {
+    MenuNavHost(
+        navController = NavHostController(LocalContext.current),
+        modifier = Modifier,
+        onNavigateToLoginPage = {},
+    )
+}
 
-sealed class LibraryScreens(val route : String) {
+
+sealed class LibraryScreens(val route: String) {
     object Library : LibraryScreens("Library")
     object Books : LibraryScreens("Books")
     object BookDetails : LibraryScreens("BookDetails")
