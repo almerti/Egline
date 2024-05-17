@@ -5,6 +5,7 @@ import almerti.egline.feature.login.loginGraph
 import almerti.egline.feature.login.navigateToLoginGraph
 import almerti.egline.feature.register.navigateToRegisterGraph
 import almerti.egline.feature.register.registerGraph
+import almerti.egline.navigation.navbar.MenuNavHost
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
