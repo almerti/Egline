@@ -28,8 +28,11 @@ import androidx.compose.ui.unit.sp
 import almerti.egline.ui.components.PasswordField
 import android.annotation.SuppressLint
 import android.graphics.drawable.Icon
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Deck
 import androidx.compose.material.icons.outlined.Email
@@ -52,7 +55,8 @@ fun LoginScreen(
         Column(
             modifier = Modifier
                 .padding(16.dp)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             val state = viewModel.state
@@ -118,7 +122,6 @@ fun LoginScreen(
                         viewModel.onEvent(LoginFormEvent.Submit)
                     },
                 )
-                Spacer(modifier = Modifier.weight(1f))
                 AuthBottomMessage(
                     text1 = stringResource(id = R.string.register_message_part1),
                     text2 = stringResource(id = R.string.register_message_part2),

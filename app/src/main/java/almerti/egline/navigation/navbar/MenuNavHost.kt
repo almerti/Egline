@@ -1,5 +1,7 @@
 package almerti.egline.navigation.navbar
 
+import almerti.egline.feature.favorite.FAVORITE_GRAPH_ROUTE
+import almerti.egline.feature.favorite.favoriteGraph
 import almerti.egline.feature.settings.settingsGraph
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,9 +33,7 @@ fun MenuNavHost(
             startDestination = CATALOG_BROWSER_GRAPH_ROUTE,
         ) {
 
-            composable(FAVORITES_GRAPH_ROUTE) {
-                BooksScreen(navController)
-            }
+            favoriteGraph()
 
             composable(SAVED_GRAPH_ROUTE) {
                 SavedScreen(navController)

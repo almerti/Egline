@@ -1,5 +1,6 @@
 package almerti.egline.navigation.navbar
 
+import almerti.egline.feature.favorite.FAVORITE_GRAPH_ROUTE
 import almerti.egline.feature.settings.SETTINGS_GRAPH_ROUTE
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
@@ -34,7 +35,7 @@ import androidx.navigation.compose.rememberNavController
 fun BottomNavBar(navController : NavHostController) {
     val state = rememberNavigationBarState(navController)
     NavigationBar {
-        val isFavoritesSelected by state.isRouteSelected(FAVORITES_GRAPH_ROUTE)
+        val isFavoritesSelected by state.isRouteSelected(FAVORITE_GRAPH_ROUTE)
             .collectAsState(initial = false)
 
         val favoritesIcon =
@@ -46,7 +47,7 @@ fun BottomNavBar(navController : NavHostController) {
             },
             label = {Text("Favorites")},
             selected = isFavoritesSelected,
-            onClick = {state.openRoute(FAVORITES_GRAPH_ROUTE)},
+            onClick = {state.openRoute(FAVORITE_GRAPH_ROUTE)},
         )
 
         val isBrowserSelected by state.isRouteSelected(CATALOG_BROWSER_GRAPH_ROUTE)
