@@ -20,6 +20,9 @@ interface RetrofitEglineNetworkApi : NetworkApi {
     @GET(value = "book")
     override suspend fun getBooks() : Response<List<Book>>
 
+    @GET(value = "book/get-ids")
+    override suspend fun getIdsBooks() : Response<List<Int>>
+
     @GET(value = "book/{id}")
     override suspend fun getBook(@Path("id") id : Int) : Response<Book>
 
@@ -31,7 +34,7 @@ interface RetrofitEglineNetworkApi : NetworkApi {
 
     @DELETE(value = "book/rate/{book-id}/{user-id}")
     override suspend fun deleteRateToBook(
-        @Path(value = "book-id") bookId : Int ,
+        @Path(value = "book-id") bookId : Int,
         @Path(value = "user-id") userId : Int
     ) : Response<String>
 
@@ -44,7 +47,7 @@ interface RetrofitEglineNetworkApi : NetworkApi {
     override suspend fun createUser(@Body user : User) : Response<String>
 
     @PUT(value = "user/{id}")
-    override suspend fun updateUser(@Path("id") id : Int , @Body user : User) : Response<String>
+    override suspend fun updateUser(@Path("id") id : Int, @Body user : User) : Response<String>
 
     @DELETE(value = "user/{id}")
     override suspend fun deleteUser(@Path("id") id : Int) : Response<String>
@@ -84,7 +87,7 @@ interface RetrofitEglineNetworkApi : NetworkApi {
 
     @PUT(value = "comment/{id}")
     override suspend fun updateComment(
-        @Path("id") id : Int ,
+        @Path("id") id : Int,
         @Body comment : Comment
     ) : Response<String>
 }
