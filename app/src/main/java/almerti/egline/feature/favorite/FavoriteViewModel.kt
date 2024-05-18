@@ -3,14 +3,12 @@ package almerti.egline.feature.favorite
 import almerti.egline.data.model.Book
 import almerti.egline.data.repository.BookRepository
 import almerti.egline.data.repository.FolderRepository
-import almerti.egline.data.source.database.model.SavedBook
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
