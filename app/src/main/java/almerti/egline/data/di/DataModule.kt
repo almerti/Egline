@@ -1,5 +1,7 @@
 package almerti.egline.data.di
 
+import almerti.egline.data.implementation.BookRepositoryImpl
+import almerti.egline.data.implementation.ChapterRepositoryImpl
 import almerti.egline.data.implementation.CommentRepositoryImpl
 import almerti.egline.data.repository.FolderRepository
 import almerti.egline.data.implementation.FolderRepositoryimpl
@@ -27,8 +29,8 @@ abstract class DataModule {
     internal abstract fun bindCommentRepository(commentRepository : CommentRepositoryImpl) : CommentRepository
 
     @Binds
-    internal abstract fun bindBookRepository(bookRepository : BookRepository) : BookRepository
+    internal abstract fun bindBookRepository(bookRepository : BookRepositoryImpl) : BookRepository
 
     @Binds
-    internal abstract fun bindChapterRepository(chapterRepository : ChapterRepository) : ChapterRepository
+    internal abstract fun bindChapterRepository(chapterRepository : ChapterRepositoryImpl) : ChapterRepository
 }
