@@ -13,23 +13,27 @@ import javax.inject.Inject
 
 class FolderRepositoryimpl @Inject constructor(
     private val eglineDatabase : EglineDatabase,
-    private val UserRepository : Lazy<UserRepository>,
+    private val userRepositoryLazy : Lazy<UserRepository>,
 ) : FolderRepository {
 
 
     override suspend fun addBooks(folder : Folder) {
         eglineDatabase.SavedBookDao().upsertSavedBooks(folderToSavedBook(folder))
-        UserRepository.get().sendDataToServer()
+        userRepositoryLazy.get().sendDataToServer()
+    }
+
+    override suspend fun addFolder(folderName : String) {
+        eglineDatabase.SavedBookDao().upsertSavedBook(SavedBook(-1, folderName))
     }
 
     override suspend fun removeBooksFromFolder(folder : Folder) {
         eglineDatabase.SavedBookDao().deleteSavedBooks(folderToSavedBook(folder))
-        UserRepository.get().sendDataToServer()
+        userRepositoryLazy.get().sendDataToServer()
     }
 
     override suspend fun removeFolder(folder : Folder) {
         eglineDatabase.SavedBookDao().deleteFolder(folder.folderName)
-        UserRepository.get().sendDataToServer()
+        userRepositoryLazy.get().sendDataToServer()
     }
 
     override suspend fun getAll() : Flow<List<Folder>> {
@@ -41,21 +45,26 @@ class FolderRepositoryimpl @Inject constructor(
     }
 
     override suspend fun saveFoldersJson(jsonObject : JsonObject) {
-        val folders = mutableListOf<Folder>()
+        try {
 
-        for ((key, value) in jsonObject.entrySet()) {
-            val bookIds = value.asJsonPrimitive.asString.removeSurrounding("[", "]")
-                .split(",")
-                .map {it.trim().toInt()}
-                .toMutableList()
-            folders.add(Folder(key, bookIds))
-        }
+            val folders = mutableListOf<Folder>()
 
-        val savedBooks = mutableListOf<SavedBook>()
-        folders.forEach {
-            savedBooks.addAll(folderToSavedBook(it))
+            for ((key, value) in jsonObject.entrySet()) {
+                val bookIds = value.asJsonPrimitive.asString.removeSurrounding("[", "]")
+                    .split(",")
+                    .map {it.trim().toIntOrNull() ?: -1}
+                    .toMutableList()
+                folders.add(Folder(key, bookIds))
+            }
+
+            val savedBooks = mutableListOf<SavedBook>()
+            folders.forEach {
+                savedBooks.addAll(folderToSavedBook(it))
+            }
+            eglineDatabase.SavedBookDao().upsertSavedBooks(savedBooks)
+        } catch (e : Exception) {
+            e.printStackTrace()
         }
-        eglineDatabase.SavedBookDao().upsertSavedBooks(savedBooks)
     }
 
     override suspend fun getByName(folderName : String) : Folder {
