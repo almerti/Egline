@@ -26,7 +26,7 @@ class LoginViewModel @Inject constructor(
     fun onEvent(event: LoginFormEvent) {
         when (event) {
             is LoginFormEvent.EmailChanged -> {
-                state = state.copy(email = event.email, emailError = null)
+                state = state.copy(email = event.email.lowercase(), emailError = null)
             }
 
             is LoginFormEvent.PasswordChanged -> {
