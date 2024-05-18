@@ -30,7 +30,7 @@ class RegisterViewModel @Inject constructor(
     fun onEvent(event: RegisterFormEvent) {
         when (event) {
             is RegisterFormEvent.EmailChanged -> {
-                state = state.copy(email = event.email, emailError = null)
+                state = state.copy(email = event.email.lowercase(), emailError = null)
             }
 
             is RegisterFormEvent.PasswordChanged -> {
