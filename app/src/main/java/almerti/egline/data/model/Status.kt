@@ -4,5 +4,6 @@ enum class Status {
     UNKNOWN,
     ONGOING,
     COMPLETED,
-    CANCELLED
+    CANCELLED,
+    SUSPENDED
 }
