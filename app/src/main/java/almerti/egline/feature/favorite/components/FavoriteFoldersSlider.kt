@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -30,7 +31,7 @@ fun FavoriteFoldersSlider(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 16.dp),
+            .padding(bottom = 24.dp, top = 24.dp),
     ) {
         LazyRow {
             items(folders.size) {index ->
@@ -38,16 +39,17 @@ fun FavoriteFoldersSlider(
                 Box(
                     modifier = Modifier
                         .padding(
-                            end = 15.dp,
+                            end = 12.dp,
                         )
                         .drawBehind {
-                            val borderSize = 2.dp.toPx()
+                            val borderSize = 5.dp.toPx()
                             if (isCurrent)
                                 drawLine(
                                     color = activeColor,
-                                    start = Offset(0f, size.height),
-                                    end = Offset(size.width, size.height),
+                                    start = Offset(0f + (size.width / 2 - 15), size.height),
+                                    end = Offset(0f + (size.width / 2 + 15), size.height),
                                     strokeWidth = borderSize,
+                                    cap = StrokeCap.Round,
                                 )
                         },
                 ) {
@@ -62,7 +64,7 @@ fun FavoriteFoldersSlider(
                             text = folders[index].folderName,
                             style = TextStyle(
                                 fontWeight = if (isCurrent)
-                                    FontWeight.ExtraBold
+                                    FontWeight.Black
                                 else FontWeight.Medium,
                                 fontSize = 16.sp,
                                 color = MaterialTheme.colorScheme.onSurface,

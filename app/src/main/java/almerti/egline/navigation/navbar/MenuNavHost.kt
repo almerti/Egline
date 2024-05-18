@@ -2,6 +2,8 @@ package almerti.egline.navigation.navbar
 
 import almerti.egline.feature.favorite.FAVORITE_GRAPH_ROUTE
 import almerti.egline.feature.favorite.favoriteGraph
+import almerti.egline.feature.login.navigateToLoginGraph
+import almerti.egline.feature.profile.profileGraph
 import almerti.egline.feature.settings.settingsGraph
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,9 +22,9 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun MenuNavHost(
-    navController : NavHostController = rememberNavController(),
-    modifier : Modifier = Modifier,
-    onNavigateToLoginPage : () -> Unit
+    navController: NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier,
+    onNavigateToLoginPage: () -> Unit
 ) {
     Scaffold(
         bottomBar = {BottomNavBar(navController)},
@@ -41,10 +43,9 @@ fun MenuNavHost(
             composable(CATALOG_BROWSER_GRAPH_ROUTE) {
                 FavoritesScreen(navController)
             }
-
-            composable(PROFILE_GRAPH_ROUTE) {
-                ProfileScreen(navController, onNavigateToLoginPage)
-            }
+            profileGraph(
+                onNavigateToLoginPage = onNavigateToLoginPage,
+            )
             settingsGraph()
         }
     }
@@ -52,7 +53,7 @@ fun MenuNavHost(
 
 
 @Composable
-fun FavoritesScreen(navController : NavHostController) {
+fun FavoritesScreen(navController: NavHostController) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,
@@ -63,22 +64,7 @@ fun FavoritesScreen(navController : NavHostController) {
 }
 
 @Composable
-fun ProfileScreen(navController : NavHostController, onNavigateToLoginPage : () -> Unit) {
-    Column(
-        verticalArrangement = Arrangement.Top,
-        modifier = Modifier,
-    ) {
-
-        Text(text = "ProfileScreen")
-        Button(onClick = onNavigateToLoginPage) {
-            Text(text = "Login")
-        }
-    }
-
-}
-
-@Composable
-fun BooksScreen(navController : NavHostController) {
+fun BooksScreen(navController: NavHostController) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,
@@ -89,7 +75,7 @@ fun BooksScreen(navController : NavHostController) {
 }
 
 @Composable
-fun SavedScreen(navController : NavHostController) {
+fun SavedScreen(navController: NavHostController) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,

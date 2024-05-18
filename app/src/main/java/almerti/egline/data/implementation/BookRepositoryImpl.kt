@@ -11,18 +11,18 @@ import java.util.logging.Logger
 import javax.inject.Inject
 
 class BookRepositoryImpl @Inject constructor(
-    private val remoteApi : NetworkApi,
-    private val EglineDatabase : EglineDatabase,
+    private val remoteApi: NetworkApi,
+    private val EglineDatabase: EglineDatabase,
 ) : BookRepository {
 
-    override suspend fun getAll() : Flow<MutableList<Book>> {
+    override suspend fun getAll(): Flow<MutableList<Book>> {
         update()
         return EglineDatabase.BookDao().getAllBooks().map {
             it.toMutableList()
         }
     }
 
-    override suspend fun getById(id : Int) : Book? {
+    override suspend fun getById(id: Int): Book? {
         val response = remoteApi.getBook(id)
         if (response.isSuccessful) {
             val book = networkToModel(response.body()!!)
@@ -32,7 +32,7 @@ class BookRepositoryImpl @Inject constructor(
         return EglineDatabase.BookDao().getBookById(id)
     }
 
-    override suspend fun getByName(name : String) : List<Book> {
+    override suspend fun getByName(name: String): List<Book> {
         update()
         return EglineDatabase.BookDao().getBookByName(name)
     }
@@ -44,7 +44,7 @@ class BookRepositoryImpl @Inject constructor(
                 val books = response.body()!!.map {networkToModel(it)}
                 EglineDatabase.BookDao().upsertBooks(books)
             }
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             Logger.getGlobal().info(e.toString())
         }
     }
@@ -54,7 +54,7 @@ class BookRepositoryImpl @Inject constructor(
     }
 
 
-    private fun parseStatus(status : String) : Status {
+    private fun parseStatus(status: String): Status {
         return when (status) {
             "COMPLETED" -> Status.COMPLETED
             "ONGOING" -> Status.ONGOING
@@ -63,7 +63,7 @@ class BookRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun networkToModel(book : almerti.egline.data.source.network.model.Book) : Book {
+    private fun networkToModel(book: almerti.egline.data.source.network.model.Book): Book {
         return Book(
             id = book.id,
             title = book.title,
@@ -74,7 +74,7 @@ class BookRepositoryImpl @Inject constructor(
             views = book.views,
             year = book.year,
             status = parseStatus(book.status),
-            genres = book.genre.map {it.title},
+            genres = book.genres,
         )
     }
 }

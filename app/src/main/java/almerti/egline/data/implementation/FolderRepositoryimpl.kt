@@ -12,27 +12,27 @@ import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class FolderRepositoryimpl @Inject constructor(
-    private val eglineDatabase : EglineDatabase,
-    private val UserRepository : Lazy<UserRepository>,
+    private val eglineDatabase: EglineDatabase,
+    private val UserRepository: Lazy<UserRepository>,
 ) : FolderRepository {
 
 
-    override suspend fun addBooks(folder : Folder) {
+    override suspend fun addBooks(folder: Folder) {
         eglineDatabase.SavedBookDao().upsertSavedBooks(folderToSavedBook(folder))
         UserRepository.get().sendDataToServer()
     }
 
-    override suspend fun removeBooksFromFolder(folder : Folder) {
+    override suspend fun removeBooksFromFolder(folder: Folder) {
         eglineDatabase.SavedBookDao().deleteSavedBooks(folderToSavedBook(folder))
         UserRepository.get().sendDataToServer()
     }
 
-    override suspend fun removeFolder(folder : Folder) {
+    override suspend fun removeFolder(folder: Folder) {
         eglineDatabase.SavedBookDao().deleteFolder(folder.folderName)
         UserRepository.get().sendDataToServer()
     }
 
-    override suspend fun getAll() : Flow<List<Folder>> {
+    override suspend fun getAll(): Flow<List<Folder>> {
         return flowOf(savedBooksToFolder(eglineDatabase.SavedBookDao().getAllSavedBooks()))
     }
 
@@ -40,12 +40,13 @@ class FolderRepositoryimpl @Inject constructor(
         eglineDatabase.SavedBookDao().deleteAllSavedBooks()
     }
 
-    override suspend fun saveFoldersJson(jsonObject : JsonObject) {
+    override suspend fun saveFoldersJson(jsonObject: JsonObject) {
         val folders = mutableListOf<Folder>()
 
         for ((key, value) in jsonObject.entrySet()) {
             val bookIds = value.asJsonPrimitive.asString.removeSurrounding("[", "]")
                 .split(",")
+                .filter {it.isNotEmpty()}
                 .map {it.trim().toInt()}
                 .toMutableList()
             folders.add(Folder(key, bookIds))
@@ -58,13 +59,13 @@ class FolderRepositoryimpl @Inject constructor(
         eglineDatabase.SavedBookDao().upsertSavedBooks(savedBooks)
     }
 
-    override suspend fun getByName(folderName : String) : Folder {
+    override suspend fun getByName(folderName: String): Folder {
         return savedBooksToFolder(
             eglineDatabase.SavedBookDao().getSavedBooksByFolderName(folderName),
         )[0]
     }
 
-    private fun folderToSavedBook(folder : Folder) : List<SavedBook> {
+    private fun folderToSavedBook(folder: Folder): List<SavedBook> {
 
         val savedBooks = mutableListOf<SavedBook>()
         folder.bookIds.forEach {
@@ -79,14 +80,14 @@ class FolderRepositoryimpl @Inject constructor(
         return savedBooks
     }
 
-    private fun savedBookToFolder(savedBook : SavedBook) : Folder {
+    private fun savedBookToFolder(savedBook: SavedBook): Folder {
         return Folder(
             folderName = savedBook.folderName,
             bookIds = mutableListOf(savedBook.bookId),
         )
     }
 
-    private fun savedBooksToFolder(savedBooks : List<SavedBook>) : List<Folder> {
+    private fun savedBooksToFolder(savedBooks: List<SavedBook>): List<Folder> {
         val folders = mutableMapOf<String, Folder>()
 
         savedBooks.forEach {book ->

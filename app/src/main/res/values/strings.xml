@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Egline</string>
+
+    <!--  Auth module  -->
     <string name="login_header">Sign In</string>
     <string name="register_header">Sign Up</string>
     <string name="password_label">Password</string>
@@ -7,4 +9,20 @@
     <string name="username_label">Username</string>
     <string name="register_message_part1">Still do not have account?</string>
     <string name="register_message_part2">Sign Up!</string>
+
+    <!--  Favorite page  -->
+    <string name="favorite_header">Favorites</string>
+    <string name="favorite_no_folders_message">You have no books</string>
+    <string name="favorite_no_books_message">You have no books</string>
+
+    <!--  Profile page  -->
+    <string name="profile_header">Hello, %1$s</string>
+
+    <!--  Navbar text  -->
+    <string name="navbar_favorites">Favorites</string>
+    <string name="navbar_library">Library</string>
+    <string name="navbar_local">Saved</string>
+    <string name="navbar_profile">Profile</string>
+    <string name="navbar_settings">Settings</string>
+
 </resources>

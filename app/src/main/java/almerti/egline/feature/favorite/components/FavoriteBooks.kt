@@ -1,43 +1,46 @@
 package almerti.egline.feature.favorite.components
 
-import almerti.egline.R
 import almerti.egline.feature.favorite.BookItem
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.SubcomposeAsyncImage
 
 @Composable
 fun FavoriteBooks(
     books: List<BookItem>,
     navigateToBookPage: (id: Int) -> Unit
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Fixed(2),
+    Column {
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(150.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             items(books) {item ->
                 BookCard(
@@ -56,34 +59,50 @@ private fun BookCard(
     bookItem: BookItem,
     navigateToBookPage: () -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .width(250.dp)
-            .border(1.dp, Color.Black, RoundedCornerShape(20.dp)),
-    ) {
+    Column {
         Button(
             onClick = navigateToBookPage,
-            shape = RectangleShape,
-            modifier = Modifier
-                .width(200.dp)
-                .height(200.dp)
-                .padding(bottom = 16.dp),
+            shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(
+                contentColor = MaterialTheme.colorScheme.onSurface,
                 containerColor = Color.Transparent,
-                contentColor = Color.Transparent,
             ),
+            contentPadding = PaddingValues(0.dp),
         ) {
-            Image(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_launcher_foreground),
+            SubcomposeAsyncImage(
+                model = bookItem.bookCover,
+                loading = {
+                    CircularProgressIndicator()
+                },
+                contentScale = ContentScale.Crop,
                 contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .height(250.dp),
             )
         }
         Text(
-            text = bookItem.bookTitle,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            text = if (bookItem.bookTitle.length > 40)
+                bookItem.bookTitle.substring(0, 38) + "…"
+            else bookItem.bookTitle,
+            maxLines = 2,
             style = TextStyle(
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium,
+                lineHeight = 16.sp,
+                fontWeight = FontWeight.Bold,
             ),
         )
     }
 }
+
+@Composable
+@Preview
+private fun BookCardPreview() {
+    BookCard(
+        bookItem = BookItem(1, "Hekki", ByteArray(1)),
+        navigateToBookPage = {},
+    )
+}
+

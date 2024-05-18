@@ -1,6 +1,7 @@
 package almerti.egline.navigation.navbar
 
 import almerti.egline.feature.favorite.FAVORITE_GRAPH_ROUTE
+import almerti.egline.feature.profile.PROFILE_GRAPH_ROUTE
 import almerti.egline.feature.settings.SETTINGS_GRAPH_ROUTE
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
@@ -14,7 +15,6 @@ import kotlinx.coroutines.flow.map
 
 const val CATALOG_BROWSER_GRAPH_ROUTE = "catalog_browser"
 const val SAVED_GRAPH_ROUTE = "saved"
-const val PROFILE_GRAPH_ROUTE = "profile"
 
 @Stable
 internal class NavigationBarState(private val navController: NavController) {
