@@ -13,4 +13,5 @@ interface UserRepository {
     suspend fun fetchDataFromServer()
     suspend fun register(user : User) : String
     suspend fun login(email : String, password : String) : String
+    suspend fun logout()
 }
