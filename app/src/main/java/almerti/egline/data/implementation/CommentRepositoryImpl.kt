@@ -5,6 +5,7 @@ import almerti.egline.data.model.Comment
 import almerti.egline.data.model.User
 import almerti.egline.data.repository.CommentRepository
 import almerti.egline.data.source.network.NetworkApi
+import android.util.Log
 import androidx.datastore.core.DataStore
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -14,13 +15,17 @@ class CommentRepositoryImpl @Inject constructor(
     private val userDataStore : DataStore<User>,
 ) : CommentRepository {
     override suspend fun getAll() : List<Comment> {
-        val response = remoteApi.getComments()
-        return if (response.isSuccessful) {
-            response.body()!!.map {
-                networkToEntity(it)
+        try {
+            val response = remoteApi.getComments()
+            if (response.isSuccessful) {
+                return response.body()!!.map {
+                    networkToEntity(it)
+                }
             }
-        } else
-            listOf()
+        } catch (e : Exception) {
+            Log.e("CommentRepositoryImpl", e.toString())
+        }
+        return listOf()
     }
 
     override suspend fun getAll(book : Book) : List<Comment> {
@@ -28,25 +33,41 @@ class CommentRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAll(bookId : Int) : List<Comment> {
-        val response = remoteApi.getComments()
-        return if (response.isSuccessful) {
-            response.body()!!.filter {it.bookId == bookId}.map {networkToEntity(it)}
-        } else
-            listOf()
+        try {
+            val response = remoteApi.getComments()
+            if (response.isSuccessful) {
+                return response.body()!!.filter {it.bookId == bookId}.map {networkToEntity(it)}
+            }
+        } catch (e : Exception) {
+            Log.e("CommentRepositoryImpl", e.toString())
+        }
+        return listOf()
     }
 
     override suspend fun add(comment : Comment) {
-        remoteApi.createComment(entityToNetwork(comment))
+        try {
+            remoteApi.createComment(entityToNetwork(comment))
+        } catch (e : Exception) {
+            Log.e("CommentRepositoryImpl", e.toString())
+        }
     }
 
     override suspend fun delete(comment : Comment) {
-        if (comment.id != userDataStore.data.first().id)
-            return
-        remoteApi.deleteComment(comment.id)
+        try {
+            if (comment.id != userDataStore.data.first().id)
+                return
+            remoteApi.deleteComment(comment.id)
+        } catch (e : Exception) {
+            Log.e("CommentRepositoryImpl", e.toString())
+        }
     }
 
     override suspend fun update(comment : Comment) {
-        remoteApi.updateComment(comment.id, entityToNetwork(comment))
+        try {
+            remoteApi.updateComment(comment.id, entityToNetwork(comment))
+        } catch (e : Exception) {
+            Log.e("CommentRepositoryImpl", e.toString())
+        }
     }
 
     private fun networkToEntity(network : almerti.egline.data.source.network.model.Comment) : Comment {

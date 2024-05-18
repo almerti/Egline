@@ -4,8 +4,8 @@ import almerti.egline.data.model.Chapter
 import almerti.egline.data.repository.ChapterRepository
 import almerti.egline.data.source.database.EglineDatabase
 import almerti.egline.data.source.network.NetworkApi
+import android.util.Log
 import kotlinx.coroutines.flow.first
-import retrofit2.HttpException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -20,10 +20,11 @@ class ChapterRepositoryImpl @Inject constructor(
             if (response.isSuccessful && response.body() != null) {
                 val chapter = networkToModel(response.body()!!)
                 saveToDb(chapter)
+
                 return chapter
             }
-        } catch (e : HttpException) {
-            return entityToModel(eglineDatabase.ChapterDao().getChapter(chapterId))
+        } catch (e : Exception) {
+            Log.e("ChapterRepositoryImpl", e.toString())
         }
         return entityToModel(eglineDatabase.ChapterDao().getChapter(chapterId))
     }
@@ -34,13 +35,12 @@ class ChapterRepositoryImpl @Inject constructor(
             if (response.isSuccessful && response.body() != null) {
                 val chapters = response.body()!!.map {networkToModel(it)}
 
-                eglineDatabase.ChapterDao().upsertChapters(chapters.map {modelToEntity(it)})
+                saveToDb(chapters)
 
                 return chapters
             }
-        } catch (e : HttpException) {
-            return eglineDatabase.ChapterDao().getAllChaptersToBook(bookId).first()
-                .map {entityToModel(it)}
+        } catch (e : Exception) {
+            Log.e("ChapterRepositoryImpl", e.toString())
         }
         return eglineDatabase.ChapterDao().getAllChaptersToBook(bookId).first()
             .map {entityToModel(it)}
@@ -48,17 +48,16 @@ class ChapterRepositoryImpl @Inject constructor(
 
     override suspend fun getAll() : List<Chapter> {
         try {
-
             val response = remoteApi.getChapters()
             if (response.isSuccessful && response.body() != null) {
                 val chapters = response.body()!!.map {networkToModel(it)}
 
-                eglineDatabase.ChapterDao().upsertChapters(chapters.map {modelToEntity(it)})
+                saveToDb(chapters)
 
                 return chapters
             }
-        } catch (e : HttpException) {
-            return eglineDatabase.ChapterDao().getAllChapters().map {entityToModel(it)}
+        } catch (e : Exception) {
+            Log.e("ChapterRepositoryImpl", e.toString())
         }
         return eglineDatabase.ChapterDao().getAllChapters().map {entityToModel(it)}
     }
@@ -70,9 +69,10 @@ class ChapterRepositoryImpl @Inject constructor(
                 return response.body()!!
             }
             return "Text not found"
-        } catch (e : HttpException) {
-            return eglineDatabase.ChapterDao().getChapter(chapterId).textContent
+        } catch (e : Exception) {
+            Log.e("ChapterRepositoryImpl", e.toString())
         }
+        return eglineDatabase.ChapterDao().getChapter(chapterId).textContent
     }
 
     override suspend fun getText(chapter : Chapter) : String {
@@ -86,9 +86,10 @@ class ChapterRepositoryImpl @Inject constructor(
                 return response.body()
             }
             return null
-        } catch (e : HttpException) {
-            return eglineDatabase.ChapterDao().getChapter(chapterId).audioContent
+        } catch (e : Exception) {
+            Log.e("ChapterRepositoryImpl", e.toString())
         }
+        return eglineDatabase.ChapterDao().getChapter(chapterId).audioContent
     }
 
     override suspend fun getAudio(chapter : Chapter) : ByteArray? {
@@ -97,6 +98,10 @@ class ChapterRepositoryImpl @Inject constructor(
 
     private suspend fun saveToDb(chapter : Chapter) {
         eglineDatabase.ChapterDao().upsertChapter(modelToEntity(chapter))
+    }
+
+    private suspend fun saveToDb(chapterList : List<Chapter>) {
+        eglineDatabase.ChapterDao().upsertChapters(chapterList.map {modelToEntity(it)})
     }
 
 
