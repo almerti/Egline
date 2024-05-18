@@ -9,7 +9,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,20 +25,23 @@ class FavoriteViewModel @Inject constructor(
 
     private fun getFolders() {
         viewModelScope.launch {
-            val list = folderRepository.getAll().first()
+            val flow = folderRepository.getAll()
             var bookList : List<Book?> = emptyList()
 
-            if (list.isNotEmpty() && list[0].bookIds.isNotEmpty()) {
-                bookList = list[0].bookIds.map {
-                    bookRepository.getById(it)
-                }
-            }
+            flow.collect {
 
-            state = state.copy(
-                folders = list,
-                currentFolder = if (list.isEmpty()) null else list[0],
-                bookList = getBooks(bookList),
-            )
+                if (it.isNotEmpty() && it[0].bookIds.isNotEmpty()) {
+                    bookList = it[0].bookIds.map {
+                        bookRepository.getById(it)
+                    }
+                }
+
+                state = state.copy(
+                    folders = it,
+                    currentFolder = if (it.isEmpty()) null else it[0],
+                    bookList = getBooks(bookList),
+                )
+            }
         }
     }
 

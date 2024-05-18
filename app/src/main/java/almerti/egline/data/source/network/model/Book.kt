@@ -7,11 +7,10 @@ data class Book(
     val description : String,
     val cover : ByteArray,
     val rating : Double,
-//    val ratingCount : Int ,
     val year : Int,
     val views : Int,
     val status : String,
-    val genre : List<Genre>,
+    val genres : List<String>,
     val rates : Int
 )
 
