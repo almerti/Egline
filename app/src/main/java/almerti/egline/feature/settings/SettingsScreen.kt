@@ -50,9 +50,6 @@ fun SettingsScreen(
         Button(onClick = {viewModel.addToFolder(folder)}) {
             Text(text = "add to folder")
         }
-        Button(onClick = {viewModel.getFolders()}) {
-            Text(text = "get folders")
-        }
         Button(onClick = {viewModel.logintest()}) {
             Text(text = "login")
         }

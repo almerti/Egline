@@ -46,6 +46,7 @@ class SettingsViewModel @Inject constructor(
                 password = "NewPassword",
             )
             userRepository.update(user)
+            userRepository.sendDataToServer()
         }
     }
 
@@ -56,17 +57,6 @@ class SettingsViewModel @Inject constructor(
                     folderName = name,
                     bookIds = mutableListOf(2, 5, 3),
                 ),
-            )
-        }
-    }
-
-    fun getFolders() {
-        viewModelScope.launch {
-            val ele = FolderRepository.getAll()
-            ele.forEach(
-                fun(it : Folder) {
-                    Logger.getGlobal().info(it.toString())
-                },
             )
         }
     }

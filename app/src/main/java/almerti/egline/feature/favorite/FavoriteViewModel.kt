@@ -9,13 +9,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
-    private val folderRepository: FolderRepository,
-    private val bookRepository: BookRepository
+    private val folderRepository : FolderRepository,
+    private val bookRepository : BookRepository
 ) : ViewModel() {
     var state by mutableStateOf(FavoriteState())
 
@@ -25,8 +26,8 @@ class FavoriteViewModel @Inject constructor(
 
     private fun getFolders() {
         viewModelScope.launch {
-            val list = folderRepository.getAll()
-            var bookList: List<Book?> = emptyList()
+            val list = folderRepository.getAll().first()
+            var bookList : List<Book?> = emptyList()
 
             if (list.isNotEmpty() && list[0].bookIds.isNotEmpty()) {
                 bookList = list[0].bookIds.map {
@@ -43,8 +44,8 @@ class FavoriteViewModel @Inject constructor(
     }
 
     private fun getBooks(
-        books: List<Book?>
-    ): List<BookItem> {
+        books : List<Book?>
+    ) : List<BookItem> {
         val bookItems = mutableListOf<BookItem>()
         books.forEach {book ->
             if (book != null) {
@@ -54,7 +55,7 @@ class FavoriteViewModel @Inject constructor(
         return bookItems
     }
 
-    fun onEvent(event: FavoriteEvent) {
+    fun onEvent(event : FavoriteEvent) {
         when (event) {
             is FavoriteEvent.AddFolder -> {
 
@@ -62,7 +63,7 @@ class FavoriteViewModel @Inject constructor(
 
             is FavoriteEvent.ChangeCurrentFolder -> {
                 viewModelScope.launch {
-                    var bookList: List<Book?> = emptyList()
+                    var bookList : List<Book?> = emptyList()
 
                     if (event.folder.bookIds.isNotEmpty()) {
                         bookList = event.folder.bookIds.map {

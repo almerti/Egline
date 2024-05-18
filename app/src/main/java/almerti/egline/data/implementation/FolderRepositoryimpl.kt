@@ -7,29 +7,33 @@ import almerti.egline.data.source.database.EglineDatabase
 import almerti.egline.data.source.database.model.SavedBook
 import com.google.gson.JsonObject
 import dagger.Lazy
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class FolderRepositoryimpl @Inject constructor(
     private val eglineDatabase : EglineDatabase,
     private val UserRepository : Lazy<UserRepository>,
 ) : FolderRepository {
+
+
     override suspend fun addBooks(folder : Folder) {
         eglineDatabase.SavedBookDao().upsertSavedBooks(folderToSavedBook(folder))
-        UserRepository.get().update()
+        UserRepository.get().sendDataToServer()
     }
 
-    override suspend fun removeBook(folder : Folder) {
+    override suspend fun removeBooksFromFolder(folder : Folder) {
         eglineDatabase.SavedBookDao().deleteSavedBooks(folderToSavedBook(folder))
-        UserRepository.get().update()
+        UserRepository.get().sendDataToServer()
     }
 
     override suspend fun removeFolder(folder : Folder) {
         eglineDatabase.SavedBookDao().deleteFolder(folder.folderName)
-        UserRepository.get().update()
+        UserRepository.get().sendDataToServer()
     }
 
-    override suspend fun getAll() : List<Folder> {
-        return savedBooksToFolder(eglineDatabase.SavedBookDao().getAllSavedBooks())
+    override suspend fun getAll() : Flow<List<Folder>> {
+        return flowOf(savedBooksToFolder(eglineDatabase.SavedBookDao().getAllSavedBooks()))
     }
 
     override suspend fun removeAll() {
@@ -40,12 +44,11 @@ class FolderRepositoryimpl @Inject constructor(
         val folders = mutableListOf<Folder>()
 
         for ((key, value) in jsonObject.entrySet()) {
-            val folderName = key
             val bookIds = value.asJsonPrimitive.asString.removeSurrounding("[", "]")
                 .split(",")
                 .map {it.trim().toInt()}
                 .toMutableList()
-            folders.add(Folder(folderName, bookIds))
+            folders.add(Folder(key, bookIds))
         }
 
         val savedBooks = mutableListOf<SavedBook>()
@@ -53,7 +56,6 @@ class FolderRepositoryimpl @Inject constructor(
             savedBooks.addAll(folderToSavedBook(it))
         }
         eglineDatabase.SavedBookDao().upsertSavedBooks(savedBooks)
-        UserRepository.get().update()
     }
 
     override suspend fun getByName(folderName : String) : Folder {

@@ -20,46 +20,47 @@ class UserRepositoryImpl @Inject constructor(
     private val folderRepository : FolderRepository
 ) : UserRepository {
     override suspend fun get() : Flow<User> {
-        networkUpdate()
         return userDataStore.data
     }
 
-    override suspend fun update(user : User) {
+    override suspend fun sendDataToServer() {
         try {
-            userDataStore.updateData {
-                user
-            }
-
+            val user = userDataStore.data.first()
             val networkUser = userToNetworkUser(user)
             val savedBooks = JsonObject()
             val gson = Gson()
 
-            folderRepository.getAll().forEach {
-                savedBooks.addProperty(it.folderName, gson.toJson(it.bookIds))
+            folderRepository.getAll().collect {folderList ->
+                folderList.forEach {
+                    savedBooks.addProperty(it.folderName, gson.toJson(it.bookIds))
+                }
             }
             networkUser.savedBooks = savedBooks
 
-            Logger.getGlobal().info(networkUser.toString())
             remoteApi.updateUser(networkUser.id, networkUser)
-
         } catch (e : Exception) {
             Logger.getGlobal().info(e.toString())
         }
     }
 
-    override suspend fun update() {
-        update(userDataStore.data.first())
-    }
-
-    override suspend fun get(userId : Int) : User {
+    override suspend fun get(userId : Int) : User? {
         try {
             val userData = remoteApi.getUser(userId)
             if (userData.isSuccessful)
                 return networkUserToUser(userData.body()!!)
             else
-                return userDataStore.data.first()
+                if (userDataStore.data.first().id == userId)
+                    return userDataStore.data.first()
+                else
+                    return null
         } catch (e : Exception) {
             return userDataStore.data.first()
+        }
+    }
+
+    override suspend fun update(user : User) {
+        userDataStore.updateData {
+            user
         }
     }
 
@@ -96,7 +97,7 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun delete(userId: Int): String {
+    override suspend fun delete(userId : Int) : String {
         val answer = remoteApi.deleteUser(userDataStore.data.first().id)
 
         if (answer.isSuccessful) {
@@ -109,7 +110,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun networkUpdate() {
+    override suspend fun fetchDataFromServer() {
         try {
             val networkUser = remoteApi.getUser(userDataStore.data.first().id)
             if (networkUser.isSuccessful && networkUser.body() != null) {
@@ -137,7 +138,7 @@ class UserRepositoryImpl @Inject constructor(
         )
     }
 
-    private fun userToNetworkUser(user: User): almerti.egline.data.source.network.model.User {
+    private fun userToNetworkUser(user : User) : almerti.egline.data.source.network.model.User {
 
         return almerti.egline.data.source.network.model.User(
             id = user.id,
