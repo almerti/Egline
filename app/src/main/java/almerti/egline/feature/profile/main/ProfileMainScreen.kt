@@ -45,8 +45,16 @@ fun ProfileMainScreen(
 ) {
     val user = viewModel.userState.collectAsState(initial = null)
 
-    if (user.value == null || user.value?.id == -1)
-        Button(onClick = onNavigateToLoginPage) {
+    if (user.value == null)
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            CircularProgressIndicator()
+        }
+    else if (user.value?.id == -1)
+        Button(onClick = onNavigateToEditPage) {
             Text(text = "Login")
         }
     else

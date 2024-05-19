@@ -5,7 +5,12 @@ import almerti.egline.ui.components.CustomIconButton
 import almerti.egline.ui.components.CustomTextField
 import almerti.egline.ui.components.FormButton
 import almerti.egline.ui.components.PasswordField
+import android.content.Context
+import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -38,6 +43,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.io.InputStream
 
 @Composable
 fun EditProfileScreen(
@@ -47,6 +55,16 @@ fun EditProfileScreen(
     val user = viewModel.userState.collectAsState(null)
     val state = viewModel.state
     val context = LocalContext.current
+
+
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = {
+            viewModel.selectedImageUri.value = it
+            val bytes = readBytes(context, viewModel.selectedImageUri.value!!)
+            viewModel.onEvent(EditProfileEvent.AvatarChanged(bytes!!))
+        },
+    )
 
     if (user.value == null)
         CircularProgressIndicator()
@@ -97,7 +115,9 @@ fun EditProfileScreen(
                 modifier = Modifier
                     .width(150.dp)
                     .height(150.dp),
-                onClick = {},
+                onClick = {
+                    imagePickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                },
                 contentPadding = PaddingValues(0.dp),
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(
@@ -105,9 +125,9 @@ fun EditProfileScreen(
                 ),
             ) {
                 SubcomposeAsyncImage(
-                    model = if (state.avatar.isEmpty())
+                    model = if (viewModel.selectedImageUri.value == null)
                         R.drawable.ic_no_cover
-                    else state.avatar,
+                    else viewModel.selectedImageUri.value,
                     loading = {CircularProgressIndicator()},
                     contentDescription = "User avatar",
                     contentScale = ContentScale.Crop,
@@ -169,3 +189,7 @@ fun EditProfileScreen(
         }
     }
 }
+
+@Throws(IOException::class)
+private fun readBytes(context: Context, uri: Uri): ByteArray? =
+    context.contentResolver.openInputStream(uri)?.buffered()?.use {it.readBytes()}
