@@ -4,6 +4,7 @@ import almerti.egline.data.model.User
 import almerti.egline.data.repository.FolderRepository
 import almerti.egline.data.repository.UserRepository
 import almerti.egline.data.source.network.NetworkApi
+import almerti.egline.data.source.network.model.UserEdit
 import almerti.egline.data.source.network.model.UserLogin
 import android.util.Log
 import androidx.datastore.core.DataStore
@@ -58,9 +59,16 @@ class UserRepositoryImpl @Inject constructor(
             null
     }
 
-    override suspend fun update(user: User): String {
+    override suspend fun update(user: User) {
+        userDataStore.updateData {
+            user
+        }
+        sendDataToServer()
+    }
+
+    override suspend fun edit(id: Int, userEdit: UserEdit): String {
         try {
-            val response = remoteApi.updateUser(user.id, userToNetworkUser(user))
+            val response = remoteApi.edit(id, userEdit)
             if (response.isSuccessful && response.body() != null) {
                 val updatedUser = networkUserToUser(response.body()!!)
 
@@ -70,7 +78,7 @@ class UserRepositoryImpl @Inject constructor(
                     updatedUser
                 }
             } else {
-                return response.errorBody()?.toString() ?: "No response"
+                return response.errorBody()?.string() ?: "No response"
             }
             return "OK"
         } catch (e: Exception) {

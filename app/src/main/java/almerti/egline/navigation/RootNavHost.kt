@@ -52,7 +52,11 @@ fun RootNavHost(
             },
         )
         composable(RootScreens.Library.route) {
-            MenuNavHost()
+            MenuNavHost(
+                onNavigateToLoginPage = {
+                    rootController.navigateToLoginGraph()
+                },
+            )
         }
     }
 }

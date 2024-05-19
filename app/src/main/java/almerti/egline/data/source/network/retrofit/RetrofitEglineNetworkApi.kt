@@ -6,6 +6,7 @@ import almerti.egline.data.source.network.model.BookRate
 import almerti.egline.data.source.network.model.Chapter
 import almerti.egline.data.source.network.model.Comment
 import almerti.egline.data.source.network.model.User
+import almerti.egline.data.source.network.model.UserEdit
 import almerti.egline.data.source.network.model.UserLogin
 import retrofit2.Response
 import retrofit2.http.Body
@@ -55,6 +56,8 @@ interface RetrofitEglineNetworkApi : NetworkApi {
     @POST(value = "user/login")
     override suspend fun login(@Body userLogin: UserLogin): Response<User>
 
+    @POST(value = "user/edit/{id}")
+    override suspend fun edit(@Path("id") id: Int, @Body userEdit: UserEdit): Response<User>
 
     //Chapter
     @GET(value = "chapter")

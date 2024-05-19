@@ -2,6 +2,7 @@ package almerti.egline.feature.profile.edit
 
 import almerti.egline.data.model.User
 import almerti.egline.data.repository.UserRepository
+import almerti.egline.data.source.network.model.UserEdit
 import almerti.egline.data.use_case.ValidateDisplayName
 import almerti.egline.data.use_case.ValidateEmail
 import almerti.egline.data.use_case.ValidatePassword
@@ -87,6 +88,56 @@ class EditProfileViewModel @Inject constructor(
         val emailValidation = validateEmail.execute(state.email)
         val displayNameValidation = validateDisplayName.execute(state.displayName)
         val passwordValidation = validatePassword.execute(state.password, false)
+        val newPasswordValidation = validatePassword.execute(state.newPassword, true)
+
+        var isError = listOf(
+            emailValidation,
+            displayNameValidation,
+            passwordValidation,
+        ).any {!it.successful}
+
+        if (!isError) {
+            if (!newPasswordValidation.successful && state.newPassword != "") {
+                isError = true
+            }
+        }
+
+        if (isError) {
+            state = state.copy(
+                emailError = emailValidation.errorMessage,
+                passwordError = passwordValidation.errorMessage,
+                displayNameError = displayNameValidation.errorMessage,
+                newPasswordError = if (state.newPassword.isNotEmpty())
+                    newPasswordValidation.errorMessage
+                else null,
+            )
+            return
+        }
+
+        viewModelScope.launch {
+            val editUser = UserEdit(
+                email = state.email,
+                displayName = state.displayName,
+                password = state.password,
+                newPassword = state.newPassword,
+                avatar = state.avatar,
+            )
+
+            val updateResult = userRepository.edit(_userState.value?.id!!, editUser)
+
+            state = state.copy(
+                emailError = if (updateResult.contains("email")) "Email is already in use" else null,
+                displayNameError = if (updateResult.contains("display")) "Display name is already in use" else null,
+                passwordError = if (updateResult.contains("Password")) "Wrong password" else null,
+                newPasswordError = null,
+            )
+
+            if (updateResult == "OK") {
+                editProfileValidationEventChannel.send(EditProfileValidationEvent.Success)
+            } else if (updateResult == "No response") {
+                editProfileValidationEventChannel.send(EditProfileValidationEvent.Failed)
+            }
+        }
     }
 
     sealed class EditProfileValidationEvent {
