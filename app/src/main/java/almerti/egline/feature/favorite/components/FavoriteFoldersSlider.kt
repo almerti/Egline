@@ -23,15 +23,15 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun FavoriteFoldersSlider(
-    folders: List<Folder>,
-    current: Folder,
-    changeCurrentFolder: (folder: Folder) -> Unit
+    folders : List<Folder>,
+    current : Folder,
+    changeCurrentFolder : (folder : Folder) -> Unit
 ) {
     val activeColor = MaterialTheme.colorScheme.primary
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 24.dp, top = 24.dp),
+            .padding(bottom = 24.dp),
     ) {
         LazyRow {
             items(folders.size) {index ->

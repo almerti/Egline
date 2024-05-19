@@ -5,14 +5,25 @@ import almerti.egline.feature.favorite.favoriteGraph
 import almerti.egline.feature.login.navigateToLoginGraph
 import almerti.egline.feature.profile.profileGraph
 import almerti.egline.feature.settings.settingsGraph
+import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBarsIgnoringVisibility
+import androidx.compose.foundation.layout.waterfall
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -20,17 +31,20 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
+@OptIn(ExperimentalLayoutApi::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MenuNavHost(
-    navController: NavHostController = rememberNavController(),
-    modifier: Modifier = Modifier,
-    onNavigateToLoginPage: () -> Unit
+    modifier : Modifier = Modifier,
+    navController : NavHostController = rememberNavController(),
+    onNavigateToLoginPage : () -> Unit
 ) {
     Scaffold(
+        modifier = modifier,
         bottomBar = {BottomNavBar(navController)},
-    ) {innerPadding ->
+    ) {
         NavHost(
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier.windowInsetsPadding(WindowInsets.waterfall),
             navController = navController,
             startDestination = CATALOG_BROWSER_GRAPH_ROUTE,
         ) {
@@ -48,12 +62,13 @@ fun MenuNavHost(
             )
             settingsGraph()
         }
+
     }
 }
 
 
 @Composable
-fun FavoritesScreen(navController: NavHostController) {
+fun FavoritesScreen(navController : NavHostController) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,
@@ -64,7 +79,7 @@ fun FavoritesScreen(navController: NavHostController) {
 }
 
 @Composable
-fun BooksScreen(navController: NavHostController) {
+fun BooksScreen(navController : NavHostController) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,
@@ -75,7 +90,7 @@ fun BooksScreen(navController: NavHostController) {
 }
 
 @Composable
-fun SavedScreen(navController: NavHostController) {
+fun SavedScreen(navController : NavHostController) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,

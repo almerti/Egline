@@ -1,6 +1,5 @@
 package almerti.egline.di
 
-import almerti.egline.feature.settings.dep
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,11 +10,5 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-
-    @Singleton
-    @Provides
-    fun provideDep() : dep {
-        return dep()
-    }
 
 }

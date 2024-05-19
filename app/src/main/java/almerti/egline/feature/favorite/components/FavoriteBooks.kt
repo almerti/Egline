@@ -2,6 +2,8 @@ package almerti.egline.feature.favorite.components
 
 import almerti.egline.R
 import almerti.egline.feature.favorite.BookItem
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,13 +11,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.NoPhotography
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,12 +38,12 @@ import coil.compose.SubcomposeAsyncImage
 
 @Composable
 fun FavoriteBooks(
-    books: List<BookItem>,
-    navigateToBookPage: (id: Int) -> Unit
+    books : List<BookItem>,
+    navigateToBookPage : (id : Int) -> Unit
 ) {
     Column {
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(150.dp),
+            columns = GridCells.Adaptive(100.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
@@ -54,8 +61,8 @@ fun FavoriteBooks(
 
 @Composable
 private fun BookCard(
-    bookItem: BookItem,
-    navigateToBookPage: () -> Unit
+    bookItem : BookItem,
+    navigateToBookPage : () -> Unit
 ) {
     Column {
         Button(
@@ -69,7 +76,14 @@ private fun BookCard(
         ) {
             SubcomposeAsyncImage(
                 model = if (bookItem.bookCover.isEmpty())
-                    R.drawable.ic_no_cover
+                    Icon(
+                        imageVector = Icons.Filled.NoPhotography,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .height(200.dp)
+                            .size(150.dp)
+                            .background(color = MaterialTheme.colorScheme.surfaceContainer),
+                    )
                 else bookItem.bookCover,
                 loading = {
                     CircularProgressIndicator()
@@ -78,7 +92,7 @@ private fun BookCard(
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
-                    .height(250.dp),
+                    .height(200.dp),
             )
         }
         Text(
