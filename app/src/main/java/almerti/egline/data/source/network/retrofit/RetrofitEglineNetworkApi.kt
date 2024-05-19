@@ -19,78 +19,78 @@ import retrofit2.http.Path
 interface RetrofitEglineNetworkApi : NetworkApi {
     //Book
     @GET(value = "book")
-    override suspend fun getBooks(): Response<List<Book>>
+    override suspend fun getBooks() : Response<List<Book>>
 
     @GET(value = "book/get-ids")
-    override suspend fun getIdsBooks(): Response<List<Int>>
+    override suspend fun getIdsBooks() : Response<List<Int>>
 
     @GET(value = "book/{id}")
-    override suspend fun getBook(@Path("id") id: Int): Response<Book>
+    override suspend fun getBook(@Path("id") id : Int) : Response<Book>
 
     @POST(value = "book/rate")
-    override suspend fun addRateToBook(@Body bookRate: BookRate): Response<String>
+    override suspend fun addRateToBook(@Body bookRate : BookRate) : Response<String>
 
     @PUT(value = "book/rate")
-    override suspend fun updateRateToBook(@Body bookRate: BookRate): Response<String>
+    override suspend fun updateRateToBook(@Body bookRate : BookRate) : Response<String>
 
     @DELETE(value = "book/rate/{book-id}/{user-id}")
     override suspend fun deleteRateToBook(
-        @Path(value = "book-id") bookId: Int,
-        @Path(value = "user-id") userId: Int
-    ): Response<String>
+        @Path(value = "book-id") bookId : Int,
+        @Path(value = "user-id") userId : Int
+    ) : Response<String>
 
 
     //User
     @GET(value = "user/{id}")
-    override suspend fun getUser(@Path("id") id: Int): Response<User>
+    override suspend fun getUser(@Path("id") id : Int) : Response<User>
 
     @POST(value = "user")
-    override suspend fun createUser(@Body user: User): Response<String>
+    override suspend fun createUser(@Body user : User) : Response<String>
 
     @PUT(value = "user/{id}")
-    override suspend fun updateUser(@Path("id") id: Int, @Body user: User): Response<User>
+    override suspend fun updateUser(@Path("id") id : Int, @Body user : User) : Response<User>
 
     @DELETE(value = "user/{id}")
-    override suspend fun deleteUser(@Path("id") id: Int): Response<String>
+    override suspend fun deleteUser(@Path("id") id : Int) : Response<String>
 
     @POST(value = "user/login")
-    override suspend fun login(@Body userLogin: UserLogin): Response<User>
+    override suspend fun login(@Body userLogin : UserLogin) : Response<User>
 
     @POST(value = "user/edit/{id}")
-    override suspend fun edit(@Path("id") id: Int, @Body userEdit: UserEdit): Response<User>
+    override suspend fun edit(@Path("id") id : Int, @Body userEdit : UserEdit) : Response<User>
 
     //Chapter
     @GET(value = "chapter")
-    override suspend fun getChapters(): Response<List<Chapter>>
+    override suspend fun getChapters() : Response<List<Chapter>>
 
     @GET(value = "chapter/{id}")
-    override suspend fun getChapterByBookId(@Path("id") id: Int): Response<Chapter>
+    override suspend fun getChapterByBookId(@Path("id") id : Int) : Response<Chapter>
 
     @GET(value = "chapter/book-chapters/{id}")
-    override suspend fun getAllChaptersToBookId(@Path("id") id: Int): Response<List<Chapter>>
+    override suspend fun getAllChaptersToBookId(@Path("id") id : Int) : Response<List<Chapter>>
 
     @GET(value = "chapter/audio/{id}")
-    override suspend fun getChapterAudioContent(@Path("id") id: Int): Response<ByteArray>
+    override suspend fun getChapterAudioContent(@Path("id") id : Int) : Response<String>
 
     @GET(value = "chapter/text/{id}")
-    override suspend fun getChapterTextContent(@Path("id") id: Int): Response<String>
+    override suspend fun getChapterTextContent(@Path("id") id : Int) : Response<String>
 
     //comment
     @GET(value = "comment")
-    override suspend fun getComments(): Response<List<Comment>>
+    override suspend fun getComments() : Response<List<Comment>>
 
     @GET(value = "comment/{id}")
-    override suspend fun getComment(@Path("id") id: Int): Response<Comment>
+    override suspend fun getComment(@Path("id") id : Int) : Response<Comment>
 
     @DELETE(value = "comment/{id}")
-    override suspend fun deleteComment(@Path("id") commentId: Int): Response<String>
+    override suspend fun deleteComment(@Path("id") commentId : Int) : Response<String>
 
     @POST(value = "comment")
-    override suspend fun createComment(@Body comment: Comment): Response<String>
+    override suspend fun createComment(@Body comment : Comment) : Response<String>
 
     @PUT(value = "comment/{id}")
     override suspend fun updateComment(
-        @Path("id") id: Int,
-        @Body comment: Comment
-    ): Response<String>
+        @Path("id") id : Int,
+        @Body comment : Comment
+    ) : Response<String>
 }

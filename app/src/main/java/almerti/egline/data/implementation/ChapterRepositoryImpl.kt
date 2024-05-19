@@ -79,20 +79,19 @@ class ChapterRepositoryImpl @Inject constructor(
         return getText(chapter.id)
     }
 
-    override suspend fun getAudio(chapterId : Int) : ByteArray? {
+    override suspend fun getAudio(chapterId : Int) : String {
         try {
             val response = remoteApi.getChapterAudioContent(chapterId)
             if (response.isSuccessful && response.body() != null) {
-                return response.body()
+                return response.body()!!
             }
-            return null
         } catch (e : Exception) {
             Log.e("ChapterRepositoryImpl", e.toString())
         }
-        return eglineDatabase.ChapterDao().getChapter(chapterId).audioContent
+        return "Error 500: Audio not found"
     }
 
-    override suspend fun getAudio(chapter : Chapter) : ByteArray? {
+    override suspend fun getAudio(chapter : Chapter) : String {
         return getAudio(chapter.id)
     }
 
@@ -112,7 +111,6 @@ class ChapterRepositoryImpl @Inject constructor(
             title = entity.name,
             number = entity.number,
             textContent = entity.textContent,
-            audioContent = entity.audioContent,
             date = LocalDate.ofEpochDay(entity.date),
         )
     }
@@ -125,7 +123,6 @@ class ChapterRepositoryImpl @Inject constructor(
             name = model.title,
             number = model.number,
             textContent = model.textContent,
-            audioContent = model.audioContent ?: ByteArray(0),
         )
     }
 
@@ -138,7 +135,6 @@ class ChapterRepositoryImpl @Inject constructor(
             date = parseLocalDate(netChapter.date),
             title = netChapter.title,
             number = netChapter.number,
-            audioContent = getAudio(netChapter.id),
             textContent = getText(netChapter.id),
         )
     }
