@@ -16,7 +16,8 @@ fun NavController.navigateToProfileGraph() {
 }
 
 fun NavGraphBuilder.profileGraph(
-    navController: NavController
+    navController: NavController,
+    onNavigateToLoginPage: () -> Unit
 ) {
     navigation(
         route = PROFILE_GRAPH_ROUTE,
@@ -24,7 +25,7 @@ fun NavGraphBuilder.profileGraph(
     ) {
         profileMainScreen(
             onNavigateToLoginPage = {
-                navController.navigateToLoginGraph()
+                onNavigateToLoginPage()
             },
             onNavigateToEditPage = {
                 navController.navigateToEditProfile()

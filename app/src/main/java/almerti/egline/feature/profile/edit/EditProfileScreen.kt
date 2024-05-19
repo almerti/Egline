@@ -5,6 +5,7 @@ import almerti.egline.ui.components.CustomIconButton
 import almerti.egline.ui.components.CustomTextField
 import almerti.egline.ui.components.FormButton
 import almerti.egline.ui.components.PasswordField
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,12 +27,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
@@ -43,10 +46,28 @@ fun EditProfileScreen(
 ) {
     val user = viewModel.userState.collectAsState(null)
     val state = viewModel.state
+    val context = LocalContext.current
 
     if (user.value == null)
         CircularProgressIndicator()
     else {
+        LaunchedEffect(key1 = context) {
+            viewModel.editProfileValidationEvents.collect {event ->
+                when (event) {
+                    is EditProfileViewModel.EditProfileValidationEvent.Success -> {
+                        onNavigateToBack()
+                    }
+
+                    is EditProfileViewModel.EditProfileValidationEvent.Failed -> {
+                        Toast.makeText(
+                            context,
+                            "Connecting to server error",
+                            Toast.LENGTH_LONG,
+                        ).show()
+                    }
+                }
+            }
+        }
         viewModel.initState()
         Column(
             modifier = Modifier

@@ -16,14 +16,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val userRepository : UserRepository,
-    private val FolderRepository : FolderRepository
+    private val userRepository: UserRepository,
+    private val FolderRepository: FolderRepository
 
 ) : ViewModel() {
-    private lateinit var userFlow : Flow<User>
+    private lateinit var userFlow: Flow<User>
 
     private val _userState = MutableStateFlow<User?>(null)
-    val userState : StateFlow<User?> = _userState
+    val userState: StateFlow<User?> = _userState
 
     init {
         getUser()
@@ -36,7 +36,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun updateUser(name : String) {
+    fun updateUser(name: String) {
         viewModelScope.launch {
             val user = User(
                 id = 1,
@@ -50,7 +50,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun addToFolder(name : String) {
+    fun addToFolder(name: String) {
         viewModelScope.launch {
             FolderRepository.addBooks(
                 Folder(

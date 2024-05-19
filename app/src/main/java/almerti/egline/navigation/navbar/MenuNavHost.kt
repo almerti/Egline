@@ -20,7 +20,8 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun MenuNavHost(
     navController: NavHostController = rememberNavController(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateToLoginPage: () -> Unit
 ) {
     Scaffold(
         bottomBar = {BottomNavBar(navController)},
@@ -41,6 +42,7 @@ fun MenuNavHost(
             }
             profileGraph(
                 navController = navController,
+                onNavigateToLoginPage = onNavigateToLoginPage
             )
             settingsGraph()
         }
@@ -87,6 +89,7 @@ private fun MenuNavHostPreview() {
     MenuNavHost(
         navController = NavHostController(LocalContext.current),
         modifier = Modifier,
+        onNavigateToLoginPage = {}
     )
 }
 
