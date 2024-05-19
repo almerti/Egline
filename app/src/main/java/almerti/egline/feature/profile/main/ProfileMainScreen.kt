@@ -78,7 +78,7 @@ fun ProfileMainScreen(
                         onNavigateToLoginPage
                     else onNavigateToEditPage,
                     imageVector = Icons.Outlined.Edit,
-                    size = 40.dp,
+                    size = 32.dp,
                 )
                 Box(
                     modifier = Modifier
@@ -109,7 +109,7 @@ fun ProfileMainScreen(
                         Icons.AutoMirrored.Outlined.Login
                     else
                         Icons.AutoMirrored.Outlined.Logout,
-                    size = 40.dp,
+                    size = 32.dp,
                 )
             }
             if (user.value?.id == -1)
@@ -126,9 +126,9 @@ fun ProfileMainScreen(
                 Text(
                     text = user.value?.displayName!!,
                     style = TextStyle(
-                        fontSize = 24.sp,
+                        fontSize = 28.sp,
                         color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.ExtraBold,
                     ),
                 )
                 Row(

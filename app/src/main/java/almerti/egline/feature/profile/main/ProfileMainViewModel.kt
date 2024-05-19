@@ -74,7 +74,9 @@ class ProfileMainViewModel @Inject constructor(
 
                 idsList.forEach {id ->
                     if (localBooks.any {book -> book.id == id}) {
-                        requiredBooks.add(localBooks.find {it.id == id})
+                        if (!requiredBooks.contains(requiredBooks.find {it?.id!! == id})) {
+                            requiredBooks.add(localBooks.find {it.id == id})
+                        }
                     } else {
                         requiredBooks.add(bookRepository.getById(id))
                     }
