@@ -1,5 +1,6 @@
 package almerti.egline.navigation.navbar
 
+import almerti.egline.feature.book.navigateToBookCardGraph
 import almerti.egline.feature.favorite.favoriteGraph
 import almerti.egline.feature.profile.profileGraph
 import almerti.egline.feature.settings.settingsGraph
@@ -8,8 +9,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.waterfall
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,9 +27,9 @@ import androidx.navigation.compose.rememberNavController
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MenuNavHost(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
-    onNavigateToLoginPage: () -> Unit
+    modifier : Modifier = Modifier,
+    navController : NavHostController = rememberNavController(),
+    onNavigateToLoginPage : () -> Unit
 ) {
     Scaffold(
         modifier = modifier,
@@ -41,7 +44,13 @@ fun MenuNavHost(
             favoriteGraph()
 
             composable(SAVED_GRAPH_ROUTE) {
-                SavedScreen(navController)
+                SavedScreen(
+                    navigateToBookPage = {bookId ->
+                        navController.navigateToBookCardGraph(
+                            bookId,
+                        )
+                    },
+                )
             }
             composable(CATALOG_BROWSER_GRAPH_ROUTE) {
                 FavoritesScreen(navController)
@@ -58,7 +67,7 @@ fun MenuNavHost(
 
 
 @Composable
-fun FavoritesScreen(navController: NavHostController) {
+fun FavoritesScreen(navController : NavHostController) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,
@@ -69,24 +78,19 @@ fun FavoritesScreen(navController: NavHostController) {
 }
 
 @Composable
-fun BooksScreen(navController: NavHostController) {
+fun SavedScreen(
+    navigateToBookPage : (id : Int) -> Unit
+) {
     Column(
         verticalArrangement = Arrangement.Top,
-        modifier = Modifier,
-    ) {
-
-        Text(text = "BooksScreen")
-    }
-}
-
-@Composable
-fun SavedScreen(navController: NavHostController) {
-    Column(
-        verticalArrangement = Arrangement.Top,
-        modifier = Modifier,
+        modifier = Modifier.safeContentPadding(),
     ) {
 
         Text(text = "SavedScreen")
+
+        Button(onClick = {navigateToBookPage(1)}) {
+            Text(text = "Go to Book")
+        }
     }
 }
 
