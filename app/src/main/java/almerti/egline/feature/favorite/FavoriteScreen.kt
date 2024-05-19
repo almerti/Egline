@@ -101,6 +101,7 @@ fun FavoriteScreen(
                         )
                     }
                 }
+
         if (showBottomSheet) {
             FavoriteBottomSheet(
                 Modifier,
@@ -109,7 +110,15 @@ fun FavoriteScreen(
                     showBottomSheet = false
                 },
                 state,
-                
+                onEditFolder = {oldName, newName ->
+                    viewModel.onEvent(FavoriteEvent.ChangeFolderName(oldName, newName))
+                },
+                onAddNewFolder = {
+                    viewModel.onEvent(FavoriteEvent.AddFolder(it))
+                },
+                onDeleteFolder = {
+                    viewModel.onEvent(FavoriteEvent.RemoveFolder(it))
+                },
             )
         }
     }

@@ -8,7 +8,9 @@ import almerti.egline.data.source.database.model.SavedBook
 import com.google.gson.JsonObject
 import dagger.Lazy
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class FolderRepositoryimpl @Inject constructor(
@@ -31,13 +33,19 @@ class FolderRepositoryimpl @Inject constructor(
         userRepositoryLazy.get().sendDataToServer()
     }
 
-    override suspend fun removeFolder(folder : Folder) {
-        eglineDatabase.SavedBookDao().deleteFolder(folder.folderName)
+    override suspend fun removeFolder(folderName : String) {
+        eglineDatabase.SavedBookDao().deleteFolder(folderName)
         userRepositoryLazy.get().sendDataToServer()
     }
 
+    override suspend fun renameFolder(oldName : String, newName : String) {
+        eglineDatabase.SavedBookDao().updateFolderName(oldName, newName)
+    }
+
     override suspend fun getAll() : Flow<List<Folder>> {
-        return flowOf(savedBooksToFolder(eglineDatabase.SavedBookDao().getAllSavedBooks()))
+        return eglineDatabase.SavedBookDao().getAllSavedBooks().map {
+            savedBooksToFolder(it)
+        }
     }
 
     override suspend fun removeAll() {
@@ -69,7 +77,7 @@ class FolderRepositoryimpl @Inject constructor(
 
     override suspend fun getByName(folderName : String) : Folder {
         return savedBooksToFolder(
-            eglineDatabase.SavedBookDao().getSavedBooksByFolderName(folderName),
+            eglineDatabase.SavedBookDao().getSavedBooksByFolderName(folderName).first(),
         )[0]
     }
 

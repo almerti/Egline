@@ -1,7 +1,9 @@
 package almerti.egline.feature.settings
 
+import almerti.egline.data.model.Book
 import almerti.egline.data.model.Folder
 import almerti.egline.data.model.User
+import almerti.egline.data.repository.BookRepository
 import almerti.egline.data.repository.FolderRepository
 import almerti.egline.data.repository.UserRepository
 import androidx.lifecycle.ViewModel
@@ -17,13 +19,15 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val userRepository : UserRepository,
-    private val FolderRepository : FolderRepository
+    private val bookRepository : BookRepository
 
 ) : ViewModel() {
     private lateinit var userFlow : Flow<User>
 
     private val _userState = MutableStateFlow<User?>(null)
     val userState : StateFlow<User?> = _userState
+
+    val book = MutableStateFlow<Book?>(null)
 
     init {
         getUser()
@@ -36,35 +40,10 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun updateUser(name : String) {
+    suspend fun getBook() {
         viewModelScope.launch {
-            val user = User(
-                id = 1,
-                displayName = name,
-                email = "test",
-                avatar = "get".toByteArray(),
-                password = "NewPassword",
-            )
-            userRepository.update(user)
-            userRepository.sendDataToServer()
+            book.value = bookRepository.getById(1)
         }
     }
 
-    fun addToFolder(name : String) {
-        viewModelScope.launch {
-            FolderRepository.addBooks(
-                Folder(
-                    folderName = name,
-                    bookIds = mutableListOf(2, 5, 3),
-                ),
-            )
-        }
-    }
-
-    fun logintest() {
-        viewModelScope.launch {
-            val res = userRepository.login("test@i.o", "1122")
-            Logger.getGlobal().info(res.toString())
-        }
-    }
 }

@@ -65,7 +65,9 @@ class FavoriteViewModel @Inject constructor(
     fun onEvent(event : FavoriteEvent) {
         when (event) {
             is FavoriteEvent.AddFolder -> {
-
+                viewModelScope.launch {
+                    folderRepository.addFolder(event.folderName)
+                }
             }
 
             is FavoriteEvent.ChangeCurrentFolder -> {
@@ -88,7 +90,17 @@ class FavoriteViewModel @Inject constructor(
             is FavoriteEvent.ChangeBookInFolder -> TODO()
             is FavoriteEvent.FindBookInFolder -> TODO()
             is FavoriteEvent.RemoveBookFromFolder -> TODO()
-            is FavoriteEvent.RemoveFolder -> TODO()
+            is FavoriteEvent.RemoveFolder -> {
+                viewModelScope.launch {
+                    folderRepository.removeFolder(event.folderName)
+                }
+            }
+
+            is FavoriteEvent.ChangeFolderName -> {
+                viewModelScope.launch {
+                    folderRepository.renameFolder(event.oldFolderName, event.newFolderName)
+                }
+            }
         }
     }
 }

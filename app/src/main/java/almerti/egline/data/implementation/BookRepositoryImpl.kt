@@ -64,6 +64,21 @@ class BookRepositoryImpl @Inject constructor(
             Log.e("BookRepositoryImpl", e.toString())
         }
         return eglineDatabase.BookDao().getBookById(id)
+
+        //        return withContext(Dispatchers.IO) {
+        //             try {
+        //                 val response = remoteApi.getBook(id)
+        //                 if (response.isSuccessful) {
+        //                     val book = networkToModel(response.body()!!)
+        //                     eglineDatabase.BookDao().upsertBook(book)
+        //                     return@withContext book
+        //                 }
+        //             } catch (e : Exception) {
+        //                 Log.e("BookRepositoryImpl", e.toString())
+        //             }
+        //             return@withContext eglineDatabase.BookDao().getBookById(id)
+        //         }
+
     }
 
     override suspend fun getByName(name : String) : List<Book> {
