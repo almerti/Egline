@@ -26,7 +26,5 @@ data class Chapter(
     val number : Int,
     @ColumnInfo(name = "text_content")
     val textContent : String,
-    @ColumnInfo(name = "audio_content", typeAffinity = ColumnInfo.BLOB)
-    val audioContent : ByteArray,
     val date : Long
 )

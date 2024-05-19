@@ -8,8 +8,8 @@ interface ChapterRepository {
     suspend fun getAll() : List<Chapter>
     suspend fun getText(chapterId : Int) : String
     suspend fun getText(chapter : Chapter) : String
-    suspend fun getAudio(chapterId : Int) : ByteArray?
-    suspend fun getAudio(chapter : Chapter) : ByteArray?
+    suspend fun getAudio(chapterId : Int) : String
+    suspend fun getAudio(chapter : Chapter) : String
 
 
 }
