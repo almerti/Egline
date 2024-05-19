@@ -6,6 +6,7 @@ import almerti.egline.data.source.network.model.UserEdit
 import almerti.egline.data.use_case.ValidateDisplayName
 import almerti.egline.data.use_case.ValidateEmail
 import almerti.egline.data.use_case.ValidatePassword
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -28,6 +29,7 @@ class EditProfileViewModel @Inject constructor(
     private val validatePassword: ValidatePassword = ValidatePassword()
 ) : ViewModel() {
     var state by mutableStateOf(EditProfileState())
+    var selectedImageUri = mutableStateOf<Uri?>(null)
     private val editProfileValidationEventChannel = Channel<EditProfileValidationEvent>()
     val editProfileValidationEvents = editProfileValidationEventChannel.receiveAsFlow()
 
@@ -59,7 +61,7 @@ class EditProfileViewModel @Inject constructor(
     fun onEvent(event: EditProfileEvent) {
         when (event) {
             is EditProfileEvent.AvatarChanged -> {
-
+                state = state.copy(avatar = event.avatar)
             }
 
             is EditProfileEvent.DisplayNameChanged -> {
