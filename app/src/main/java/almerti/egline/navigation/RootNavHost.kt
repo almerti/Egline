@@ -19,7 +19,6 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun RootNavHost(
-    modifier: Modifier = Modifier,
     rootController: NavHostController = rememberNavController(),
 ) {
     NavHost(

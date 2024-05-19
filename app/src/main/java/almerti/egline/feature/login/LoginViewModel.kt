@@ -26,11 +26,11 @@ class LoginViewModel @Inject constructor(
     fun onEvent(event: LoginFormEvent) {
         when (event) {
             is LoginFormEvent.EmailChanged -> {
-                state = state.copy(email = event.email)
+                state = state.copy(email = event.email, emailError = null)
             }
 
             is LoginFormEvent.PasswordChanged -> {
-                state = state.copy(password = event.password)
+                state = state.copy(password = event.password, passwordError = null)
             }
 
             is LoginFormEvent.Submit -> {
@@ -61,7 +61,7 @@ class LoginViewModel @Inject constructor(
             state = state.copy(
                 loginResult = loginResult,
                 emailError = null,
-                passwordError = if (loginResult != "OK") "Wrong password credential" else null,
+                passwordError = if (loginResult != "OK") "Wrong password" else null,
             )
 
             if (loginResult == "OK") {

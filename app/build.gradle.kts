@@ -27,7 +27,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt") ,
+                getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
@@ -83,7 +83,11 @@ dependencies {
 
     //DataStore
     implementation(libs.androidx.datastore)
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation(libs.kotlinx.serialization.json)
+
+    //Coil
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
 
     //test
     testImplementation(libs.junit)

@@ -7,29 +7,45 @@ import almerti.egline.data.source.database.EglineDatabase
 import almerti.egline.data.source.database.model.SavedBook
 import com.google.gson.JsonObject
 import dagger.Lazy
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class FolderRepositoryimpl @Inject constructor(
     private val eglineDatabase : EglineDatabase,
-    private val UserRepository : Lazy<UserRepository>,
+    private val userRepositoryLazy : Lazy<UserRepository>,
 ) : FolderRepository {
+
+
     override suspend fun addBooks(folder : Folder) {
         eglineDatabase.SavedBookDao().upsertSavedBooks(folderToSavedBook(folder))
-        UserRepository.get().update()
+        userRepositoryLazy.get().sendDataToServer()
     }
 
-    override suspend fun removeBook(folder : Folder) {
+    override suspend fun addFolder(folderName : String) {
+        eglineDatabase.SavedBookDao().upsertSavedBook(SavedBook(-1, folderName))
+    }
+
+    override suspend fun removeBooksFromFolder(folder : Folder) {
         eglineDatabase.SavedBookDao().deleteSavedBooks(folderToSavedBook(folder))
-        UserRepository.get().update()
+        userRepositoryLazy.get().sendDataToServer()
     }
 
-    override suspend fun removeFolder(folder : Folder) {
-        eglineDatabase.SavedBookDao().deleteFolder(folder.folderName)
-        UserRepository.get().update()
+    override suspend fun removeFolder(folderName : String) {
+        eglineDatabase.SavedBookDao().deleteFolder(folderName)
+        userRepositoryLazy.get().sendDataToServer()
     }
 
-    override suspend fun getAll() : List<Folder> {
-        return savedBooksToFolder(eglineDatabase.SavedBookDao().getAllSavedBooks())
+    override suspend fun renameFolder(oldName : String, newName : String) {
+        eglineDatabase.SavedBookDao().updateFolderName(oldName, newName)
+    }
+
+    override suspend fun getAll() : Flow<List<Folder>> {
+        return eglineDatabase.SavedBookDao().getAllSavedBooks().map {
+            savedBooksToFolder(it)
+        }
     }
 
     override suspend fun removeAll() {
@@ -37,28 +53,31 @@ class FolderRepositoryimpl @Inject constructor(
     }
 
     override suspend fun saveFoldersJson(jsonObject : JsonObject) {
-        val folders = mutableListOf<Folder>()
+        try {
 
-        for ((key, value) in jsonObject.entrySet()) {
-            val folderName = key
-            val bookIds = value.asJsonPrimitive.asString.removeSurrounding("[", "]")
-                .split(",")
-                .map {it.trim().toInt()}
-                .toMutableList()
-            folders.add(Folder(folderName, bookIds))
-        }
+            val folders = mutableListOf<Folder>()
 
-        val savedBooks = mutableListOf<SavedBook>()
-        folders.forEach {
-            savedBooks.addAll(folderToSavedBook(it))
+            for ((key, value) in jsonObject.entrySet()) {
+                val bookIds = value.asJsonPrimitive.asString.removeSurrounding("[", "]")
+                    .split(",")
+                    .map {it.trim().toIntOrNull() ?: -1}
+                    .toMutableList()
+                folders.add(Folder(key, bookIds))
+            }
+
+            val savedBooks = mutableListOf<SavedBook>()
+            folders.forEach {
+                savedBooks.addAll(folderToSavedBook(it))
+            }
+            eglineDatabase.SavedBookDao().upsertSavedBooks(savedBooks)
+        } catch (e : Exception) {
+            e.printStackTrace()
         }
-        eglineDatabase.SavedBookDao().upsertSavedBooks(savedBooks)
-        UserRepository.get().update()
     }
 
     override suspend fun getByName(folderName : String) : Folder {
         return savedBooksToFolder(
-            eglineDatabase.SavedBookDao().getSavedBooksByFolderName(folderName),
+            eglineDatabase.SavedBookDao().getSavedBooksByFolderName(folderName).first(),
         )[0]
     }
 

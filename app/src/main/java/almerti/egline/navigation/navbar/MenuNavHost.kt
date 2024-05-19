@@ -1,10 +1,15 @@
 package almerti.egline.navigation.navbar
 
+import almerti.egline.feature.favorite.favoriteGraph
+import almerti.egline.feature.profile.profileGraph
 import almerti.egline.feature.settings.settingsGraph
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.waterfall
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,24 +21,24 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MenuNavHost(
-    navController : NavHostController = rememberNavController(),
     modifier : Modifier = Modifier,
+    navController : NavHostController = rememberNavController(),
     onNavigateToLoginPage : () -> Unit
 ) {
     Scaffold(
+        modifier = modifier,
         bottomBar = {BottomNavBar(navController)},
-    ) {innerPadding ->
+    ) {
         NavHost(
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier.windowInsetsPadding(WindowInsets.waterfall),
             navController = navController,
             startDestination = CATALOG_BROWSER_GRAPH_ROUTE,
         ) {
 
-            composable(FAVORITES_GRAPH_ROUTE) {
-                BooksScreen(navController)
-            }
+            favoriteGraph()
 
             composable(SAVED_GRAPH_ROUTE) {
                 SavedScreen(navController)
@@ -41,12 +46,12 @@ fun MenuNavHost(
             composable(CATALOG_BROWSER_GRAPH_ROUTE) {
                 FavoritesScreen(navController)
             }
-
-            composable(PROFILE_GRAPH_ROUTE) {
-                ProfileScreen(navController, onNavigateToLoginPage)
-            }
+            profileGraph(
+                onNavigateToLoginPage = onNavigateToLoginPage,
+            )
             settingsGraph()
         }
+
     }
 }
 
@@ -60,21 +65,6 @@ fun FavoritesScreen(navController : NavHostController) {
 
         Text(text = "FavoritesScreen")
     }
-}
-
-@Composable
-fun ProfileScreen(navController : NavHostController, onNavigateToLoginPage : () -> Unit) {
-    Column(
-        verticalArrangement = Arrangement.Top,
-        modifier = Modifier,
-    ) {
-
-        Text(text = "ProfileScreen")
-        Button(onClick = onNavigateToLoginPage) {
-            Text(text = "Login")
-        }
-    }
-
 }
 
 @Composable

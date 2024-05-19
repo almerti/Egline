@@ -1,5 +1,8 @@
 package almerti.egline.navigation.navbar
 
+import almerti.egline.R
+import almerti.egline.feature.favorite.FAVORITE_GRAPH_ROUTE
+import almerti.egline.feature.profile.PROFILE_GRAPH_ROUTE
 import almerti.egline.feature.settings.SETTINGS_GRAPH_ROUTE
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
@@ -26,15 +29,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun BottomNavBar(navController : NavHostController) {
+fun BottomNavBar(navController: NavHostController) {
     val state = rememberNavigationBarState(navController)
     NavigationBar {
-        val isFavoritesSelected by state.isRouteSelected(FAVORITES_GRAPH_ROUTE)
+        val isFavoritesSelected by state.isRouteSelected(FAVORITE_GRAPH_ROUTE)
             .collectAsState(initial = false)
 
         val favoritesIcon =
@@ -44,9 +48,9 @@ fun BottomNavBar(navController : NavHostController) {
             icon = {
                 AnimatedIcon(targetIcon = favoritesIcon, contentDescription = null)
             },
-            label = {Text("Favorites")},
+            label = {Text(stringResource(id = R.string.favorite_header))},
             selected = isFavoritesSelected,
-            onClick = {state.openRoute(FAVORITES_GRAPH_ROUTE)},
+            onClick = {state.openRoute(FAVORITE_GRAPH_ROUTE)},
         )
 
         val isBrowserSelected by state.isRouteSelected(CATALOG_BROWSER_GRAPH_ROUTE)
@@ -57,7 +61,7 @@ fun BottomNavBar(navController : NavHostController) {
 
         NavigationBarItem(
             icon = {AnimatedIcon(browserIcon, contentDescription = null)},
-            label = {Text("Books")},
+            label = {Text(stringResource(id = R.string.navbar_library))},
             selected = isBrowserSelected,
             onClick = {state.openRoute(CATALOG_BROWSER_GRAPH_ROUTE)},
         )
@@ -69,7 +73,7 @@ fun BottomNavBar(navController : NavHostController) {
             if (isSavedSelected) Icons.Filled.LocalLibrary else Icons.Outlined.LocalLibrary
         NavigationBarItem(
             icon = {AnimatedIcon(savedIcon, contentDescription = null)},
-            label = {Text("Saved")},
+            label = {Text(stringResource(id = R.string.navbar_local))},
             selected = isSavedSelected,
             onClick = {state.openRoute(SAVED_GRAPH_ROUTE)},
         )
@@ -81,7 +85,7 @@ fun BottomNavBar(navController : NavHostController) {
             if (isProfileSelected) Icons.Filled.AccountCircle else Icons.Outlined.AccountCircle
         NavigationBarItem(
             icon = {AnimatedIcon(profileIcon, contentDescription = null)},
-            label = {Text("Profile")},
+            label = {Text(stringResource(id = R.string.navbar_profile))},
             selected = isProfileSelected,
             onClick = {state.openRoute(PROFILE_GRAPH_ROUTE)},
         )
@@ -93,7 +97,7 @@ fun BottomNavBar(navController : NavHostController) {
             if (isSettingsSelected) Icons.Filled.Settings else Icons.Outlined.Settings
         NavigationBarItem(
             icon = {AnimatedIcon(settingsIcon, contentDescription = null)},
-            label = {Text("Settings")},
+            label = {Text(stringResource(id = R.string.navbar_settings))},
             selected = isSettingsSelected,
             onClick = {state.openRoute(SETTINGS_GRAPH_ROUTE)},
         )
@@ -102,8 +106,8 @@ fun BottomNavBar(navController : NavHostController) {
 
 @Composable
 fun AnimatedIcon(
-    targetIcon : ImageVector,
-    contentDescription : String?
+    targetIcon: ImageVector,
+    contentDescription: String?
 ) {
     AnimatedContent(
         targetState = targetIcon,

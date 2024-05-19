@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.sp
 import almerti.egline.ui.components.PasswordField
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Person
@@ -48,7 +50,8 @@ fun RegisterScreen(
         Column(
             modifier = Modifier
                 .padding(16.dp)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             val state = viewModel.state
