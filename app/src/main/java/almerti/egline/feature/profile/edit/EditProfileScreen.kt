@@ -226,6 +226,9 @@ fun EditProfileScreen(
                 supportingText = state.newPasswordError,
                 label = stringResource(id = R.string.new_password_label),
             )
+            if (viewModel.isEditPressed.value) {
+                CircularProgressIndicator()
+            }
         }
     }
 }

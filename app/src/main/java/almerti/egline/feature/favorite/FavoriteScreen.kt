@@ -76,7 +76,7 @@ fun FavoriteScreen(
                         },
                     )
                     if (state.currentFolder.bookIds.size > 0) {
-                        FavoriteBooks(books = state.bookList, navigateToBookPage = {})
+                        FavoriteBooks(books = state.bookList!!, navigateToBookPage = {})
                     } else {
                         Text(
                             text = stringResource(id = R.string.favorite_no_books_message),
