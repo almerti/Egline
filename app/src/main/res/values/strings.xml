@@ -5,6 +5,7 @@
     <string name="login_header">Sign In</string>
     <string name="register_header">Sign Up</string>
     <string name="password_label">Password</string>
+    <string name="new_password_label">New password</string>
     <string name="email_label">Email</string>
     <string name="username_label">Username</string>
     <string name="register_message_part1">Still do not have account?</string>
@@ -17,6 +18,7 @@
 
     <!--  Profile page  -->
     <string name="profile_header">Hello, %1$s</string>
+    <string name="profile_edit_button">Save</string>
 
     <!--  Navbar text  -->
     <string name="navbar_favorites">Favorites</string>
