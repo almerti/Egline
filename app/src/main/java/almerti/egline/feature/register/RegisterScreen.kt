@@ -1,7 +1,7 @@
 package almerti.egline.feature.register
 
 import almerti.egline.R
-import almerti.egline.ui.components.BackButton
+import almerti.egline.ui.components.CustomIconButton
 import almerti.egline.ui.components.CustomTextField
 import almerti.egline.ui.components.FormButton
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
@@ -69,7 +70,11 @@ fun RegisterScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
             ) {
-                BackButton(onBackClick = onBackClick)
+                CustomIconButton(
+                    onClick = onBackClick,
+                    imageVector = Icons.Outlined.ArrowBackIosNew,
+                    size = 36.dp,
+                )
             }
             Column(
                 verticalArrangement = Arrangement.Top,
@@ -121,6 +126,7 @@ fun RegisterScreen(
                     },
                     isError = state.passwordError != null,
                     supportingText = state.passwordError,
+                    label = stringResource(id = R.string.password_label),
                 )
                 FormButton(
                     text = stringResource(id = R.string.register_header),

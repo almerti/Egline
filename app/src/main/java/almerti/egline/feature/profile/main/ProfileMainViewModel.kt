@@ -1,4 +1,4 @@
-package almerti.egline.feature.profile
+package almerti.egline.feature.profile.main
 
 import almerti.egline.data.model.User
 import almerti.egline.data.repository.UserRepository
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(
+class ProfileMainViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
     private lateinit var userFlow: Flow<User>

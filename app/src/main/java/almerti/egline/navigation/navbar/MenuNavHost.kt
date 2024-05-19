@@ -1,14 +1,11 @@
 package almerti.egline.navigation.navbar
 
-import almerti.egline.feature.favorite.FAVORITE_GRAPH_ROUTE
 import almerti.egline.feature.favorite.favoriteGraph
-import almerti.egline.feature.login.navigateToLoginGraph
 import almerti.egline.feature.profile.profileGraph
 import almerti.egline.feature.settings.settingsGraph
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,8 +20,7 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun MenuNavHost(
     navController: NavHostController = rememberNavController(),
-    modifier: Modifier = Modifier,
-    onNavigateToLoginPage: () -> Unit
+    modifier: Modifier = Modifier
 ) {
     Scaffold(
         bottomBar = {BottomNavBar(navController)},
@@ -44,7 +40,7 @@ fun MenuNavHost(
                 FavoritesScreen(navController)
             }
             profileGraph(
-                onNavigateToLoginPage = onNavigateToLoginPage,
+                navController = navController,
             )
             settingsGraph()
         }
@@ -91,7 +87,6 @@ private fun MenuNavHostPreview() {
     MenuNavHost(
         navController = NavHostController(LocalContext.current),
         modifier = Modifier,
-        onNavigateToLoginPage = {},
     )
 }
 
