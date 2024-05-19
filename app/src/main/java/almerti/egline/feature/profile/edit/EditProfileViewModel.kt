@@ -32,6 +32,7 @@ class EditProfileViewModel @Inject constructor(
     var selectedImageUri = mutableStateOf<Uri?>(null)
     private val editProfileValidationEventChannel = Channel<EditProfileValidationEvent>()
     val editProfileValidationEvents = editProfileValidationEventChannel.receiveAsFlow()
+    var isEditPressed = mutableStateOf(false)
 
     private lateinit var userFlow: Flow<User>
 
@@ -87,6 +88,7 @@ class EditProfileViewModel @Inject constructor(
     }
 
     private fun submitData() {
+        isEditPressed.value = true
         val emailValidation = validateEmail.execute(state.email)
         val displayNameValidation = validateDisplayName.execute(state.displayName)
         val passwordValidation = validatePassword.execute(state.password, false)
@@ -113,6 +115,7 @@ class EditProfileViewModel @Inject constructor(
                     newPasswordValidation.errorMessage
                 else null,
             )
+            isEditPressed.value = false
             return
         }
 
@@ -122,7 +125,16 @@ class EditProfileViewModel @Inject constructor(
                 displayName = state.displayName,
                 password = state.password,
                 newPassword = state.newPassword,
-                avatar = state.avatar,
+                avatar = if (selectedImageUri.value == null)
+                    byteArrayOf()
+                else state.avatar,
+            )
+
+            state = state.copy(
+                emailError = null,
+                displayNameError = null,
+                passwordError = null,
+                newPasswordError = null,
             )
 
             val updateResult = userRepository.edit(_userState.value?.id!!, editUser)
@@ -134,10 +146,19 @@ class EditProfileViewModel @Inject constructor(
                 newPasswordError = null,
             )
 
-            if (updateResult == "OK") {
-                editProfileValidationEventChannel.send(EditProfileValidationEvent.Success)
-            } else if (updateResult == "No response") {
-                editProfileValidationEventChannel.send(EditProfileValidationEvent.Failed)
+            when (updateResult) {
+                "OK" -> {
+                    editProfileValidationEventChannel.send(EditProfileValidationEvent.Success)
+                }
+
+                "No response" -> {
+                    editProfileValidationEventChannel.send(EditProfileValidationEvent.Failed)
+                    isEditPressed.value = false
+                }
+
+                else -> {
+                    isEditPressed.value = false
+                }
             }
         }
     }

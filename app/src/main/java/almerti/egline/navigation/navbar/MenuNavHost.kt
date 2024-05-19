@@ -24,9 +24,9 @@ import androidx.navigation.compose.rememberNavController
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MenuNavHost(
-    modifier : Modifier = Modifier,
-    navController : NavHostController = rememberNavController(),
-    onNavigateToLoginPage : () -> Unit
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
+    onNavigateToLoginPage: () -> Unit
 ) {
     Scaffold(
         modifier = modifier,
@@ -47,6 +47,7 @@ fun MenuNavHost(
                 FavoritesScreen(navController)
             }
             profileGraph(
+                navController = navController,
                 onNavigateToLoginPage = onNavigateToLoginPage,
             )
             settingsGraph()
@@ -57,7 +58,7 @@ fun MenuNavHost(
 
 
 @Composable
-fun FavoritesScreen(navController : NavHostController) {
+fun FavoritesScreen(navController: NavHostController) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,
@@ -68,7 +69,7 @@ fun FavoritesScreen(navController : NavHostController) {
 }
 
 @Composable
-fun BooksScreen(navController : NavHostController) {
+fun BooksScreen(navController: NavHostController) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,
@@ -79,7 +80,7 @@ fun BooksScreen(navController : NavHostController) {
 }
 
 @Composable
-fun SavedScreen(navController : NavHostController) {
+fun SavedScreen(navController: NavHostController) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier,

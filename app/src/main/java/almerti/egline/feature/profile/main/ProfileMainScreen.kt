@@ -1,6 +1,7 @@
 package almerti.egline.feature.profile.main
 
 import almerti.egline.R
+import almerti.egline.feature.favorite.components.FavoriteBooks
 import almerti.egline.ui.components.CustomIconButton
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -13,9 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Login
 import androidx.compose.material.icons.automirrored.outlined.Logout
@@ -30,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -44,6 +44,7 @@ fun ProfileMainScreen(
     onNavigateToEditPage: () -> Unit
 ) {
     val user = viewModel.userState.collectAsState(initial = null)
+    val state = viewModel.state
 
     if (user.value == null)
         Column(
@@ -62,8 +63,7 @@ fun ProfileMainScreen(
                     end = 16.dp,
                     bottom = 16.dp,
                 )
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Row(
@@ -112,14 +112,61 @@ fun ProfileMainScreen(
                     size = 40.dp,
                 )
             }
-            Text(
-                modifier = Modifier.padding(bottom = 24.dp),
-                text = user.value?.displayName!!,
-                style = TextStyle(
-                    fontSize = 28.sp,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Black,
-                ),
-            )
+            if (user.value?.id == -1)
+                Text(
+                    modifier = Modifier.padding(top = 24.dp),
+                    text = "No Info",
+                    style = TextStyle(
+                        fontSize = 24.sp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Bold,
+                    ),
+                )
+            else {
+                Text(
+                    text = user.value?.displayName!!,
+                    style = TextStyle(
+                        fontSize = 24.sp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Bold,
+                    ),
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                ) {
+                    Text(
+                        modifier = Modifier.padding(top = 36.dp, bottom = 16.dp),
+                        text = stringResource(id = R.string.profile_last_saved_books),
+                        style = TextStyle(
+                            fontSize = 24.sp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    )
+                }
+                if (state.bookList == null) {
+                    CircularProgressIndicator()
+                } else if (state.bookList.isNotEmpty())
+                    FavoriteBooks(
+                        books = state.bookList,
+                        navigateToBookPage = {},
+                    )
+                else
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start,
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(top = 12.dp),
+                            text = stringResource(id = R.string.favorite_no_books_message),
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontWeight = FontWeight.Medium,
+                            ),
+                        )
+                    }
+            }
         }
 }

@@ -40,6 +40,7 @@ fun RootNavHost(
                 rootController.navigateToRegisterGraph()
             },
             onNavigateToMainPage = {
+                rootController.popBackStack()
                 rootController.navigate(RootScreens.Library.route)
             },
         )
@@ -48,6 +49,8 @@ fun RootNavHost(
                 rootController.popBackStack()
             },
             onNavigateToMainPage = {
+                rootController.popBackStack()
+                rootController.popBackStack()
                 rootController.navigate(RootScreens.Library.route)
             },
         )
