@@ -30,4 +30,11 @@ class ProfileMainViewModel @Inject constructor(
             userFlow.collect {_userState.value = it}
         }
     }
+
+    fun onLogout(): () -> Unit = {
+        viewModelScope.launch {
+            _userState.value = null
+            userRepository.logout()
+        }
+    }
 }

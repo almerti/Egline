@@ -31,8 +31,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBackIosNew
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -73,7 +74,7 @@ fun LoginScreen(
             ) {
                 CustomIconButton(
                     onClick = onBackClick,
-                    imageVector = Icons.Outlined.ArrowBackIosNew,
+                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
                     size = 36.dp,
                 )
             }
@@ -118,12 +119,23 @@ fun LoginScreen(
                     supportingText = state.passwordError,
                     label = stringResource(id = R.string.password_label),
                 )
-                FormButton(
-                    text = stringResource(id = R.string.login_header),
-                    onClick = {
-                        viewModel.onEvent(LoginFormEvent.Submit)
-                    },
-                )
+                if (!viewModel.isLoginPressed)
+                    FormButton(
+                        text = stringResource(id = R.string.login_header),
+                        onClick = {
+                            viewModel.onEvent(LoginFormEvent.Submit)
+                        },
+                    )
+                else
+                    Row(
+                        modifier = Modifier.padding(
+                            top = 14.dp,
+                            bottom = 14.dp,
+                        ),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 AuthBottomMessage(
                     text1 = stringResource(id = R.string.register_message_part1),
                     text2 = stringResource(id = R.string.register_message_part2),

@@ -17,9 +17,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DoorFront
+import androidx.compose.material.icons.automirrored.outlined.Login
+import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -53,15 +53,11 @@ fun ProfileMainScreen(
         ) {
             CircularProgressIndicator()
         }
-    else if (user.value?.id == -1)
-        Button(onClick = onNavigateToEditPage) {
-            Text(text = "Login")
-        }
     else
         Column(
             modifier = Modifier
                 .padding(
-                    top = 24.dp,
+                    top = 36.dp,
                     start = 16.dp,
                     end = 16.dp,
                     bottom = 16.dp,
@@ -78,7 +74,9 @@ fun ProfileMainScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 CustomIconButton(
-                    onClick = onNavigateToEditPage,
+                    onClick = if (user.value?.id == -1)
+                        onNavigateToLoginPage
+                    else onNavigateToEditPage,
                     imageVector = Icons.Outlined.Edit,
                     size = 40.dp,
                 )
@@ -102,8 +100,15 @@ fun ProfileMainScreen(
                     )
                 }
                 CustomIconButton(
-                    onClick = onNavigateToEditPage,
-                    imageVector = Icons.Outlined.DoorFront,
+                    onClick = if (user.value?.id == -1)
+                        onNavigateToLoginPage
+                    else {
+                        viewModel.onLogout()
+                    },
+                    imageVector = if (user.value?.id == -1)
+                        Icons.AutoMirrored.Outlined.Login
+                    else
+                        Icons.AutoMirrored.Outlined.Logout,
                     size = 40.dp,
                 )
             }

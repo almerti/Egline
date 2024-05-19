@@ -32,7 +32,7 @@ fun PasswordField(
     var passwordVisibility: Boolean by remember {mutableStateOf(false)}
 
     OutlinedTextField(
-        modifier = Modifier.padding(bottom = 24.dp),
+        modifier = Modifier.padding(bottom = 12.dp),
         value = value,
         label = {Text(text = label)},
         visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
