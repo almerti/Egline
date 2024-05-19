@@ -30,9 +30,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBackIosNew
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -72,7 +73,7 @@ fun RegisterScreen(
             ) {
                 CustomIconButton(
                     onClick = onBackClick,
-                    imageVector = Icons.Outlined.ArrowBackIosNew,
+                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
                     size = 36.dp,
                 )
             }
@@ -128,12 +129,23 @@ fun RegisterScreen(
                     supportingText = state.passwordError,
                     label = stringResource(id = R.string.password_label),
                 )
-                FormButton(
-                    text = stringResource(id = R.string.register_header),
-                    onClick = {
-                        viewModel.onEvent(RegisterFormEvent.Submit)
-                    },
-                )
+                if (!viewModel.isRegisterPressed)
+                    FormButton(
+                        text = stringResource(id = R.string.register_header),
+                        onClick = {
+                            viewModel.onEvent(RegisterFormEvent.Submit)
+                        },
+                    )
+                else
+                    Row(
+                        modifier = Modifier.padding(
+                            top = 14.dp,
+                            bottom = 14.dp,
+                        ),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        CircularProgressIndicator()
+                    }
             }
         }
     }

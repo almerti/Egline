@@ -21,6 +21,8 @@ class LoginViewModel @Inject constructor(
     private val validatePassword: ValidatePassword = ValidatePassword()
 ) : ViewModel() {
     var state by mutableStateOf(LoginFormState())
+    var isLoginPressed by mutableStateOf(false)
+
     private val loginValidationEventChannel = Channel<LoginValidationEvent>()
     val loginValidationEvents = loginValidationEventChannel.receiveAsFlow()
     fun onEvent(event: LoginFormEvent) {
@@ -40,6 +42,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun submitData() {
+        isLoginPressed = true
         val emailResult = validateEmail.execute(state.email)
         val passwordResult = validatePassword.execute(state.password, false)
 
@@ -53,6 +56,7 @@ class LoginViewModel @Inject constructor(
                 emailError = emailResult.errorMessage,
                 passwordError = passwordResult.errorMessage,
             )
+            isLoginPressed = false
             return
         }
 
@@ -66,6 +70,8 @@ class LoginViewModel @Inject constructor(
 
             if (loginResult == "OK") {
                 loginValidationEventChannel.send(LoginValidationEvent.Success)
+            } else {
+                isLoginPressed = false
             }
         }
     }

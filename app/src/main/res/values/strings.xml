@@ -19,6 +19,9 @@
     <!--  Profile page  -->
     <string name="profile_header">Hello, %1$s</string>
     <string name="profile_edit_button">Save</string>
+    <string name="edit_page_header">Editing</string>
+    <string name="edit_alert_title">Wait a second, please</string>
+    <string name="edit_alert_message">You have unsaved data. Are you sure you want to leave this page?</string>
 
     <!--  Navbar text  -->
     <string name="navbar_favorites">Favorites</string>

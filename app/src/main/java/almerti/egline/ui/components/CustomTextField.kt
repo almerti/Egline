@@ -20,7 +20,7 @@ fun CustomTextField(
     paddingTop: Dp = 0.dp
 ) {
     OutlinedTextField(
-        modifier = Modifier.padding(bottom = 24.dp, top = paddingTop),
+        modifier = Modifier.padding(bottom = 12.dp, top = paddingTop),
         value = value,
         label = {Text(text = labelText)},
         trailingIcon = icon,

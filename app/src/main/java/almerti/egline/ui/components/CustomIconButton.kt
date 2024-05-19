@@ -1,6 +1,7 @@
 package almerti.egline.ui.components
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
@@ -18,10 +19,13 @@ import androidx.compose.ui.unit.dp
 fun CustomIconButton(
     onClick: () -> Unit,
     imageVector: ImageVector,
-    size: Dp
+    size: Dp,
+    paddingValues: PaddingValues = PaddingValues(0.dp)
 ) {
     Button(
-        modifier = Modifier.size(size + 10.dp),
+        modifier = Modifier
+            .size(size + 10.dp)
+            .padding(paddingValues),
         onClick = onClick,
         content = {
             Icon(
