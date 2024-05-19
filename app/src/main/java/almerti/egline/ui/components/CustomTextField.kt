@@ -1,14 +1,12 @@
 package almerti.egline.ui.components
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -18,10 +16,11 @@ fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,
     isError: Boolean,
-    supportingText: String?
+    supportingText: String?,
+    paddingTop: Dp = 0.dp
 ) {
     OutlinedTextField(
-        modifier = Modifier.padding(bottom = 24.dp),
+        modifier = Modifier.padding(bottom = 12.dp, top = paddingTop),
         value = value,
         label = {Text(text = labelText)},
         trailingIcon = icon,

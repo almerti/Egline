@@ -24,13 +24,14 @@ class RegisterViewModel @Inject constructor(
     private val validatePassword: ValidatePassword = ValidatePassword()
 ) : ViewModel() {
     var state by mutableStateOf(RegisterFormState())
+    var isRegisterPressed by mutableStateOf(false)
     private val registerValidationEventChannel = Channel<RegisterValidationEvent>()
     val registerValidationEvents = registerValidationEventChannel.receiveAsFlow()
 
     fun onEvent(event: RegisterFormEvent) {
         when (event) {
             is RegisterFormEvent.EmailChanged -> {
-                state = state.copy(email = event.email, emailError = null)
+                state = state.copy(email = event.email.lowercase(), emailError = null)
             }
 
             is RegisterFormEvent.PasswordChanged -> {
@@ -48,6 +49,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun submitData() {
+        isRegisterPressed = true
         val emailResult = validateEmail.execute(state.email)
         val passwordResult = validatePassword.execute(state.password, true)
         val displayNameResult = validateDisplayName.execute(state.displayName)
@@ -64,6 +66,7 @@ class RegisterViewModel @Inject constructor(
                 passwordError = passwordResult.errorMessage,
                 displayNameError = displayNameResult.errorMessage,
             )
+            isRegisterPressed = false
             return
         }
 
@@ -86,6 +89,8 @@ class RegisterViewModel @Inject constructor(
 
             if (registerResult == "OK") {
                 registerValidationEventChannel.send(RegisterValidationEvent.Success)
+            } else {
+                isRegisterPressed = false
             }
         }
     }

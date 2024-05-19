@@ -1,11 +1,9 @@
 package almerti.egline.ui.components
 
-import almerti.egline.R
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -14,19 +12,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BackButton(
-    onBackClick: () -> Unit
+fun CustomIconButton(
+    onClick: () -> Unit,
+    imageVector: ImageVector,
+    size: Dp,
+    paddingValues: PaddingValues = PaddingValues(0.dp)
 ) {
     Button(
-        modifier = Modifier.size(36.dp),
-        onClick = onBackClick,
+        modifier = Modifier
+            .size(size + 10.dp)
+            .padding(paddingValues),
+        onClick = onClick,
         content = {
             Icon(
-                imageVector = Icons.Outlined.ArrowBackIosNew,
+                modifier = Modifier.size(size),
+                imageVector = imageVector,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurface,
             )

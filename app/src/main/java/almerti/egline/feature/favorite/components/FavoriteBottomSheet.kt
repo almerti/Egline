@@ -44,13 +44,13 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun FavoriteBottomSheet(
-    modifier : Modifier = Modifier,
-    sheetState : SheetState,
-    onDismissRequest : () -> Unit = {},
-    favoriteState : FavoriteState,
-    onEditFolder : (String, String) -> Unit = {_, _ -> {}},
-    onAddNewFolder : (String) -> Unit = {},
-    onDeleteFolder : (String) -> Unit = {},
+    modifier: Modifier = Modifier,
+    sheetState: SheetState,
+    onDismissRequest: () -> Unit = {},
+    favoriteState: FavoriteState,
+    onEditFolder: (String, String) -> Unit = {_, _ -> {}},
+    onAddNewFolder: (String) -> Unit = {},
+    onDeleteFolder: (String) -> Unit = {},
 ) {
     var isEditMode by remember {mutableStateOf(false)}
     var editingFolder by remember {mutableStateOf<String>("")}
@@ -109,7 +109,7 @@ fun FavoriteBottomSheet(
                         },
                     ) {
                         Icon(imageVector = Icons.Default.Add, contentDescription = null)
-                        Text(text = "change")
+                        Text(text = "Change")
                     }
                     Spacer(modifier = Modifier.width(30.dp))
 
@@ -121,7 +121,6 @@ fun FavoriteBottomSheet(
                         ),
                     ) {
                         Icon(imageVector = Icons.Default.Delete, contentDescription = null)
-                        Text(text = "Delete")
                     }
 
                 }
@@ -153,7 +152,7 @@ fun FavoriteBottomSheet(
             OutlinedTextField(
                 value = newFolderName,
                 onValueChange = {newFolderName = it},
-                label = {Text(text = "new Folder")},
+                label = {Text(text = "New folder")},
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(15.dp),
@@ -171,7 +170,7 @@ fun FavoriteBottomSheet(
                     },
                 ) {
                     Icon(imageVector = Icons.Default.Add, contentDescription = null)
-                    Text(text = "add")
+                    Text(text = "Add")
                 }
             }
         }

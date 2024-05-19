@@ -2,7 +2,7 @@ package almerti.egline.feature.login
 
 import almerti.egline.R
 import almerti.egline.ui.components.AuthBottomMessage
-import almerti.egline.ui.components.BackButton
+import almerti.egline.ui.components.CustomIconButton
 import almerti.egline.ui.components.CustomTextField
 import almerti.egline.ui.components.FormButton
 import androidx.compose.foundation.layout.Arrangement
@@ -27,15 +27,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import almerti.egline.ui.components.PasswordField
 import android.annotation.SuppressLint
-import android.graphics.drawable.Icon
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Deck
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -54,7 +52,12 @@ fun LoginScreen(
     Scaffold {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(
+                    top = it.calculateTopPadding() + 16.dp,
+                    end = 16.dp,
+                    bottom = it.calculateBottomPadding() + 16.dp,
+                    start = 16.dp,
+                )
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -74,7 +77,11 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
             ) {
-                BackButton(onBackClick = onBackClick)
+                CustomIconButton(
+                    onClick = onBackClick,
+                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                    size = 36.dp,
+                )
             }
             Column(
                 verticalArrangement = Arrangement.Top,
@@ -115,13 +122,25 @@ fun LoginScreen(
                     },
                     isError = state.passwordError != null,
                     supportingText = state.passwordError,
+                    label = stringResource(id = R.string.password_label),
                 )
-                FormButton(
-                    text = stringResource(id = R.string.login_header),
-                    onClick = {
-                        viewModel.onEvent(LoginFormEvent.Submit)
-                    },
-                )
+                if (!viewModel.isLoginPressed)
+                    FormButton(
+                        text = stringResource(id = R.string.login_header),
+                        onClick = {
+                            viewModel.onEvent(LoginFormEvent.Submit)
+                        },
+                    )
+                else
+                    Row(
+                        modifier = Modifier.padding(
+                            top = 14.dp,
+                            bottom = 14.dp,
+                        ),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 AuthBottomMessage(
                     text1 = stringResource(id = R.string.register_message_part1),
                     text2 = stringResource(id = R.string.register_message_part2),

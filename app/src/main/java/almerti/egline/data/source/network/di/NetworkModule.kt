@@ -20,7 +20,7 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
-    fun okHttpCallClient() : OkHttpClient {
+    fun okHttpCallClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
@@ -35,9 +35,9 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient : OkHttpClient) : Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.0.113:8000/api/v1/")
+            .baseUrl("http://192.168.106.94:8000/api/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
@@ -46,7 +46,7 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideNetworkApi(retrofit : Retrofit) : NetworkApi {
+    fun provideNetworkApi(retrofit: Retrofit): NetworkApi {
         return retrofit.create(RetrofitEglineNetworkApi::class.java)
     }
 
