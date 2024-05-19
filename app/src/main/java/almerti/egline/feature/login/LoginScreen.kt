@@ -52,7 +52,12 @@ fun LoginScreen(
     Scaffold {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(
+                    top = it.calculateTopPadding() + 16.dp,
+                    end = 16.dp,
+                    bottom = it.calculateBottomPadding() + 16.dp,
+                    start = 16.dp,
+                )
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,

@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoriteScreen(
-    viewModel : FavoriteViewModel
+    viewModel: FavoriteViewModel
 ) {
     val state = viewModel.state
     val sheetState = rememberModalBottomSheetState()
@@ -83,7 +83,7 @@ fun FavoriteScreen(
                             top = paddingValues.calculateTopPadding(),
                             start = 16.dp,
                             end = 16.dp,
-                            bottom = paddingValues.calculateBottomPadding() + 16.dp,
+                            bottom = paddingValues.calculateBottomPadding() + 100.dp,
                         ),
                 ) {
                     FavoriteFoldersSlider(

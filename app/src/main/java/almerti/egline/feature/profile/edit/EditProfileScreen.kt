@@ -33,6 +33,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -116,118 +117,123 @@ fun EditProfileScreen(
             }
         }
         viewModel.initState()
-        TopAppBar(
-            title = {Text(text = stringResource(id = R.string.edit_page_header))},
-            navigationIcon = {
-                IconButton(
-                    onClick = {
-                        openAlertDialog = true
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {Text(text = stringResource(id = R.string.edit_page_header))},
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                openAlertDialog = true
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                contentDescription = null,
+                            )
+                        }
                     },
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                        contentDescription = null,
-                    )
-                }
-            },
-            actions = {
-                CustomIconButton(
-                    onClick = {
-                        viewModel.onEvent(EditProfileEvent.Submit)
+                    actions = {
+                        CustomIconButton(
+                            onClick = {
+                                viewModel.onEvent(EditProfileEvent.Submit)
+                            },
+                            imageVector = Icons.Outlined.Save,
+                            size = 28.dp,
+                            paddingValues = PaddingValues(
+                                end = 8.dp,
+                            ),
+                        )
                     },
-                    imageVector = Icons.Outlined.Save,
-                    size = 28.dp,
-                    paddingValues = PaddingValues(
-                        end = 8.dp,
-                    ),
                 )
             },
-        )
-        Column(
-            modifier = Modifier
-                .padding(
-                    top = 76.dp,
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 8.dp,
-                )
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Button(
+            Column(
                 modifier = Modifier
-                    .width(150.dp)
-                    .height(150.dp),
-                onClick = {
-                    imagePickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                },
-                contentPadding = PaddingValues(0.dp),
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
-                ),
+                    .padding(
+                        top = it.calculateTopPadding() + 16.dp,
+                        start = 16.dp,
+                        end = 16.dp,
+                        bottom = it.calculateBottomPadding() + 8.dp,
+                    )
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                SubcomposeAsyncImage(
-                    model = if (user.value?.avatar == null && viewModel.selectedImageUri.value == null)
-                        R.drawable.ic_no_cover
-                    else if (viewModel.selectedImageUri.value != null)
-                        viewModel.selectedImageUri.value
-                    else user.value?.avatar,
-                    loading = {CircularProgressIndicator()},
-                    contentDescription = "User avatar",
-                    contentScale = ContentScale.Crop,
+                Button(
                     modifier = Modifier
                         .width(150.dp)
-                        .height(150.dp)
-                        .clip(shape = CircleShape),
+                        .height(150.dp),
+                    onClick = {
+                        imagePickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    },
+                    contentPadding = PaddingValues(0.dp),
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent,
+                    ),
+                ) {
+                    SubcomposeAsyncImage(
+                        model = if (user.value?.avatar == null && viewModel.selectedImageUri.value == null)
+                            R.drawable.ic_no_cover
+                        else if (viewModel.selectedImageUri.value != null)
+                            viewModel.selectedImageUri.value
+                        else user.value?.avatar,
+                        loading = {CircularProgressIndicator()},
+                        contentDescription = "User avatar",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .width(150.dp)
+                            .height(150.dp)
+                            .clip(shape = CircleShape),
+                    )
+                }
+                CustomTextField(
+                    // email field
+                    labelText = stringResource(id = R.string.email_label),
+                    icon = {Icon(Icons.Outlined.Email, contentDescription = null)},
+                    value = state.email,
+                    onValueChange = {
+                        viewModel.onEvent(EditProfileEvent.EmailChanged(it))
+                    },
+                    isError = state.emailError != null,
+                    supportingText = state.emailError,
+                    paddingTop = 24.dp,
                 )
-            }
-            CustomTextField(
-                // email field
-                labelText = stringResource(id = R.string.email_label),
-                icon = {Icon(Icons.Outlined.Email, contentDescription = null)},
-                value = state.email,
-                onValueChange = {
-                    viewModel.onEvent(EditProfileEvent.EmailChanged(it))
-                },
-                isError = state.emailError != null,
-                supportingText = state.emailError,
-                paddingTop = 24.dp,
-            )
-            CustomTextField(
-                // username field
-                labelText = stringResource(id = R.string.username_label),
-                icon = {Icon(Icons.Outlined.Person, contentDescription = null)},
-                value = state.displayName,
-                onValueChange = {
-                    viewModel.onEvent(EditProfileEvent.DisplayNameChanged(it))
-                },
-                isError = state.displayNameError != null,
-                supportingText = state.displayNameError,
-            )
-            PasswordField(
-                // password field
-                value = state.password,
-                onValueChange = {
-                    viewModel.onEvent(EditProfileEvent.PasswordChanged(it))
-                },
-                isError = state.passwordError != null,
-                supportingText = state.passwordError,
-                label = stringResource(id = R.string.password_label),
-            )
-            PasswordField(
-                // new password field
-                value = state.newPassword,
-                onValueChange = {
-                    viewModel.onEvent(EditProfileEvent.NewPasswordChanged(it))
-                },
-                isError = state.newPasswordError != null,
-                supportingText = state.newPasswordError,
-                label = stringResource(id = R.string.new_password_label),
-            )
-            if (viewModel.isEditPressed.value) {
-                CircularProgressIndicator()
+                CustomTextField(
+                    // username field
+                    labelText = stringResource(id = R.string.username_label),
+                    icon = {Icon(Icons.Outlined.Person, contentDescription = null)},
+                    value = state.displayName,
+                    onValueChange = {
+                        viewModel.onEvent(EditProfileEvent.DisplayNameChanged(it))
+                    },
+                    isError = state.displayNameError != null,
+                    supportingText = state.displayNameError,
+                )
+                PasswordField(
+                    // password field
+                    value = state.password,
+                    onValueChange = {
+                        viewModel.onEvent(EditProfileEvent.PasswordChanged(it))
+                    },
+                    isError = state.passwordError != null,
+                    supportingText = state.passwordError,
+                    label = stringResource(id = R.string.password_label),
+                )
+                PasswordField(
+                    // new password field
+                    value = state.newPassword,
+                    onValueChange = {
+                        viewModel.onEvent(EditProfileEvent.NewPasswordChanged(it))
+                    },
+                    isError = state.newPasswordError != null,
+                    supportingText = state.newPasswordError,
+                    label = stringResource(id = R.string.new_password_label),
+                )
+                if (viewModel.isEditPressed.value) {
+                    CircularProgressIndicator()
+                }
             }
         }
     }
