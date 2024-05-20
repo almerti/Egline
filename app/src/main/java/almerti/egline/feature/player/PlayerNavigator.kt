@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 internal const val PLAYER_ROUTE = "player"
 
 internal fun NavGraphBuilder.playerScreen(
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     composable(PLAYER_ROUTE) {
         val viewModel: PlayerViewModel = hiltViewModel<PlayerViewModel>()

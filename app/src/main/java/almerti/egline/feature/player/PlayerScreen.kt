@@ -53,9 +53,7 @@ fun PlayerScreen(
     val player = ExoPlayer.Builder(LocalContext.current).build()
 
     if (viewModel.mediaItem != null) {
-        LaunchedEffect(Unit) {
-            player.addMediaItem(viewModel.mediaItem!!)
-        }
+        player.addMediaItem(viewModel.mediaItem!!)
         player.prepare()
 
         val isPlaying = remember {
@@ -102,7 +100,10 @@ fun PlayerScreen(
             ) {
                 Row {
                     CustomIconButton(
-                        onClick = onBack,
+                        onClick = {
+                            player.pause()
+                            onBack()
+                        },
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
                         size = 28.dp,
                     )

@@ -18,11 +18,20 @@ class ReaderViewModel @Inject constructor(
 ) : ViewModel() {
     private val args = ReaderChapterArg(savedStateHandle)
     var text by mutableStateOf<String?>(null)
+    var title by mutableStateOf<String?>(null)
+    var fontSize by mutableStateOf(18)
+    var chapterId by mutableStateOf(0)
 
     init {
         viewModelScope.launch {
             val chapter = chapterRepository.get(args.chapterId)
             text = chapter.textContent
+            title = chapter.title
+            chapterId = chapter.id
         }
+    }
+
+    fun changeFontSize(newFontSize: Int) {
+        fontSize = newFontSize
     }
 }
