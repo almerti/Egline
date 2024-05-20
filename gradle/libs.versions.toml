@@ -15,6 +15,7 @@ activityCompose = "1.9.0"
 composeBom = "2024.05.00"
 loggingInterceptor = "4.11.0"
 materialIconsExtended = "1.6.7"
+media3Exoplayer = "1.3.1"
 navigationCompose = "2.8.0-beta01"
 hilt = "2.51"
 hiltNavigationCompose = "1.2.0"
@@ -30,6 +31,10 @@ androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "d
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltCompiler" }
+androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3Exoplayer" }
+androidx-media3-exoplayer-dash = { module = "androidx.media3:media3-exoplayer-dash", version.ref = "media3Exoplayer" }
+androidx-media3-session = { module = "androidx.media3:media3-session", version.ref = "media3Exoplayer" }
+androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3Exoplayer" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomCompiler" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomCompiler" }
