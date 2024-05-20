@@ -1,8 +1,10 @@
 package almerti.egline.navigation.navbar
 
 import almerti.egline.R
+import almerti.egline.feature.catalog.CATALOG_GRAPH_ROUTE
 import almerti.egline.feature.favorite.FAVORITE_GRAPH_ROUTE
 import almerti.egline.feature.profile.PROFILE_GRAPH_ROUTE
+import almerti.egline.feature.saved.SAVED_GRAPH_ROUTE
 import almerti.egline.feature.settings.SETTINGS_GRAPH_ROUTE
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
@@ -23,9 +25,9 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
-import androidx.compose.runtime.Composable
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -35,7 +37,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun BottomNavBar(navController: NavHostController) {
+fun BottomNavBar(navController : NavHostController) {
     val state = rememberNavigationBarState(navController)
     NavigationBar {
         val isFavoritesSelected by state.isRouteSelected(FAVORITE_GRAPH_ROUTE)
@@ -53,7 +55,7 @@ fun BottomNavBar(navController: NavHostController) {
             onClick = {state.openRoute(FAVORITE_GRAPH_ROUTE)},
         )
 
-        val isBrowserSelected by state.isRouteSelected(CATALOG_BROWSER_GRAPH_ROUTE)
+        val isBrowserSelected by state.isRouteSelected(CATALOG_GRAPH_ROUTE)
             .collectAsState(initial = false)
 
         val browserIcon =
@@ -63,7 +65,7 @@ fun BottomNavBar(navController: NavHostController) {
             icon = {AnimatedIcon(browserIcon, contentDescription = null)},
             label = {Text(stringResource(id = R.string.navbar_library))},
             selected = isBrowserSelected,
-            onClick = {state.openRoute(CATALOG_BROWSER_GRAPH_ROUTE)},
+            onClick = {state.openRoute(CATALOG_GRAPH_ROUTE)},
         )
 
         val isSavedSelected by state.isRouteSelected(SAVED_GRAPH_ROUTE)
@@ -106,8 +108,8 @@ fun BottomNavBar(navController: NavHostController) {
 
 @Composable
 fun AnimatedIcon(
-    targetIcon: ImageVector,
-    contentDescription: String?
+    targetIcon : ImageVector,
+    contentDescription : String?
 ) {
     AnimatedContent(
         targetState = targetIcon,

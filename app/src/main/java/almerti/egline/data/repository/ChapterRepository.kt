@@ -6,6 +6,9 @@ interface ChapterRepository {
     suspend fun get(chapterId : Int) : Chapter
     suspend fun getAll(bookId : Int) : List<Chapter>
     suspend fun getAll() : List<Chapter>
+    suspend fun saveToDb(chapter : Chapter)
+    suspend fun saveToDb(chapterList : List<Chapter>)
+    suspend fun saveToDb(chapterId : Int)
     suspend fun getText(chapterId : Int) : String
     suspend fun getText(chapter : Chapter) : String
     suspend fun getAudio(chapterId : Int) : String

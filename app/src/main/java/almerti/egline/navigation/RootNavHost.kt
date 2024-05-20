@@ -1,6 +1,8 @@
 package almerti.egline.navigation
 
 
+import almerti.egline.feature.book.bookCardGraph
+import almerti.egline.feature.book.navigateToBookCardGraph
 import almerti.egline.feature.login.loginGraph
 import almerti.egline.feature.login.navigateToLoginGraph
 import almerti.egline.feature.register.navigateToRegisterGraph
@@ -19,7 +21,7 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun RootNavHost(
-    rootController: NavHostController = rememberNavController(),
+    rootController : NavHostController = rememberNavController(),
 ) {
     NavHost(
         navController = rootController,
@@ -59,13 +61,24 @@ fun RootNavHost(
                 onNavigateToLoginPage = {
                     rootController.navigateToLoginGraph()
                 },
+                onNavigateToBookPage = {
+                    rootController.navigateToBookCardGraph(it)
+                },
             )
         }
+        bookCardGraph(
+            onBack = {
+                rootController.popBackStack()
+            },
+            onOpenBookReader = {
+                rootController.navigate(RootScreens.BookReader.route)
+            },
+        )
     }
 }
 
 @Composable
-fun BookReaderScreen(onNavigateToLibrary: () -> Unit) {
+fun BookReaderScreen(onNavigateToLibrary : () -> Unit) {
     Column(modifier = Modifier) {
 
         Text(text = "BookReaderScreen")
@@ -74,7 +87,7 @@ fun BookReaderScreen(onNavigateToLibrary: () -> Unit) {
     }
 }
 
-sealed class RootScreens(val route: String) {
+sealed class RootScreens(val route : String) {
     object BookReader : RootScreens("book-reader")
     object Library : RootScreens("library")
 }

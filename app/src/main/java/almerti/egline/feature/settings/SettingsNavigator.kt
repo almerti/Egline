@@ -6,9 +6,9 @@ import androidx.navigation.compose.composable
 
 internal const val SETTINGS_ROUTE = "settings"
 
-internal fun NavGraphBuilder.SettingsScreen() {
+internal fun NavGraphBuilder.settingsScreen() {
     composable(SETTINGS_ROUTE) {
         val viewModel : SettingsViewModel = hiltViewModel<SettingsViewModel>()
-        SettingsScreen(viewModel)
+        settingsScreen(viewModel)
     }
 }
