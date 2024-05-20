@@ -66,7 +66,14 @@ fun RootNavHost(
                 },
             )
         }
-        bookCardGraph()
+        bookCardGraph(
+            onBack = {
+                rootController.popBackStack()
+            },
+            onOpenBookReader = {
+                rootController.navigate(RootScreens.BookReader.route)
+            },
+        )
     }
 }
 

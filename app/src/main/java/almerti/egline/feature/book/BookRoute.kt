@@ -15,12 +15,14 @@ internal data class BookCardArgs(val bookId : Int) {
 }
 
 
-fun NavGraphBuilder.bookCardGraph() {
+fun NavGraphBuilder.bookCardGraph(
+    onBack : () -> Unit, onOpenBookReader : (Int) -> Unit
+) {
     navigation(
         startDestination = BOOK_ROUTE,
         route = BOOK_CARD_GRAPH_ROUTE,
     ) {
-        bookScreen()
+        bookScreen(onBack = onBack, onOpenBookReader = onOpenBookReader)
     }
 }
 

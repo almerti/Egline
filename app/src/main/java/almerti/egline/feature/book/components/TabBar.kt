@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Comment
+import androidx.compose.material.icons.outlined.AddComment
 import androidx.compose.material.icons.outlined.DownloadForOffline
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -36,6 +37,10 @@ import androidx.compose.ui.unit.sp
 fun TabBar(
     comments : List<Comment>,
     chapters : List<Chapter>,
+    onAddComment : (String) -> Unit,
+    onDownloadChapter : (Chapter) -> Unit,
+    onOpenChapter : (Chapter) -> Unit
+
 ) {
     var state by remember {mutableIntStateOf(0)}
     var text by remember {mutableStateOf("")}
@@ -67,14 +72,29 @@ fun TabBar(
                 },
                 label = {Text(text = "New Comment")},
             )
+            IconButton(onClick = {onAddComment(text)}) {
+                Icon(
+                    imageVector = Icons.Outlined.AddComment,
+                    contentDescription = null,
+                )
+
+            }
         } else {
-            ChapterList(chapters = chapters)
+            ChapterList(
+                chapters = chapters,
+                onDownloadChapter = onDownloadChapter,
+                onOpenChapter = onOpenChapter,
+            )
         }
     }
 }
 
 @Composable
-fun ChapterList(chapters : List<Chapter>) {
+fun ChapterList(
+    chapters : List<Chapter>,
+    onDownloadChapter : (Chapter) -> Unit,
+    onOpenChapter : (Chapter) -> Unit
+) {
     for (chapter in chapters) {
 
         Row(
@@ -82,7 +102,7 @@ fun ChapterList(chapters : List<Chapter>) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 10.dp)
-                .clickable(onClick = { /*TODO*/}),
+                .clickable(onClick = {onOpenChapter(chapter)}),
         ) {
             Column(
                 verticalArrangement = Arrangement.Top,
@@ -95,7 +115,7 @@ fun ChapterList(chapters : List<Chapter>) {
                     fontWeight = FontWeight.Thin,
                 )
             }
-            IconButton(onClick = { /*TODO*/}) {
+            IconButton(onClick = {onDownloadChapter(chapter)}) {
                 Icon(
                     imageVector = Icons.Outlined.DownloadForOffline,
                     contentDescription = null,

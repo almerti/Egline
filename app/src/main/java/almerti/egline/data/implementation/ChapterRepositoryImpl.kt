@@ -19,7 +19,6 @@ class ChapterRepositoryImpl @Inject constructor(
             val response = remoteApi.getChapterByBookId(chapterId)
             if (response.isSuccessful && response.body() != null) {
                 val chapter = networkToModel(response.body()!!)
-                saveToDb(chapter)
 
                 return chapter
             }
@@ -35,8 +34,6 @@ class ChapterRepositoryImpl @Inject constructor(
             if (response.isSuccessful && response.body() != null) {
                 val chapters = response.body()!!.map {networkToModel(it)}
 
-                saveToDb(chapters)
-
                 return chapters
             }
         } catch (e : Exception) {
@@ -51,9 +48,6 @@ class ChapterRepositoryImpl @Inject constructor(
             val response = remoteApi.getChapters()
             if (response.isSuccessful && response.body() != null) {
                 val chapters = response.body()!!.map {networkToModel(it)}
-
-                saveToDb(chapters)
-
                 return chapters
             }
         } catch (e : Exception) {
@@ -68,11 +62,11 @@ class ChapterRepositoryImpl @Inject constructor(
             if (response.isSuccessful && response.body() != null) {
                 return response.body()!!
             }
-            return "Text not found"
+            return eglineDatabase.ChapterDao().getChapter(chapterId).textContent
         } catch (e : Exception) {
             Log.e("ChapterRepositoryImpl", e.toString())
         }
-        return eglineDatabase.ChapterDao().getChapter(chapterId).textContent
+        return "Text not found"
     }
 
     override suspend fun getText(chapter : Chapter) : String {
@@ -95,12 +89,16 @@ class ChapterRepositoryImpl @Inject constructor(
         return getAudio(chapter.id)
     }
 
-    private suspend fun saveToDb(chapter : Chapter) {
+    override suspend fun saveToDb(chapter : Chapter) {
         eglineDatabase.ChapterDao().upsertChapter(modelToEntity(chapter))
     }
 
-    private suspend fun saveToDb(chapterList : List<Chapter>) {
+    override suspend fun saveToDb(chapterList : List<Chapter>) {
         eglineDatabase.ChapterDao().upsertChapters(chapterList.map {modelToEntity(it)})
+    }
+
+    override suspend fun saveToDb(chapterId : Int) {
+        saveToDb(get(chapterId))
     }
 
 

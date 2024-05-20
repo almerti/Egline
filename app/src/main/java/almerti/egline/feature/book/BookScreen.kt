@@ -43,7 +43,9 @@ import coil.compose.SubcomposeAsyncImage
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun BookScreen(
-    viewModel : BookViewModel
+    viewModel : BookViewModel,
+    onBack : () -> Unit,
+    onOpenBookReader : (Int) -> Unit
 ) {
     val state = viewModel.state
 
@@ -54,7 +56,7 @@ fun BookScreen(
                     Text(text = state.book?.title.orEmpty())
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* Navigate back */}) {
+                    IconButton(onClick = {onBack()}) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
@@ -62,7 +64,7 @@ fun BookScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* Perform some action */}) {
+                    IconButton(onClick = {viewModel.onEvent(BookEvent.DownloadAllChapters(state.book!!.id))}) {
                         Icon(
                             imageVector = Icons.Filled.SaveAlt,
                             contentDescription = "More",
@@ -73,7 +75,7 @@ fun BookScreen(
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                onClick = { },
+                onClick = {onOpenBookReader(state.chapters[0].id)},
                 icon = {Icon(Icons.Filled.PlayArrow, "Extended floating action button.")},
                 text = {Text(text = "Start")},
             )
@@ -193,7 +195,13 @@ fun BookScreen(
                     }
                 }
 
-                TabBar(comments = state.comments, chapters = state.chapters)
+                TabBar(
+                    comments = state.comments,
+                    chapters = state.chapters,
+                    onAddComment = {viewModel.onEvent(BookEvent.AddComment(it))},
+                    onDownloadChapter = {viewModel.onEvent(BookEvent.DownloadChapter(it.id))},
+                    onOpenChapter = {onOpenBookReader(it.id)},
+                )
             }
         }
     }
