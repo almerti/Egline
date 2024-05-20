@@ -10,21 +10,20 @@ const val BOOK_CARD_GRAPH_ROUTE = "book-card-graph/{$BOOK_ID_ARG}"
 
 internal data class BookCardArgs(val bookId : Int) {
     constructor(savedStateHandle : SavedStateHandle) : this(
-        bookId = checkNotNull(savedStateHandle[BOOK_ID_ARG])
+        bookId = checkNotNull(savedStateHandle[BOOK_ID_ARG]).toString().toInt(),
     )
 }
 
 
-fun NavGraphBuilder.bookCardGraph(navController : NavController) {
+fun NavGraphBuilder.bookCardGraph() {
     navigation(
-        startDestination = BOOK_ROUTE ,
-        route = BOOK_CARD_GRAPH_ROUTE ,
+        startDestination = BOOK_ROUTE,
+        route = BOOK_CARD_GRAPH_ROUTE,
     ) {
-        bookScreen(
-        )
+        bookScreen()
     }
 }
 
 fun NavController.navigateToBookCardGraph(bookId : Int) {
-    navigate(BOOK_CARD_GRAPH_ROUTE.replace("{$BOOK_ID_ARG}" , bookId.toString()))
+    navigate(BOOK_CARD_GRAPH_ROUTE.replace("{$BOOK_ID_ARG}", bookId.toString()))
 }

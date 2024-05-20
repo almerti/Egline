@@ -1,13 +1,11 @@
 package almerti.egline.navigation.navbar
 
-import almerti.egline.feature.book.navigateToBookCardGraph
 import almerti.egline.feature.favorite.favoriteGraph
 import almerti.egline.feature.profile.profileGraph
 import almerti.egline.feature.settings.settingsGraph
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.waterfall
@@ -29,7 +27,8 @@ import androidx.navigation.compose.rememberNavController
 fun MenuNavHost(
     modifier : Modifier = Modifier,
     navController : NavHostController = rememberNavController(),
-    onNavigateToLoginPage : () -> Unit
+    onNavigateToLoginPage : () -> Unit,
+    onNavigateToBookPage : (Int) -> Unit
 ) {
     Scaffold(
         modifier = modifier,
@@ -38,7 +37,7 @@ fun MenuNavHost(
         NavHost(
             modifier = Modifier.windowInsetsPadding(WindowInsets.waterfall),
             navController = navController,
-            startDestination = CATALOG_BROWSER_GRAPH_ROUTE,
+            startDestination = SAVED_GRAPH_ROUTE,
         ) {
 
             favoriteGraph()
@@ -46,9 +45,7 @@ fun MenuNavHost(
             composable(SAVED_GRAPH_ROUTE) {
                 SavedScreen(
                     navigateToBookPage = {bookId ->
-                        navController.navigateToBookCardGraph(
-                            bookId,
-                        )
+                        onNavigateToBookPage(bookId)
                     },
                 )
             }
@@ -60,6 +57,7 @@ fun MenuNavHost(
                 onNavigateToLoginPage = onNavigateToLoginPage,
             )
             settingsGraph()
+
         }
 
     }
@@ -101,6 +99,7 @@ private fun MenuNavHostPreview() {
         navController = NavHostController(LocalContext.current),
         modifier = Modifier,
         onNavigateToLoginPage = {},
+        onNavigateToBookPage = {},
     )
 }
 

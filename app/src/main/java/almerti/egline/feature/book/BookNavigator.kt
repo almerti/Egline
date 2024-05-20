@@ -10,7 +10,7 @@ internal fun NavGraphBuilder.bookScreen() {
     composable(BOOK_ROUTE) {
         val viewModel : BookViewModel = hiltViewModel<BookViewModel>()
         BookScreen(
-            viewModel = viewModel
+            viewModel = viewModel,
         )
     }
 }
