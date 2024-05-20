@@ -28,6 +28,8 @@ class BookViewModel @Inject constructor(
 
     var state by mutableStateOf(BookState())
 
+    var isLogedIn by mutableStateOf(false)
+
     init {
         getBook()
     }
@@ -37,6 +39,7 @@ class BookViewModel @Inject constructor(
             state.book = bookRepository.getById(args.bookId)
             state.chapters = chapterRepository.getAll(args.bookId)
             state.comments = commentRepository.getAll(args.bookId)
+            isLogedIn = userRepository.get().first().id > 0
         }
     }
 
@@ -64,12 +67,14 @@ class BookViewModel @Inject constructor(
             is BookEvent.AddRate -> TODO()
             is BookEvent.DownloadAllChapters -> {
                 viewModelScope.launch {
+                    bookRepository.getById(state.book!!.id)
                     chapterRepository.saveToDb(state.chapters)
                 }
             }
 
             is BookEvent.DownloadChapter -> {
                 viewModelScope.launch {
+                    bookRepository.getById(state.book!!.id)
                     chapterRepository.saveToDb(event.chapterId)
                 }
             }

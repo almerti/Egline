@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Comment
 import androidx.compose.material.icons.outlined.AddComment
@@ -39,13 +41,18 @@ fun TabBar(
     chapters : List<Chapter>,
     onAddComment : (String) -> Unit,
     onDownloadChapter : (Chapter) -> Unit,
-    onOpenChapter : (Chapter) -> Unit
+    onOpenChapter : (Chapter) -> Unit,
+    isloginInt : Boolean
 
 ) {
     var state by remember {mutableIntStateOf(0)}
     var text by remember {mutableStateOf("")}
     val titles = listOf("Comments", "Chapters")
-    Column {
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(bottom = 46.dp),
+    ) {
         SecondaryTabRow(selectedTabIndex = state) {
             titles.forEachIndexed {index, title ->
                 Tab(
@@ -71,6 +78,7 @@ fun TabBar(
                     )
                 },
                 label = {Text(text = "New Comment")},
+                enabled = isloginInt,
             )
             IconButton(onClick = {onAddComment(text)}) {
                 Icon(

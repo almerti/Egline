@@ -37,7 +37,7 @@ internal object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient : OkHttpClient) : Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.0.113:8000/api/v1/")
+            .baseUrl("http://192.168.106.94:8000/api/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

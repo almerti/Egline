@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.launch
 
 @Composable
-fun SettingsScreen(
+fun settingsScreen(
     viewModel : SettingsViewModel
 ) {
     val user by viewModel.userState.collectAsState(initial = null)

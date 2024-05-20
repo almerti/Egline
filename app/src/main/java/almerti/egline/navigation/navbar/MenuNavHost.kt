@@ -1,25 +1,22 @@
 package almerti.egline.navigation.navbar
 
+import almerti.egline.feature.catalog.catalogGraph
 import almerti.egline.feature.favorite.favoriteGraph
 import almerti.egline.feature.profile.profileGraph
+import almerti.egline.feature.saved.SAVED_GRAPH_ROUTE
+import almerti.egline.feature.saved.savedGraph
 import almerti.egline.feature.settings.settingsGraph
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.waterfall
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -42,16 +39,11 @@ fun MenuNavHost(
 
             favoriteGraph()
 
-            composable(SAVED_GRAPH_ROUTE) {
-                SavedScreen(
-                    navigateToBookPage = {bookId ->
-                        onNavigateToBookPage(bookId)
-                    },
-                )
-            }
-            composable(CATALOG_BROWSER_GRAPH_ROUTE) {
-                FavoritesScreen(navController)
-            }
+
+            savedGraph()
+
+            catalogGraph()
+
             profileGraph(
                 navController = navController,
                 onNavigateToLoginPage = onNavigateToLoginPage,
@@ -63,34 +55,6 @@ fun MenuNavHost(
     }
 }
 
-
-@Composable
-fun FavoritesScreen(navController : NavHostController) {
-    Column(
-        verticalArrangement = Arrangement.Top,
-        modifier = Modifier,
-    ) {
-
-        Text(text = "FavoritesScreen")
-    }
-}
-
-@Composable
-fun SavedScreen(
-    navigateToBookPage : (id : Int) -> Unit
-) {
-    Column(
-        verticalArrangement = Arrangement.Top,
-        modifier = Modifier.safeContentPadding(),
-    ) {
-
-        Text(text = "SavedScreen")
-
-        Button(onClick = {navigateToBookPage(1)}) {
-            Text(text = "Go to Book")
-        }
-    }
-}
 
 @Preview
 @Composable

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.NoPhotography
@@ -35,6 +36,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -115,8 +117,9 @@ fun BookScreen(
                         else state.book?.cover,
                         contentDescription = null,
                         modifier = Modifier
-                            .height(100.dp)
-                            .width(10.dp),
+                            .width(160.dp)
+                            .padding(end = 16.dp)
+                            .clip(shape = RoundedCornerShape(10.dp)),
                     )
                     Column(
                         modifier = Modifier
@@ -201,6 +204,7 @@ fun BookScreen(
                     onAddComment = {viewModel.onEvent(BookEvent.AddComment(it))},
                     onDownloadChapter = {viewModel.onEvent(BookEvent.DownloadChapter(it.id))},
                     onOpenChapter = {onOpenBookReader(it.id)},
+                    isloginInt = viewModel.isLogedIn,
                 )
             }
         }

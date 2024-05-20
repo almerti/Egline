@@ -16,7 +16,7 @@ fun NavGraphBuilder.settingsGraph() {
         route = SETTINGS_GRAPH_ROUTE,
         startDestination = SETTINGS_ROUTE,
     ) {
-        SettingsScreen()
+        settingsScreen()
     }
 }
 
