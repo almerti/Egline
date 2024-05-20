@@ -3,7 +3,6 @@ package almerti.egline.feature.player
 import almerti.egline.data.repository.BookRepository
 import almerti.egline.data.repository.ChapterRepository
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -19,36 +18,28 @@ import javax.inject.Inject
 @SuppressLint("MutableCollectionMutableState")
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val chapterRepository: ChapterRepository,
     private val bookRepository: BookRepository,
 ) : ViewModel() {
     private val args = PlayerChapterArg(savedStateHandle)
-    var mediaItems by mutableStateOf(mutableListOf<MediaItem>())
-    val chaptersTitles by mutableStateOf(mutableListOf<String>())
+    var mediaItem by mutableStateOf<MediaItem?>(null)
     var cover by mutableStateOf(byteArrayOf())
-    var bookTitle: String = ""
-    var currentChapter: Int = 0
+
+    var bookTitle by mutableStateOf("")
+    var chapterTitle by mutableStateOf("")
 
     init {
         viewModelScope.launch {
             val chapter = chapterRepository.get(args.chapterId)
-            Log.e("FOREIGN KEY", "KEY: " + chapter.bookId)
             val book = bookRepository.getById(chapter.bookId)
 
             bookTitle = book?.title!!
+            chapterTitle = chapter.title
             cover = book.cover
 
-            val allChapters = chapterRepository.getAll(book.id).sortedBy {it.number}
-            allChapters.forEachIndexed {index, chapter ->
-                val uri = chapterRepository.getAudio(chapter.id).toUri()
-                mediaItems.add(MediaItem.fromUri(uri))
-                chaptersTitles.add("Chapter #${chapter.number} - ${chapter.title}")
-
-                if (chapter.id == args.chapterId) {
-                    currentChapter = index
-                }
-            }
+            val uri = chapterRepository.getAudio(chapter.id).toUri()
+            mediaItem = MediaItem.fromUri(uri)
         }
     }
 }

@@ -1,14 +1,11 @@
 package almerti.egline.feature.player
 
-import almerti.egline.feature.player.components.TrackSlider
 import almerti.egline.ui.components.CustomIconButton
-import android.util.Log
 import androidx.annotation.OptIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,10 +15,10 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.rounded.FastForward
+import androidx.compose.material.icons.rounded.FastRewind
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.SkipNext
-import androidx.compose.material.icons.rounded.SkipPrevious
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -42,8 +39,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
-import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import coil.compose.SubcomposeAsyncImage
@@ -56,11 +51,10 @@ fun PlayerScreen(
     onBack: () -> Unit
 ) {
     val player = ExoPlayer.Builder(LocalContext.current).build()
-    if (viewModel.mediaItems.isNotEmpty()) {
+
+    if (viewModel.mediaItem != null) {
         LaunchedEffect(Unit) {
-            viewModel.mediaItems.forEach {
-                player.addMediaItem(it)
-            }
+            player.addMediaItem(viewModel.mediaItem!!)
         }
         player.prepare()
 
@@ -92,7 +86,6 @@ fun PlayerScreen(
         LaunchedEffect(player.duration) {
             if (player.duration > 0) {
                 totalDuration.longValue = player.duration
-                System.out.println("GOOD")
             } else {
                 System.out.println("SJFHLSFLJNBNSLKJNSFJNSBJNSKBJNKSJNO OIA U")
             }
@@ -161,14 +154,14 @@ fun PlayerScreen(
                         modifier = Modifier
                             .widthIn(min = 250.dp, max = 300.dp)
                             .padding(bottom = 36.dp),
-                        text = viewModel.chaptersTitles[viewModel.currentChapter],
+                        text = viewModel.chapterTitle,
                         style = TextStyle(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
                         ),
                     )
-                    Row(
+                    /*Row(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
@@ -188,8 +181,8 @@ fun PlayerScreen(
                             color = MaterialTheme.colorScheme.onSurface,
                             style = TextStyle(fontWeight = FontWeight.Bold),
                         )
-                    }
-                    TrackSlider(
+                    }*/
+                    /*TrackSlider(
                         value = sliderPosition.longValue.toFloat(),
                         onValueChange = {
                             sliderPosition.longValue = it.toLong()
@@ -199,13 +192,12 @@ fun PlayerScreen(
                             player.seekTo(sliderPosition.longValue)
                         },
                         songDuration = totalDuration.longValue.toFloat(),
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
+                    )*/
                     // audio buttons
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 24.dp),
+                            .padding(top = 24.dp),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -214,12 +206,10 @@ fun PlayerScreen(
                         ) {
                             CustomIconButton(
                                 onClick = {
-                                    player.stop()
-                                    player.seekToPreviousMediaItem()
-                                    viewModel.currentChapter =
-                                        viewModel.mediaItems.indexOf(player.currentMediaItem)
+                                    currentPosition.longValue -= 5000L
+                                    player.seekTo(currentPosition.longValue)
                                 },
-                                imageVector = Icons.Rounded.SkipPrevious,
+                                imageVector = Icons.Rounded.FastRewind,
                                 size = 36.dp,
                             )
                         }
@@ -242,13 +232,10 @@ fun PlayerScreen(
                         ) {
                             CustomIconButton(
                                 onClick = {
-                                    player.stop()
-                                    player.seekToNextMediaItem()
-                                    viewModel.currentChapter =
-                                        viewModel.mediaItems.indexOf(player.currentMediaItem)
-                                    System.out.println("CURRENT POS: " + player.currentPosition.toString())
+                                    currentPosition.longValue += 5000L
+                                    player.seekTo(currentPosition.longValue)
                                 },
-                                imageVector = Icons.Rounded.SkipNext,
+                                imageVector = Icons.Rounded.FastForward,
                                 size = 36.dp,
                             )
                         }
@@ -259,7 +246,7 @@ fun PlayerScreen(
     }
 }
 
-private fun Long.convertToText(): String {
+/*private fun Long.convertToText(): String {
     val sec = this / 1000
     val minutes = sec / 60
     val seconds = sec % 60
@@ -275,4 +262,4 @@ private fun Long.convertToText(): String {
         seconds.toString()
     }
     return "$minutesString:$secondsString"
-}
+}*/
