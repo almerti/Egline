@@ -1,6 +1,5 @@
 package almerti.egline.feature.profile
 
-import almerti.egline.feature.login.navigateToLoginGraph
 import almerti.egline.feature.profile.edit.navigateToEditProfile
 import almerti.egline.feature.profile.edit.profileEditScreen
 import almerti.egline.feature.profile.main.PROFILE_MAIN_ROUTE
