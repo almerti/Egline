@@ -1,9 +1,11 @@
 package almerti.egline.feature.book
 
 import almerti.egline.data.model.Comment
+import almerti.egline.data.model.Folder
 import almerti.egline.data.repository.BookRepository
 import almerti.egline.data.repository.ChapterRepository
 import almerti.egline.data.repository.CommentRepository
+import almerti.egline.data.repository.FolderRepository
 import almerti.egline.data.repository.UserRepository
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +24,8 @@ class BookViewModel @Inject constructor(
     private val bookRepository : BookRepository,
     private val chapterRepository : ChapterRepository,
     private val commentRepository : CommentRepository,
-    private val userRepository : UserRepository
+    private val userRepository : UserRepository,
+    private val folderRepository : FolderRepository
 ) : ViewModel() {
     private val args = BookCardArgs(savedStateHandle)
 
@@ -34,7 +37,7 @@ class BookViewModel @Inject constructor(
         getBook()
     }
 
-    private fun getBook() {
+    fun getBook() {
         viewModelScope.launch {
             state.book = bookRepository.getById(args.bookId)
             state.chapters = chapterRepository.getAll(args.bookId)
@@ -55,6 +58,7 @@ class BookViewModel @Inject constructor(
                             bookId = args.bookId,
                             text = event.comment,
                             userId = userRepository.get().first().id,
+                            chapterId = 1,
                             rating = 5,
                         ),
                     )
@@ -76,6 +80,17 @@ class BookViewModel @Inject constructor(
                 viewModelScope.launch {
                     bookRepository.getById(state.book!!.id)
                     chapterRepository.saveToDb(event.chapterId)
+                }
+            }
+
+            is BookEvent.AddToFolder -> {
+                viewModelScope.launch {
+                    folderRepository.addBooks(
+                        Folder(
+                            folderName = event.folderName,
+                            bookIds = mutableListOf(state.book!!.id),
+                        ),
+                    )
                 }
             }
         }

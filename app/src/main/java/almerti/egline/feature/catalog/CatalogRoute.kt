@@ -11,11 +11,13 @@ fun NavController.navigateToCatalogGraph() {
     navigate(CATALOG_GRAPH_ROUTE)
 }
 
-fun NavGraphBuilder.catalogGraph() {
+fun NavGraphBuilder.catalogGraph(
+    onNavigateToBook : (Int) -> Unit
+) {
     navigation(
         route = CATALOG_GRAPH_ROUTE,
         startDestination = CATALOG_ROUTE,
     ) {
-        catalogScreen()
+        catalogScreen(onNavigateToBook = onNavigateToBook)
     }
 }

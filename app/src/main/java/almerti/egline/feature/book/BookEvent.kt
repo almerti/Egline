@@ -10,4 +10,5 @@ sealed class BookEvent {
     data class RateComment(val commentId : Int, val rate : Int) : BookEvent()
     data class DownloadChapter(val chapterId : Int) : BookEvent()
     data class DownloadAllChapters(val bookId : Int) : BookEvent()
+    data class AddToFolder(val bookId : Int, val folderName : String) : BookEvent()
 }

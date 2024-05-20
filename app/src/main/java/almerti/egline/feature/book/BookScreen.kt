@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material.icons.filled.NoPhotography
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.SaveAlt
@@ -32,8 +33,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,9 +53,10 @@ import coil.compose.SubcomposeAsyncImage
 fun BookScreen(
     viewModel : BookViewModel,
     onBack : () -> Unit,
-    onOpenBookReader : (Int) -> Unit
+    onOpenBookReader : (Int) -> Unit,
 ) {
     val state = viewModel.state
+    var folderName by remember {mutableStateOf("")}
 
     Scaffold(
         topBar = {
@@ -90,6 +97,7 @@ fun BookScreen(
                     .padding(top = 100.dp)
                     .width(200.dp),
             )
+            viewModel.getBook()
         } else {
             Column(
                 modifier = Modifier
@@ -185,6 +193,7 @@ fun BookScreen(
                     textAlign = TextAlign.Justify,
                 )
 
+
                 // Genres
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
@@ -197,6 +206,38 @@ fun BookScreen(
                         )
                     }
                 }
+
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier,
+                ) {
+
+                    TextField(
+                        value = folderName, onValueChange = {folderName = it},
+                        label = {Text(text = "Folder name")},
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .padding(end = 8.dp),
+                    )
+
+                    IconButton(
+                        onClick = {
+                            viewModel.onEvent(
+                                BookEvent.AddToFolder(
+                                    state.book!!.id,
+                                    folderName,
+                                ),
+                            )
+                            folderName = ""
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.CreateNewFolder,
+                            contentDescription = "Save to folder",
+                        )
+                    }
+                }
+
 
                 TabBar(
                     comments = state.comments,

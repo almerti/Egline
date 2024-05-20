@@ -59,8 +59,8 @@ import java.io.IOException
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileScreen(
-    viewModel: EditProfileViewModel,
-    onNavigateToBack: () -> Unit
+    viewModel : EditProfileViewModel,
+    onNavigateToBack : () -> Unit
 ) {
     val user = viewModel.userState.collectAsState(null)
     val state = viewModel.state
@@ -84,9 +84,11 @@ fun EditProfileScreen(
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = {
-            viewModel.selectedImageUri.value = it
-            val bytes = readBytes(context, viewModel.selectedImageUri.value!!)
-            viewModel.onEvent(EditProfileEvent.AvatarChanged(bytes!!))
+            if (it != null) {
+                viewModel.selectedImageUri.value = it
+                val bytes = readBytes(context, viewModel.selectedImageUri.value!!)
+                viewModel.onEvent(EditProfileEvent.AvatarChanged(bytes!!))
+            }
         },
     )
 
@@ -174,7 +176,7 @@ fun EditProfileScreen(
                     ),
                 ) {
                     SubcomposeAsyncImage(
-                        model = if (user.value?.avatar == null && viewModel.selectedImageUri.value == null)
+                        model = if (user.value?.avatar?.isEmpty()!! && viewModel.selectedImageUri.value == null)
                             R.drawable.ic_no_cover
                         else if (viewModel.selectedImageUri.value != null)
                             viewModel.selectedImageUri.value
@@ -240,15 +242,15 @@ fun EditProfileScreen(
 }
 
 @Throws(IOException::class)
-private fun readBytes(context: Context, uri: Uri): ByteArray? =
+private fun readBytes(context : Context, uri : Uri) : ByteArray? =
     context.contentResolver.openInputStream(uri)?.buffered()?.use {it.readBytes()}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AlertDialogExample(
-    onDismissRequest: () -> Unit,
-    onConfirmation: () -> Unit,
-    icon: ImageVector,
+    onDismissRequest : () -> Unit,
+    onConfirmation : () -> Unit,
+    icon : ImageVector,
 ) {
     AlertDialog(
         icon = {
