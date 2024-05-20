@@ -26,6 +26,7 @@ internal data class ReaderChapterArg(val chapterId: Int) {
 
 fun NavGraphBuilder.readerGraph(
     onBack: () -> Unit,
+    navController: NavController
 ) {
     navigation(
         route = READER_GRAPH_ROUTE,
@@ -33,6 +34,7 @@ fun NavGraphBuilder.readerGraph(
     ) {
         readerScreen(
             onBack = onBack,
+            navController = navController,
         )
     }
 }

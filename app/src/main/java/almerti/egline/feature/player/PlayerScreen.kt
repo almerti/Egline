@@ -102,7 +102,10 @@ fun PlayerScreen(
             ) {
                 Row {
                     CustomIconButton(
-                        onClick = onBack,
+                        onClick = {
+                            player.pause()
+                            onBack()
+                        },
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
                         size = 28.dp,
                     )
