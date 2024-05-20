@@ -9,6 +9,7 @@ interface BookRepository {
 
     suspend fun getFlow() : Flow<List<Book>>
     suspend fun getNext(amount : Int)
+    suspend fun clearFlow()
     suspend fun getById(id : Int) : Book?
     suspend fun getByName(name : String) : List<Book>
     suspend fun getSaved() : Flow<List<Book>>

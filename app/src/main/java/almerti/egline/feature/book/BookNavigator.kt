@@ -6,7 +6,10 @@ import androidx.navigation.compose.composable
 
 internal const val BOOK_ROUTE = "book"
 
-internal fun NavGraphBuilder.bookScreen(onBack : () -> Unit, onOpenBookReader : (Int) -> Unit) {
+internal fun NavGraphBuilder.bookScreen(
+    onBack : () -> Unit,
+    onOpenBookReader : (Int) -> Unit,
+) {
     composable(BOOK_ROUTE) {
         val viewModel : BookViewModel = hiltViewModel<BookViewModel>()
         BookScreen(

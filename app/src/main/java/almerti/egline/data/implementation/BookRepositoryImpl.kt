@@ -52,6 +52,9 @@ class BookRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun clearFlow() {
+        eglineDatabase.BookDao().deleteAllBooks()
+    }
 
     override suspend fun getById(id : Int) : Book? {
         try {

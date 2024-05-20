@@ -6,11 +6,12 @@ import androidx.navigation.compose.composable
 
 internal const val SAVED_ROUTE = "saved"
 
-internal fun NavGraphBuilder.savedScreen() {
+internal fun NavGraphBuilder.savedScreen(onNavigateToBooPage : (Int) -> Unit) {
     composable(SAVED_ROUTE) {
         val viewModel : SavedViewModel = hiltViewModel<SavedViewModel>()
         SavedScreen(
-            viewModel = viewModel,
+            viewModel = viewModel ,
+            onNavigateToBookPage = onNavigateToBooPage
         )
     }
 }

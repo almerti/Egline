@@ -40,9 +40,11 @@ fun MenuNavHost(
             favoriteGraph()
 
 
-            savedGraph()
+            savedGraph(onNavigateToBook = onNavigateToBookPage)
 
-            catalogGraph()
+            catalogGraph(
+                onNavigateToBook = onNavigateToBookPage,
+            )
 
             profileGraph(
                 navController = navController,

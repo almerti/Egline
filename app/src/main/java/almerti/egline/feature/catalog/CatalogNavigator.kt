@@ -6,11 +6,14 @@ import androidx.navigation.compose.composable
 
 internal const val CATALOG_ROUTE = "catalog"
 
-internal fun NavGraphBuilder.catalogScreen() {
+internal fun NavGraphBuilder.catalogScreen(
+    onNavigateToBook : (Int) -> Unit
+) {
     composable(CATALOG_ROUTE) {
         val viewModel : CatalogViewModel = hiltViewModel<CatalogViewModel>()
         CatalogScreen(
             viewModel = viewModel,
+            onNavigateToBook = onNavigateToBook,
         )
     }
 }
